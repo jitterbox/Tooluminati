@@ -664,6 +664,9 @@ importers:
       '@tooluminati/angular':
         specifier: workspace:*
         version: link:../angular
+      '@tooluminati/core':
+        specifier: workspace:*
+        version: link:../core
       '@tooluminati/devtools':
         specifier: workspace:*
         version: link:../devtools
