@@ -1,6 +1,6 @@
 # WebMCP Spec Notes
 
-This project tracks the 15 June 2026 WebMCP draft.
+Tooluminati tracks the 15 June 2026 WebMCP draft.
 
 Current core assumptions:
 

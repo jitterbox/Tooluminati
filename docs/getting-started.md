@@ -1,4 +1,4 @@
-# Getting Started
+# Getting Started with Tooluminati
 
 Install the packages you need:
 
@@ -11,14 +11,22 @@ pnpm add @tooluminati/core \
 Wrap your app with explicit enablement:
 
 ```tsx
+import { WebMcpProvider } from '@tooluminati/react';
+
 <WebMcpProvider enabled={import.meta.env.DEV}>
   <App />
-</WebMcpProvider>
+</WebMcpProvider>;
 ```
 
 Register diagnostics through package factories:
 
 ```tsx
+import { useWebMcpTools } from '@tooluminati/react';
+import {
+  createAppInfoTool,
+  createActionAvailabilityTool,
+} from '@tooluminati/diagnostics';
+
 useWebMcpTools([
   createAppInfoTool(() => ({
     name: 'Customer Portal',

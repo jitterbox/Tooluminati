@@ -11,8 +11,8 @@ export function useWebMcpSecurityBanner() {
       supported: isWebMcpSupported(),
       registeredTools: registry.getRegisteredToolNames(),
       message: enabled
-        ? 'WebMCP diagnostics are enabled for this page.'
-        : 'WebMCP diagnostics are disabled.',
+        ? 'Tooluminati diagnostics are enabled for this page.'
+        : 'Tooluminati diagnostics are disabled.',
     }),
     [enabled, registry],
   );

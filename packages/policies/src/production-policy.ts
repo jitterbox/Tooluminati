@@ -27,7 +27,7 @@ export function createProductionPolicy(
         return {
           allowed: false,
           warnings: [],
-          reason: 'WebMCP diagnostics are disabled in production by policy.',
+          reason: 'Tooluminati diagnostics are disabled in production by policy.',
         };
       }
 

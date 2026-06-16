@@ -26,4 +26,4 @@ When launching Chrome manually for automation, the relevant feature flags are:
 ```
 
 Chrome-only `getTools()` and `executeTool()` helpers are treated as testing
-surfaces in this project, not required core registration APIs.
+surfaces in Tooluminati, not required core registration APIs.

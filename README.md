@@ -1,25 +1,40 @@
 <p align="center">
-  <img src="assets/tooluminati-logo.png" alt="Tooluminati" width="420" />
+  <a href="https://github.com/jitterbox/Tooluminati">
+    <img
+      src="assets/tooluminati-logo.png"
+      alt="Tooluminati — Expose tools. Share context. Empower agents."
+      width="480"
+    />
+  </a>
 </p>
 
-# Tooluminati
+<p align="center">
+  <strong>Expose tools. Share context. Empower agents.</strong>
+</p>
 
-[![CI](https://github.com/jitterbox/Tooluminati/actions/workflows/ci.yml/badge.svg)](https://github.com/jitterbox/Tooluminati/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+<p align="center">
+  <a href="https://github.com/jitterbox/Tooluminati/actions/workflows/ci.yml">
+    <img
+      src="https://github.com/jitterbox/Tooluminati/actions/workflows/ci.yml/badge.svg"
+      alt="CI"
+    />
+  </a>
+  <a href="LICENSE">
+    <img
+      src="https://img.shields.io/badge/License-MIT-yellow.svg"
+      alt="License: MIT"
+    />
+  </a>
+</p>
 
-**Expose tools. Share context. Empower agents.**
-
-Opinionated React diagnostics and agent observability for the emerging WebMCP
-browser API.
-
-This project is intentionally not just another `useWebMcpTool` hook. Generic
-hook packages solve registration plumbing. Tooluminati focuses on safe,
-consistent interpretation of React runtime surfaces: forms, routers, data
-caches, action availability, errors, hydration, and production security policy.
+Tooluminati is an opinionated React toolkit for the emerging WebMCP browser API.
+It helps apps expose safe, structured diagnostics so agents can troubleshoot
+forms, routers, data caches, action availability, errors, hydration, and
+production security policy — not just register another `useWebMcpTool` hook.
 
 WebMCP is experimental and currently requires browser flags or origin-trial
-support. All APIs in this repository should be treated as pre-1.0 and subject
-to change as the draft evolves.
+support. All `@tooluminati/*` APIs should be treated as pre-1.0 and subject to
+change as the draft evolves.
 
 ## Install
 
@@ -98,6 +113,7 @@ pnpm test:browser
 ## Documentation
 
 - [Getting started](docs/getting-started.md)
+- [Positioning](docs/positioning.md)
 - [Security](docs/security.md)
 - [Diagnostics tools](docs/diagnostics.md)
 - [Chrome setup](docs/chrome-setup.md)
@@ -106,6 +122,8 @@ pnpm test:browser
 ## Development
 
 ```bash
+git clone https://github.com/jitterbox/Tooluminati.git
+cd Tooluminati
 pnpm install
 pnpm check
 pnpm build

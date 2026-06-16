@@ -1,6 +1,6 @@
-# Releasing to npm
+# Releasing Tooluminati to npm
 
-Packages publish under the `@tooluminati` scope on npm. All nine
+Tooluminati packages publish under the `@tooluminati` scope on npm. All nine
 packages version together via Changesets.
 
 ## Published packages

@@ -21,7 +21,7 @@ export function createAppInfoTool(
   return {
     name,
     description:
-      'Returns safe application metadata, environment, build, and WebMCP diagnostics status.',
+      'Returns safe application metadata, environment, build, and Tooluminati status.',
     inputSchema: {
       type: 'object',
       properties: {},

@@ -1,6 +1,6 @@
 # Production Hardening
 
-Production WebMCP diagnostics should be opt-in and reviewed.
+Production Tooluminati diagnostics should be opt-in and reviewed.
 
 Recommended policy:
 

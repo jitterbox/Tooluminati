@@ -4,7 +4,7 @@
 React apps.
 
 This example deliberately hides checkout blockers from the DOM. A disabled
-button is visible, but the real reasons live only in WebMCP diagnostics.
+button is visible, but the real reasons live only in Tooluminati diagnostics.
 
 ## Run locally
 

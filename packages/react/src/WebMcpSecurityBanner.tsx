@@ -18,7 +18,7 @@ export function WebMcpSecurityBanner() {
         marginBottom: '1rem',
       }}
     >
-      <strong>WebMCP diagnostics enabled.</strong> {banner.message} Registered
+      <strong>Tooluminati diagnostics enabled.</strong> {banner.message} Registered
       tools: {banner.registeredTools.join(', ') || 'none'}.
     </aside>
   );
