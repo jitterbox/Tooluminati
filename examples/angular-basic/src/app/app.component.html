@@ -1,0 +1,8 @@
+<web-mcp-security-banner></web-mcp-security-banner>
+<h1>{{ pageTitle }}</h1>
+<p>
+  This Angular example exposes app info, visible tools, action availability,
+  and page state.
+</p>
+<button type="button" (click)="makeDirty()">Make profile dirty</button>
+<button type="button" [disabled]="!dirty()">Save profile</button>

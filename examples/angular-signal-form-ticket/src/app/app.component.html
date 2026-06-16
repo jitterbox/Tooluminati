@@ -1,0 +1,22 @@
+<web-mcp-security-banner></web-mcp-security-banner>
+<h1>Support Ticket</h1>
+<label>
+  Subject
+  <input
+    [ngModel]="subject"
+    (ngModelChange)="onSubjectChange($event)"
+    name="subject"
+  />
+</label>
+<label>
+  Message
+  <textarea
+    [ngModel]="message"
+    (ngModelChange)="onMessageChange($event)"
+    name="message"
+  ></textarea>
+</label>
+<button type="button">Submit ticket</button>
+@if (submittedId()) {
+  <p>Ticket submitted: {{ submittedId() }}</p>
+}

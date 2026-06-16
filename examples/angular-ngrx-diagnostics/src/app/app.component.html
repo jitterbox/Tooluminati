@@ -1,0 +1,15 @@
+<web-mcp-security-banner></web-mcp-security-banner>
+<h1>Signal State Diagnostics</h1>
+<p>
+  Only the allowlisted <code>users</code> query key is exposed via WebMCP.
+</p>
+<ul>
+  @for (query of state().queries; track query.key) {
+    <li>
+      <strong>{{ query.key }}</strong> — {{ query.status }}
+      @if (query.stale) {
+        (stale)
+      }
+    </li>
+  }
+</ul>

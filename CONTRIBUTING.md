@@ -4,21 +4,21 @@ Thanks for helping improve Tooluminati.
 
 ## Development setup
 
-Requirements: Node.js 18+, pnpm 10+.
+Requirements: Node.js 18+, pnpm 10+, Angular CLI 20+ (for `examples/angular-*`).
 
 ```bash
 git clone https://github.com/jitterbox/Tooluminati.git
 cd Tooluminati
 pnpm install
 pnpm check      # typecheck, lint, unit tests
-pnpm build      # build publishable packages
-pnpm test:browser
+pnpm build      # build publishable packages (React + Angular)
+pnpm test:browser  # React + Angular Playwright specs
 ```
 
 ## Project layout
 
 - `packages/*` — publishable npm packages (`@tooluminati/*`)
-- `examples/*` — runnable Vite demos (not published)
+- `examples/*` — runnable React (Vite) and Angular (CLI) demos (not published)
 - `docs/*` — guides and adapter documentation
 - `tests/browser/*` — Playwright integration tests
 

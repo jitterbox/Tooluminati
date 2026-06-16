@@ -20,10 +20,10 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "@tooluminati/core": "workspace:*",
-    "@tooluminati/react": "workspace:*"
+    "@tooluminati/core": "workspace:*"
   },
   "peerDependencies": {
+    "@tooluminati/react": "workspace:*",
     "react": ">=18.0.0"
   },
   "files": [

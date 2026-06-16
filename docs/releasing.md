@@ -1,6 +1,6 @@
 # Releasing Tooluminati to npm
 
-Tooluminati packages publish under the `@tooluminati` scope on npm. All nine
+Tooluminati packages publish under the `@tooluminati` scope on npm. All fourteen
 packages version together via Changesets.
 
 ## Published packages
@@ -16,6 +16,11 @@ packages version together via Changesets.
 | `@tooluminati/state` | Redux / TanStack Query adapters |
 | `@tooluminati/testing` | Mocks, Playwright helpers |
 | `@tooluminati/devtools` | Debug panel components |
+| `@tooluminati/angular` | Angular provider, scopes, banner |
+| `@tooluminati/angular-forms` | Angular form adapters |
+| `@tooluminati/angular-router` | Angular Router adapters |
+| `@tooluminati/angular-state` | NgRx / signal state adapters |
+| `@tooluminati/angular-devtools` | Angular debug panel |
 
 Examples in `examples/` are **not** published.
 

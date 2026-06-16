@@ -1,0 +1,94 @@
+<main class="layout">
+  <web-mcp-security-banner></web-mcp-security-banner>
+
+  <header>
+    <h1>Why is checkout disabled?</h1>
+    <p>
+      The UI shows a disabled button but hides the real blockers on purpose.
+      Compare what a DOM-only agent can prove vs WebMCP tools.
+    </p>
+  </header>
+
+  <section
+    class="checkout-card"
+    data-testid="checkout-row"
+    aria-label="Checkout summary"
+  >
+    <h2>Checkout</h2>
+    <p>Total: $129.00</p>
+    <p class="muted">
+      Status: waiting for customer action (details not shown in DOM).
+    </p>
+    <button disabled type="button">{{ checkoutButtonLabel }}</button>
+  </section>
+
+  <section class="prompt-box">
+    <h2>Sample agent prompt</h2>
+    <blockquote>
+      The "Complete checkout" button is disabled. Diagnose why the user cannot
+      checkout and list concrete blockers.
+    </blockquote>
+  </section>
+
+  <div class="compare-grid">
+    <article class="panel panel-dom">
+      <h2>Without WebMCP (DOM only)</h2>
+      <p class="muted">
+        Inspects button state, title, aria-describedby, and visible hints only.
+      </p>
+      <button type="button" (click)="runDomDiagnosis()">
+        Run DOM-only diagnosis
+      </button>
+      @if (domResult) {
+        <pre data-testid="dom-diagnosis">{{
+          domResult | json
+        }}</pre>
+        <p class="verdict verdict-fail" data-testid="dom-verdict">
+          Blockers found in DOM: {{ domBlockers }}. Cannot explain checkout
+          failure.
+        </p>
+      }
+    </article>
+
+    <article class="panel panel-webmcp">
+      <h2>With WebMCP</h2>
+      <p class="muted">
+        Calls <code>why_is_action_unavailable</code> with action id
+        <code>{{ checkoutActionId }}</code>.
+      </p>
+      <button type="button" (click)="runWebMcpDiagnosis()">
+        Run WebMCP diagnosis
+      </button>
+      @if (error) {
+        <p class="verdict verdict-fail">{{ error }}</p>
+      }
+      @if (webMcpResult) {
+        <pre data-testid="webmcp-diagnosis">{{
+          webMcpResult | json
+        }}</pre>
+        <p class="verdict verdict-pass" data-testid="webmcp-verdict">
+          Blockers from tool: {{ webMcpBlockers }}. Actionable diagnosis
+          available.
+        </p>
+      }
+    </article>
+  </div>
+
+  @if (domResult && webMcpResult) {
+    <section class="summary" data-testid="comparative-summary">
+      <h2>Objective comparison</h2>
+      <ul>
+        <li>
+          DOM-only blocker reasons: <strong>{{ domBlockers }}</strong>
+        </li>
+        <li>
+          WebMCP blocker reasons: <strong>{{ webMcpBlockers }}</strong>
+        </li>
+        <li>
+          WebMCP strictly more informative:
+          <strong>{{ webMcpStrictlyBetter ? 'yes' : 'no' }}</strong>
+        </li>
+      </ul>
+    </section>
+  }
+</main>
