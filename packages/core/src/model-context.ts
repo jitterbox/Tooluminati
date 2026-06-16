@@ -11,6 +11,7 @@ interface NavigatorWithModelContext extends Navigator {
 export interface GetModelContextOptions {
   globalObject?: typeof globalThis;
   allowNavigatorFallback?: boolean;
+  onNavigatorFallback?: () => void;
 }
 
 export function getModelContext(
@@ -35,8 +36,23 @@ export function getModelContext(
     return undefined;
   }
 
-  return (globalObject.navigator as NavigatorWithModelContext | undefined)
-    ?.modelContext;
+  const navigatorContext = (
+    globalObject.navigator as NavigatorWithModelContext | undefined
+  )?.modelContext;
+
+  if (navigatorContext) {
+    options.onNavigatorFallback?.();
+    if (
+      typeof process !== 'undefined' &&
+      process.env.NODE_ENV !== 'production'
+    ) {
+      console.warn(
+        '[react-webmcp-diagnostics] Using deprecated navigator.modelContext fallback. Prefer document.modelContext.',
+      );
+    }
+  }
+
+  return navigatorContext;
 }
 
 export function isWebMcpSupported(

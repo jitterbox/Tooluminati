@@ -24,7 +24,10 @@
       "@react-webmcp-diagnostics/testing": ["packages/testing/src/index.ts"],
       "@react-webmcp-diagnostics/forms": ["packages/forms/src/index.ts"],
       "@react-webmcp-diagnostics/router": ["packages/router/src/index.ts"],
-      "@react-webmcp-diagnostics/state": ["packages/state/src/index.ts"]
+      "@react-webmcp-diagnostics/state": ["packages/state/src/index.ts"],
+      "@react-webmcp-diagnostics/devtools": [
+        "packages/devtools/src/index.ts"
+      ]
     },
     "resolveJsonModule": true,
     "isolatedModules": true,

@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import type { WebMcpRegistry } from '@react-webmcp-diagnostics/core';
 import { WebMcpContext } from './WebMcpContext';
 
 export function useWebMcpRegistry() {
@@ -11,12 +12,19 @@ export function useWebMcpRegistry() {
   return context.registry;
 }
 
-export function useWebMcpContextValue() {
+export function useWebMcpContextValue(fallbackRegistry?: WebMcpRegistry) {
   const context = useContext(WebMcpContext);
 
-  if (!context) {
+  if (!context && !fallbackRegistry) {
     throw new Error('WebMCP hooks must be used within WebMcpProvider.');
   }
 
-  return context;
+  if (context) {
+    return context;
+  }
+
+  return {
+    registry: fallbackRegistry as WebMcpRegistry,
+    enabled: false,
+  };
 }

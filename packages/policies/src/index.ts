@@ -1,3 +1,7 @@
+/**
+ * @experimental React WebMCP Diagnostics policies — public APIs may change.
+ */
+export * from './adapter-policies';
 export * from './confirmation-policy';
 export * from './logging-policy';
 export * from './output-policy';

@@ -1,6 +1,6 @@
 import { defaultConfirmationPolicy } from './confirmation-policy';
 import { localLoggingPolicy, remoteSafeLoggingPolicy } from './logging-policy';
-import { defaultOutputPolicy, createOutputPolicy } from './output-policy';
+import { createOutputPolicy, defaultOutputPolicy } from './output-policy';
 import {
   productionOffPolicy,
   productionSafePolicy,
@@ -28,6 +28,24 @@ export const ciStrictPolicy: WebMcpPolicySet = {
   production: productionOffPolicy,
   confirmation: defaultConfirmationPolicy,
   logging: remoteSafeLoggingPolicy,
+};
+
+export const stagingPolicy: WebMcpPolicySet = {
+  security: ciStrictSecurityPolicy,
+  redaction: defaultRedactionPolicy,
+  output: createOutputPolicy({ maxChars: 1500, truncate: true }),
+  production: productionSafePolicy,
+  confirmation: defaultConfirmationPolicy,
+  logging: remoteSafeLoggingPolicy,
+};
+
+export const debugSessionPolicy: WebMcpPolicySet = {
+  security: localDevSecurityPolicy,
+  redaction: defaultRedactionPolicy,
+  output: createOutputPolicy({ maxChars: 800, truncate: true }),
+  production: productionSafePolicy,
+  confirmation: defaultConfirmationPolicy,
+  logging: localLoggingPolicy,
 };
 
 export const productionOffPolicySet: WebMcpPolicySet = {

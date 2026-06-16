@@ -84,6 +84,8 @@ export interface WebMcpToolDescriptor<TArgs = unknown, TResult = unknown> {
     sensitive?: boolean;
     readOnly?: boolean;
   };
+  securityLevel?: 'low' | 'medium' | 'high' | undefined;
+  outputBudget?: number | undefined;
 }
 
 export interface BrowserWebMcpToolDescriptor {
@@ -123,21 +125,39 @@ export interface RegisteredWebMcpTool {
   source: WebMcpToolSource;
   signal: AbortSignal;
   abort: () => void;
+  title?: string | undefined;
+  description: string;
+  annotations?: WebMcpToolAnnotations | undefined;
+}
+
+export interface VisibleToolSummary {
+  name: string;
+  browserName: string;
+  source: WebMcpToolSource;
+  title?: string | undefined;
+  description: string;
+  annotations?: WebMcpToolAnnotations | undefined;
 }
 
 export interface WebMcpRegistryLike {
   getRegisteredToolNames(): string[];
+  getVisibleToolSummaries(): VisibleToolSummary[];
   unregisterTool(name: string): void;
 }
+
+import type { PolicyContext, WebMcpPolicySet } from './policy-types';
 
 export interface WebMcpRegistryOptions {
   enabled?: boolean;
   strict?: boolean;
   namespace?: string | undefined;
   allowNavigatorFallback?: boolean;
+  validateExposedTo?: boolean;
   maxOutputChars?: number;
   maxDescriptionChars?: number;
   enforceOutputBudget?: boolean;
+  policies?: WebMcpPolicySet | undefined;
+  policyContext?: PolicyContext | undefined;
   getAppContext?: (() => unknown) | undefined;
   modelContext?: BrowserModelContext | undefined;
   onRegister?: ((tool: WebMcpToolDescriptor) => void) | undefined;

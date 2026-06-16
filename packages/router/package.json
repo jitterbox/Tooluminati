@@ -19,7 +19,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@react-webmcp-diagnostics/core": "workspace:*"
+    "@react-webmcp-diagnostics/core": "workspace:*",
+    "@react-webmcp-diagnostics/react": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
   },
   "files": ["dist"],
   "license": "MIT"

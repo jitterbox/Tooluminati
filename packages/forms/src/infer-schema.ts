@@ -6,7 +6,7 @@ export function inferSchemaFromValue(value: unknown): JsonSchema | undefined {
   }
 
   if (typeof value === 'number') {
-    return Number.isInteger(value) ? { type: 'integer' } : { type: 'number' };
+    return { type: 'number' };
   }
 
   if (typeof value === 'boolean') {

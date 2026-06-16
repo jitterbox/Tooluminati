@@ -17,6 +17,7 @@ export interface FormDiagnosticSummary {
   touched?: boolean | undefined;
   errors: FormError[];
   schema?: JsonSchema | undefined;
+  values?: unknown;
 }
 
 export type FormSubmitResult =
@@ -34,4 +35,7 @@ export interface WebMcpFormToolOptions<TValues> {
   getSummary?: () => Partial<FormDiagnosticSummary>;
   validateArgs?: ((args: unknown) => TValues) | undefined;
   annotations?: WebMcpToolAnnotations | undefined;
+  redactValues?: ((values: TValues) => unknown) | undefined;
+  redactResult?: ((result: unknown) => unknown) | undefined;
+  includeValidationSummary?: boolean | undefined;
 }

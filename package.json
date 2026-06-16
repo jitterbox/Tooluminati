@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",
-    "check": "pnpm typecheck && pnpm lint && pnpm test"
+    "check": "pnpm typecheck && pnpm lint && pnpm test",
+    "test:browser": "playwright test"
   },
   "keywords": [
     "webmcp",
@@ -23,6 +24,8 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@changesets/cli": "^2.29.8",
+    "@playwright/test": "^1.57.0",
     "@eslint/js": "^9.39.1",
     "@testing-library/react": "^16.3.0",
     "@types/node": "^24.10.1",
