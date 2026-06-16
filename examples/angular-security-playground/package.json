@@ -1,7 +1,7 @@
 {
   "name": "angular-security-playground",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "ng serve --host 127.0.0.1",
     "build": "ng build"

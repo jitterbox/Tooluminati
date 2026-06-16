@@ -1,6 +1,6 @@
 {
   "name": "@tooluminati/angular-devtools",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Angular debug panel for Tooluminati.",
   "type": "module",
   "sideEffects": false,
