@@ -1,14 +1,22 @@
 import { createRoot } from 'react-dom/client';
 import { useMemo, useState } from 'react';
+import { redactObject } from '@tooluminati/core';
 import {
   createActionAvailabilityTool,
   createAppInfoTool,
-} from '@react-webmcp-diagnostics/diagnostics';
-import { localDevPolicy } from '@react-webmcp-diagnostics/policies';
-import { WebMcpProvider, useWebMcpTool } from '@react-webmcp-diagnostics/react';
+  type AppInfo,
+} from '@tooluminati/diagnostics';
+import { localDevPolicy } from '@tooluminati/policies';
+import {
+  WebMcpProvider,
+  WebMcpSecurityBanner,
+  useWebMcpTool,
+} from '@tooluminati/react';
 
 function Quickstart() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [displayInfo, setDisplayInfo] = useState<AppInfo | null>(null);
+
   const provider = useMemo(
     () => ({
       getActionAvailability(actionId: string) {
@@ -23,16 +31,22 @@ function Quickstart() {
     [acceptedTerms],
   );
 
-  useWebMcpTool(createActionAvailabilityTool(provider), [provider]);
-  useWebMcpTool(
-    createAppInfoTool(() => ({
+  const appInfo = useMemo(
+    () => ({
       name: 'Diagnostics Quickstart',
       environment: import.meta.env.MODE,
-    })),
+      apiToken: 'secret-demo-token',
+      supportEmail: 'agent@example.com',
+    }),
+    [],
   );
+
+  useWebMcpTool(createActionAvailabilityTool(provider), [provider]);
+  useWebMcpTool(createAppInfoTool(() => appInfo));
 
   return (
     <main>
+      <WebMcpSecurityBanner />
       <label>
         <input
           checked={acceptedTerms}
@@ -42,6 +56,12 @@ function Quickstart() {
         Accept terms
       </label>
       <button disabled={!acceptedTerms}>Continue</button>
+      <button type="button" onClick={() => setDisplayInfo(appInfo)}>
+        Show redacted app info
+      </button>
+      {displayInfo ? (
+        <pre>{JSON.stringify(redactObject(displayInfo), null, 2)}</pre>
+      ) : null}
     </main>
   );
 }

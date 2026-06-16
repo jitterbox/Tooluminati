@@ -52,3 +52,17 @@ export class WebMcpConfirmationRequiredError extends WebMcpError {
     super(`Tool "${name}" requires confirmation before execution.`);
   }
 }
+
+export class WebMcpInvalidSchemaError extends WebMcpError {
+  constructor(name: string, message: string) {
+    super(`Invalid schema for WebMCP tool "${name}": ${message}`);
+  }
+}
+
+export class WebMcpOutputBudgetExceededWarning extends WebMcpError {
+  constructor(name: string, maxChars: number) {
+    super(
+      `Tool "${name}" output exceeds the recommended ${maxChars} character budget.`,
+    );
+  }
+}

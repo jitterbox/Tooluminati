@@ -1,23 +1,31 @@
 import type { RouteDiagnosticsProvider } from './types';
 
-export interface ReactRouterLikeInput {
+export interface TanStackRouterLikeInput {
   location: {
     pathname: string;
     search?: string;
     hash?: string;
   };
   params?: Record<string, string | undefined>;
-  matches?: Array<{ id?: string; pathname?: string; handle?: unknown }>;
+  matches?: Array<{ id?: string; pathname?: string; status?: string }>;
   navigation?: {
     state: string;
     location?: { pathname?: string };
   };
+  loaderData?: unknown;
 }
 
-export function createReactRouterDiagnosticsProvider(
-  input: () => ReactRouterLikeInput,
+export interface TanStackRouterDiagnosticsOptions {
+  loaderAllowlist?: string[] | undefined;
+}
+
+/** @experimental */
+export function createTanStackRouterDiagnosticsProvider(
+  input: () => TanStackRouterLikeInput,
+  options: TanStackRouterDiagnosticsOptions = {},
 ): RouteDiagnosticsProvider {
   return {
+    loaderAllowlist: options.loaderAllowlist,
     getCurrentRoute() {
       const value = input();
       return {
@@ -28,6 +36,7 @@ export function createReactRouterDiagnosticsProvider(
         matches: value.matches?.map((match) => ({
           id: match.id,
           path: match.pathname,
+          status: match.status,
         })),
       };
     },
@@ -36,6 +45,11 @@ export function createReactRouterDiagnosticsProvider(
       return {
         state: navigation?.state ?? 'idle',
         pendingPathname: navigation?.location?.pathname,
+      };
+    },
+    getRouteContext() {
+      return {
+        loaderData: input().loaderData,
       };
     },
   };

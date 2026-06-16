@@ -2,7 +2,7 @@ import { useEffect, type DependencyList } from 'react';
 import type {
   RegisterToolOptions,
   WebMcpToolDescriptor,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 import { useWebMcpContextValue } from './useWebMcpRegistry';
 
 export function useWebMcpTools(
@@ -10,33 +10,22 @@ export function useWebMcpTools(
   deps: DependencyList = [],
   options: RegisterToolOptions = {},
 ): void {
-  const { registry, policies } = useWebMcpContextValue();
+  const { registry } = useWebMcpContextValue();
+  const exposedTo = options.exposedTo;
+  const source = options.source ?? 'scope';
 
   useEffect(() => {
-    const registrations = tools.flatMap((tool) => {
-      const decision = policies?.security.evaluateTool(tool, options);
-      for (const warning of decision?.warnings ?? []) {
-        console.warn(`[react-webmcp-diagnostics] ${warning}`);
-      }
-      if (decision && !decision.allowed) {
-        console.warn(
-          `[react-webmcp-diagnostics] Tool "${tool.name}" not registered: ${decision.reason}`,
-        );
-        return [];
-      }
-
-      return [
-        registry.registerTool(tool, {
-          ...options,
-          source: options.source ?? 'scope',
-        }),
-      ];
-    });
+    const registrations = tools.map((tool) =>
+      registry.registerTool(tool, {
+        ...options,
+        source,
+      }),
+    );
 
     return () => {
       for (const registration of registrations) {
         registration.abort();
       }
     };
-  }, [registry, policies, tools, options, ...deps]);
+  }, [registry, tools, exposedTo, source, ...deps]);
 }

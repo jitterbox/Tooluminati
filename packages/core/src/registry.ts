@@ -1,7 +1,9 @@
 import {
   WebMcpConfirmationRequiredError,
+  WebMcpExecutionValidationError,
   WebMcpNameCollisionError,
   WebMcpRegistrationError,
+  WebMcpSecurityPolicyError,
   WebMcpUnsupportedError,
 } from './errors';
 import { getModelContext } from './model-context';
@@ -10,7 +12,12 @@ import {
   validateToolDescription,
   validateToolName,
 } from './name-validation';
-import { enforceOutputBudget, normalizeWebMcpResult } from './result';
+import {
+  permissivePolicySet,
+  type PolicyDecision,
+  type WebMcpPolicySet,
+} from './policy-types';
+import { applyOutputBudget, normalizeWebMcpResult } from './result';
 import { createSecurityWarning, validateExposedOrigins } from './security';
 import { anySignal } from './signals';
 import type {
@@ -18,6 +25,7 @@ import type {
   BrowserWebMcpToolDescriptor,
   RegisteredWebMcpTool,
   RegisterToolOptions,
+  VisibleToolSummary,
   WebMcpExecutionContext,
   WebMcpRegistryLike,
   WebMcpRegistryOptions,
@@ -29,9 +37,11 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
   private readonly browserNames = new Set<string>();
   private readonly modelContext: BrowserModelContext | undefined;
   private readonly enabled: boolean;
+  private readonly policies: WebMcpPolicySet;
 
   constructor(private readonly options: WebMcpRegistryOptions = {}) {
     this.enabled = options.enabled ?? false;
+    this.policies = options.policies ?? permissivePolicySet;
     this.modelContext =
       options.modelContext ??
       getModelContext(
@@ -58,10 +68,27 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
       throw new WebMcpNameCollisionError(tool.name);
     }
 
-    validateExposedOrigins(options.exposedTo);
+    if (this.options.validateExposedTo !== false) {
+      validateExposedOrigins(options.exposedTo);
+    }
 
     const browserName = toBrowserToolName(this.options.namespace, tool.name);
     validateToolName(browserName);
+
+    if (!this.evaluateRegistrationPolicies(tool as WebMcpToolDescriptor, options)) {
+      const controller = new AbortController();
+      return {
+        name: tool.name,
+        browserName,
+        source: options.source ?? 'manual',
+        signal: controller.signal,
+        abort: () => controller.abort(),
+        title: tool.title,
+        description: tool.description,
+        annotations: tool.annotations,
+      };
+    }
+
     if (this.browserNames.has(browserName)) {
       throw new WebMcpNameCollisionError(browserName);
     }
@@ -77,7 +104,14 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
       source,
       signal,
       abort: () => controller.abort(),
+      title: tool.title,
+      description: tool.description,
+      annotations: tool.annotations,
     };
+
+    if (signal.aborted) {
+      return registration;
+    }
 
     this.registrations.set(tool.name, registration);
     this.browserNames.add(browserName);
@@ -87,6 +121,7 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
       () => {
         this.registrations.delete(tool.name);
         this.browserNames.delete(browserName);
+        this.logEvent('unregister', { toolName: tool.name });
         this.options.onUnregister?.(tool.name);
       },
       { once: true },
@@ -104,8 +139,7 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
     }
 
     if (!this.modelContext) {
-      this.registrations.delete(tool.name);
-      this.browserNames.delete(browserName);
+      this.cleanupRegistration(tool.name, browserName);
       if (this.options.strict) {
         throw new WebMcpUnsupportedError();
       }
@@ -113,17 +147,29 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
     }
 
     const browserTool = this.toBrowserTool(tool, browserName, signal, source);
+    const registerOptions =
+      options.exposedTo === undefined
+        ? { signal }
+        : { signal, exposedTo: options.exposedTo };
 
     try {
-      const registerOptions =
-        options.exposedTo === undefined
-          ? { signal }
-          : { signal, exposedTo: options.exposedTo };
-      void this.modelContext.registerTool(browserTool, registerOptions);
+      const result = this.modelContext.registerTool(browserTool, registerOptions);
+      if (result instanceof Promise) {
+        void result.catch((error) => {
+          this.cleanupRegistration(tool.name, browserName);
+          this.options.onError?.(error, {
+            operation: 'registerTool',
+            toolName: tool.name,
+          });
+          if (this.options.strict) {
+            throw new WebMcpRegistrationError(tool.name, error);
+          }
+        });
+      }
+      this.logEvent('register', { toolName: tool.name });
       this.options.onRegister?.(tool as WebMcpToolDescriptor);
     } catch (error) {
-      this.registrations.delete(tool.name);
-      this.browserNames.delete(browserName);
+      this.cleanupRegistration(tool.name, browserName);
       this.options.onError?.(error, {
         operation: 'registerTool',
         toolName: tool.name,
@@ -154,8 +200,66 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
     return [...this.registrations.values()];
   }
 
+  getVisibleToolSummaries(): VisibleToolSummary[] {
+    return this.getRegisteredToolsForDebug().map(
+      ({ name, browserName, source, title, description, annotations }) => ({
+        name,
+        browserName,
+        source,
+        title,
+        description,
+        annotations,
+      }),
+    );
+  }
+
   isEnabled(): boolean {
     return this.enabled;
+  }
+
+  private evaluateRegistrationPolicies(
+    tool: WebMcpToolDescriptor,
+    options: RegisterToolOptions,
+  ): boolean {
+    const context = this.options.policyContext ?? {};
+    const production = this.policies.production.canRegister(tool, context);
+    if (!this.consumePolicyDecision(production, tool.name)) {
+      return false;
+    }
+
+    const security = this.policies.security.evaluateTool(
+      tool,
+      options,
+      context,
+    );
+    return this.consumePolicyDecision(security, tool.name);
+  }
+
+  private consumePolicyDecision(
+    decision: PolicyDecision,
+    toolName: string,
+  ): boolean {
+    for (const warning of decision.warnings) {
+      this.warn(warning, toolName);
+    }
+
+    if (decision.allowed) {
+      return true;
+    }
+
+    const message =
+      decision.reason ?? `Tool "${toolName}" was rejected by policy.`;
+    if (this.options.strict) {
+      throw new WebMcpSecurityPolicyError(message);
+    }
+
+    this.warn(message, toolName);
+    return false;
+  }
+
+  private cleanupRegistration(name: string, browserName: string): void {
+    this.registrations.delete(name);
+    this.browserNames.delete(browserName);
   }
 
   private toBrowserTool<TArgs, TResult>(
@@ -168,9 +272,15 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
       name: browserName,
       description: tool.description,
       execute: async (rawArgs: unknown, client = {}) => {
-        const args = tool.validateArgs
-          ? tool.validateArgs(rawArgs)
-          : (rawArgs as TArgs);
+        let args: TArgs;
+        try {
+          args = tool.validateArgs
+            ? tool.validateArgs(rawArgs)
+            : (rawArgs as TArgs);
+        } catch (error) {
+          throw new WebMcpExecutionValidationError(tool.name, error);
+        }
+
         const context: WebMcpExecutionContext = {
           signal: client.signal ?? signal,
           registry: this,
@@ -184,31 +294,51 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
           context.getAppContext = this.options.getAppContext;
         }
 
-        if (tool.confirmBeforeExecute || tool.confirmationHandler) {
-          const confirmed = tool.confirmationHandler
-            ? await tool.confirmationHandler(tool, args)
-            : false;
-          if (!confirmed) {
+        const needsConfirmation =
+          this.policies.confirmation.requiresConfirmation(
+            tool as WebMcpToolDescriptor,
+          ) || tool.confirmBeforeExecute;
+
+        if (needsConfirmation) {
+          if (tool.confirmationHandler) {
+            const confirmed = await tool.confirmationHandler(tool, args);
+            if (!confirmed) {
+              throw new WebMcpConfirmationRequiredError(tool.name);
+            }
+          } else {
             throw new WebMcpConfirmationRequiredError(tool.name);
           }
         }
 
+        this.logEvent('executeStart', { toolName: tool.name, args });
         this.options.onExecuteStart?.(tool.name, args);
 
         try {
           const rawResult = await tool.execute(args, context);
-          const redacted = tool.redactResult
+          const toolRedacted = tool.redactResult
             ? tool.redactResult(rawResult)
             : rawResult;
-          const normalized = normalizeWebMcpResult(redacted);
-          const budgeted = enforceOutputBudget(
+          const policyRedacted = this.policies.redaction.redact(toolRedacted, {
+            kind: 'result',
+            path: tool.name,
+          });
+          const normalized = normalizeWebMcpResult(policyRedacted);
+          const maxChars =
+            tool.outputBudget ?? this.options.maxOutputChars ?? 1500;
+          const budget = applyOutputBudget(
             normalized,
-            this.options.maxOutputChars ?? 1500,
+            maxChars,
             this.options.enforceOutputBudget ?? false,
+            (message) => this.warn(message, tool.name),
           );
-          this.options.onExecuteSuccess?.(tool.name, budgeted);
-          return budgeted;
+          const output = this.policies.output.enforce(budget.value, {
+            toolName: tool.name,
+          });
+          this.logEvent('executeSuccess', { toolName: tool.name, output });
+          this.options.onExecuteSuccess?.(tool.name, output);
+          return output;
         } catch (error) {
+          this.logEvent('executeError', { toolName: tool.name, error });
           this.options.onExecuteError?.(tool.name, error);
           throw error;
         }
@@ -226,6 +356,12 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
     }
 
     return browserTool;
+  }
+
+  private logEvent(event: string, payload?: unknown): void {
+    if (!this.policies.logging.canLog(event, payload)) {
+      return;
+    }
   }
 
   private warn(message: string, toolName?: string): void {

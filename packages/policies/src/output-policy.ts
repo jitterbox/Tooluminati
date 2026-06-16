@@ -1,4 +1,4 @@
-import { enforceOutputBudget } from '@react-webmcp-diagnostics/core';
+import { enforceOutputBudget } from '@tooluminati/core';
 import type { OutputPolicy } from './types';
 
 export interface OutputPolicyOptions {

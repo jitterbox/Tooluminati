@@ -1,23 +1,41 @@
 import { useEffect, useMemo, type DependencyList } from 'react';
 import type {
   RegisterToolOptions,
-  WebMcpToolDescriptor as AnyWebMcpToolDescriptor,
+  WebMcpRegistry,
   WebMcpToolDescriptor,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 import { useLatestRef } from './useLatestRef';
 import { useWebMcpContextValue } from './useWebMcpRegistry';
+
+export interface UseWebMcpToolOptions extends RegisterToolOptions {
+  fallbackRegistry?: WebMcpRegistry;
+}
+
+function stableSerialize(value: unknown): string {
+  return JSON.stringify(value, (_key, current) =>
+    current && typeof current === 'object' && !Array.isArray(current)
+      ? Object.keys(current as Record<string, unknown>)
+          .sort()
+          .reduce<Record<string, unknown>>((accumulator, key) => {
+            accumulator[key] = (current as Record<string, unknown>)[key];
+            return accumulator;
+          }, {})
+      : current,
+  );
+}
 
 export function useWebMcpTool<TArgs, TResult>(
   tool: WebMcpToolDescriptor<TArgs, TResult>,
   deps: DependencyList = [],
-  options: RegisterToolOptions = {},
+  options: UseWebMcpToolOptions = {},
 ): void {
-  const { registry, policies } = useWebMcpContextValue();
+  const context = useWebMcpContextValue(options.fallbackRegistry);
+  const registry = options.fallbackRegistry ?? context.registry;
   const toolRef = useLatestRef(tool);
 
   const definitionKey = useMemo(
     () =>
-      JSON.stringify({
+      stableSerialize({
         name: tool.name,
         title: tool.title,
         description: tool.description,
@@ -39,24 +57,11 @@ export function useWebMcpTool<TArgs, TResult>(
 
   useEffect(() => {
     const latest = toolRef.current;
-    const decision = policies?.security.evaluateTool(
-      latest as AnyWebMcpToolDescriptor,
-      options,
-    );
-    for (const warning of decision?.warnings ?? []) {
-      console.warn(`[react-webmcp-diagnostics] ${warning}`);
-    }
-    if (decision && !decision.allowed) {
-      console.warn(
-        `[react-webmcp-diagnostics] Tool "${latest.name}" not registered: ${decision.reason}`,
-      );
-      return;
-    }
-
     const registration = registry.registerTool(
       {
         ...latest,
-        execute: (args, context) => toolRef.current.execute(args, context),
+        execute: (args, executionContext) =>
+          toolRef.current.execute(args, executionContext),
       },
       {
         ...options,
@@ -65,7 +70,5 @@ export function useWebMcpTool<TArgs, TResult>(
     );
 
     return () => registration.abort();
-    // The definition key captures registration-defining fields. The caller's
-    // deps decide when intentionally dynamic semantics should re-register.
-  }, [definitionKey, registry, toolRef, policies, ...deps]);
+  }, [definitionKey, registry, toolRef, options.exposedTo, options.source, ...deps]);
 }

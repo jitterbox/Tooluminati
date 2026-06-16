@@ -13,5 +13,7 @@ export interface QuerySummary {
   stale?: boolean | undefined;
   updatedAt?: number | undefined;
   error?: string | undefined;
+  retryCount?: number | undefined;
   dataShape?: unknown;
+  data?: unknown;
 }

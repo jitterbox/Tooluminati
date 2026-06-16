@@ -1,26 +1,46 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
+
+const repoRoot = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@react-webmcp-diagnostics/core':
-        '/home/cory/repos/ReactWebMCP/packages/core/src/index.ts',
-      '@react-webmcp-diagnostics/policies':
-        '/home/cory/repos/ReactWebMCP/packages/policies/src/index.ts',
-      '@react-webmcp-diagnostics/react':
-        '/home/cory/repos/ReactWebMCP/packages/react/src/index.ts',
-      '@react-webmcp-diagnostics/diagnostics':
-        '/home/cory/repos/ReactWebMCP/packages/diagnostics/src/index.ts',
-      '@react-webmcp-diagnostics/testing':
-        '/home/cory/repos/ReactWebMCP/packages/testing/src/index.ts',
-      '@react-webmcp-diagnostics/forms':
-        '/home/cory/repos/ReactWebMCP/packages/forms/src/index.ts',
-      '@react-webmcp-diagnostics/router':
-        '/home/cory/repos/ReactWebMCP/packages/router/src/index.ts',
-      '@react-webmcp-diagnostics/state':
-        '/home/cory/repos/ReactWebMCP/packages/state/src/index.ts',
+      '@tooluminati/core': path.resolve(
+        repoRoot,
+        'packages/core/src/index.ts',
+      ),
+      '@tooluminati/policies': path.resolve(
+        repoRoot,
+        'packages/policies/src/index.ts',
+      ),
+      '@tooluminati/react': path.resolve(
+        repoRoot,
+        'packages/react/src/index.ts',
+      ),
+      '@tooluminati/diagnostics': path.resolve(
+        repoRoot,
+        'packages/diagnostics/src/index.ts',
+      ),
+      '@tooluminati/testing': path.resolve(
+        repoRoot,
+        'packages/testing/src/index.ts',
+      ),
+      '@tooluminati/forms': path.resolve(
+        repoRoot,
+        'packages/forms/src/index.ts',
+      ),
+      '@tooluminati/router': path.resolve(
+        repoRoot,
+        'packages/router/src/index.ts',
+      ),
+      '@tooluminati/state': path.resolve(
+        repoRoot,
+        'packages/state/src/index.ts',
+      ),
     },
   },
   test: {

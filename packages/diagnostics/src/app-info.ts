@@ -1,4 +1,7 @@
-import type { WebMcpToolDescriptor } from '@react-webmcp-diagnostics/core';
+import type {
+  VisibleToolSummary,
+  WebMcpToolDescriptor,
+} from '@tooluminati/core';
 
 export interface AppInfo {
   name: string;
@@ -18,7 +21,7 @@ export function createAppInfoTool(
   return {
     name,
     description:
-      'Returns safe application metadata, environment, build, and WebMCP diagnostics status.',
+      'Returns safe application metadata, environment, build, and Tooluminati status.',
     inputSchema: {
       type: 'object',
       properties: {},
@@ -31,11 +34,14 @@ export function createAppInfoTool(
 
 export function createVisibleToolsTool(
   name = 'get_visible_agent_tools',
-): WebMcpToolDescriptor<Record<string, never>, { tools: string[] }> {
+): WebMcpToolDescriptor<
+  Record<string, never>,
+  { tools: VisibleToolSummary[] }
+> {
   return {
     name,
     description:
-      'Returns the WebMCP diagnostic tools currently registered by this app scope.',
+      'Returns visible WebMCP tools with safe metadata such as names, descriptions, annotations, and scope.',
     inputSchema: {
       type: 'object',
       properties: {},
@@ -43,7 +49,7 @@ export function createVisibleToolsTool(
     },
     annotations: { readOnlyHint: true },
     execute: (_args, context) => ({
-      tools: context.registry.getRegisteredToolNames(),
+      tools: context.registry.getVisibleToolSummaries(),
     }),
   };
 }

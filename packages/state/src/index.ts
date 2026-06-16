@@ -1,3 +1,6 @@
+/**
+ * @experimental Tooluminati state adapters — public APIs may change.
+ */
 export * from './apollo';
 export * from './jotai';
 export * from './redux-toolkit';

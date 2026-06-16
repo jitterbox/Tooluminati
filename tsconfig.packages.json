@@ -8,6 +8,7 @@
     { "path": "./packages/testing" },
     { "path": "./packages/forms" },
     { "path": "./packages/router" },
-    { "path": "./packages/state" }
+    { "path": "./packages/state" },
+    { "path": "./packages/devtools" }
   ]
 }

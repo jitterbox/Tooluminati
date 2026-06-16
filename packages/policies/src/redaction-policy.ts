@@ -1,7 +1,7 @@
 import {
   redactObject,
   type RedactObjectOptions,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 import type { RedactionPolicy } from './types';
 
 export function createRedactionPolicy(

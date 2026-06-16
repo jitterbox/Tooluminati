@@ -2,7 +2,7 @@ import type {
   BrowserModelContextTestingExtensions,
   BrowserWebMcpToolDescriptor,
   WebMcpRegisterToolOptions,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 
 export class MockModelContext
   extends EventTarget

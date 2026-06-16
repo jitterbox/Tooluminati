@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { isWebMcpSupported } from '@react-webmcp-diagnostics/core';
+import { isWebMcpSupported } from '@tooluminati/core';
 import { useWebMcpContextValue } from './useWebMcpRegistry';
 
 export function useWebMcpSecurityBanner() {
@@ -11,8 +11,8 @@ export function useWebMcpSecurityBanner() {
       supported: isWebMcpSupported(),
       registeredTools: registry.getRegisteredToolNames(),
       message: enabled
-        ? 'WebMCP diagnostics are enabled for this page.'
-        : 'WebMCP diagnostics are disabled.',
+        ? 'Tooluminati diagnostics are enabled for this page.'
+        : 'Tooluminati diagnostics are disabled.',
     }),
     [enabled, registry],
   );

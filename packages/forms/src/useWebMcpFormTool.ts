@@ -1,6 +1,6 @@
 import { useMemo, type DependencyList } from 'react';
-import type { WebMcpToolDescriptor } from '@react-webmcp-diagnostics/core';
-import { useWebMcpTool } from '@react-webmcp-diagnostics/react';
+import type { WebMcpToolDescriptor } from '@tooluminati/core';
+import { useWebMcpTools } from '@tooluminati/react';
 import { inferSchemaFromValue } from './infer-schema';
 import type {
   FormDiagnosticSummary,
@@ -14,6 +14,17 @@ function formatFormErrors(errors: FormError[], message?: string): string {
   );
 
   return [message, ...lines].filter(Boolean).join('\n');
+}
+
+function applyRedactResult<T>(
+  result: T,
+  redactResult?: (value: unknown) => unknown,
+): T {
+  if (!redactResult) {
+    return result;
+  }
+
+  return redactResult(result) as T;
 }
 
 export function useWebMcpFormTool<TValues>(
@@ -32,8 +43,10 @@ export function useWebMcpFormTool<TValues>(
     );
   }
 
-  useWebMcpTool(
-    {
+  const includeValidationSummary = options.includeValidationSummary ?? true;
+
+  const submitTool = useMemo(
+    (): WebMcpToolDescriptor => ({
       name: options.name,
       description: options.description,
       inputSchema: schema,
@@ -50,27 +63,54 @@ export function useWebMcpFormTool<TValues>(
         const result = await options.submit();
 
         if (result.success) {
-          return result.message ?? 'Form submitted successfully.';
+          let output: unknown = result.message ?? 'Form submitted successfully.';
+          if (result.data !== undefined) {
+            output = {
+              message: output,
+              data: options.redactValues
+                ? options.redactValues(result.data as TValues)
+                : result.data,
+            };
+          }
+
+          return applyRedactResult(output, options.redactResult);
         }
 
         const errors = result.errors ?? options.getErrors?.() ?? [];
-        return {
-          content: [
-            {
-              type: 'text',
-              text: `Form submission failed:\n${formatFormErrors(
-                errors,
-                result.message,
-              )}`,
-            },
-          ],
-          isError: true,
-        };
+        return applyRedactResult(
+          {
+            content: [
+              {
+                type: 'text',
+                text: `Form submission failed:\n${formatFormErrors(
+                  errors,
+                  result.message,
+                )}`,
+              },
+            ],
+            isError: true,
+          },
+          options.redactResult,
+        );
       },
-    },
-    deps,
-    { source: 'form' },
+    }),
+    [options, schema],
   );
+
+  const summaryTool = useMemo(
+    () => createFormValidationSummaryTool(options),
+    [options],
+  );
+
+  const tools = useMemo((): WebMcpToolDescriptor[] => {
+    if (includeValidationSummary) {
+      return [submitTool, summaryTool as WebMcpToolDescriptor];
+    }
+
+    return [submitTool];
+  }, [includeValidationSummary, submitTool, summaryTool]);
+
+  useWebMcpTools(tools, deps, { source: 'form' });
 }
 
 export function createFormValidationSummaryTool<TValues>(
@@ -88,11 +128,22 @@ export function createFormValidationSummaryTool<TValues>(
       additionalProperties: false,
     },
     annotations: { readOnlyHint: true },
-    execute: () => ({
-      name: options.name,
-      errors: options.getErrors?.() ?? [],
-      schema,
-      ...options.getSummary?.(),
-    }),
+    execute: () => {
+      const summary: FormDiagnosticSummary = {
+        name: options.name,
+        errors: options.getErrors?.() ?? [],
+        schema,
+        ...options.getSummary?.(),
+      };
+
+      if (options.redactValues) {
+        return {
+          ...summary,
+          values: options.redactValues(options.getValues()),
+        };
+      }
+
+      return summary;
+    },
   };
 }

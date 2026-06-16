@@ -23,10 +23,12 @@ export interface RouteContextSummary {
   loaderStatus?: string | undefined;
   dataShape?: unknown;
   safeLabels?: string[] | undefined;
+  loaderData?: unknown;
 }
 
 export interface RouteDiagnosticsProvider {
   getCurrentRoute(): RouteSummary;
   getNavigationState?: () => NavigationSummary;
   getRouteContext?: () => RouteContextSummary;
+  loaderAllowlist?: string[] | undefined;
 }

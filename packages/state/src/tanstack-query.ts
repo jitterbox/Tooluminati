@@ -1,4 +1,4 @@
-import type { WebMcpToolDescriptor } from '@react-webmcp-diagnostics/core';
+import type { WebMcpToolDescriptor } from '@tooluminati/core';
 import type { QuerySummary } from './types';
 
 export interface QueryLike {
@@ -9,6 +9,8 @@ export interface QueryLike {
     dataUpdatedAt?: number;
     error?: unknown;
     data?: unknown;
+    fetchFailureCount?: number;
+    failureCount?: number;
   };
   isStale?: () => boolean;
 }
@@ -21,8 +23,10 @@ export interface QueryClientLike {
 
 export interface QueryCacheSummaryOptions {
   queryClient: QueryClientLike;
-  allowKeys?: unknown[];
+  allowKeys: unknown[];
   includeDataShape?: boolean;
+  includeData?: boolean;
+  redact?: (data: unknown) => unknown;
   name?: string;
 }
 
@@ -41,10 +45,18 @@ function summarizeShape(value: unknown): unknown {
   return { type: typeof value };
 }
 
+function getRetryCount(query: QueryLike): number | undefined {
+  const state = query.state;
+  return state.fetchFailureCount ?? state.failureCount;
+}
+
+/** @experimental */
 export function createQueryCacheSummaryTool({
   queryClient,
   allowKeys,
   includeDataShape = true,
+  includeData = false,
+  redact,
   name = 'get_query_cache_summary',
 }: QueryCacheSummaryOptions): WebMcpToolDescriptor<
   Record<string, never>,
@@ -61,30 +73,49 @@ export function createQueryCacheSummaryTool({
     },
     annotations: { readOnlyHint: true },
     execute: () => {
-      const allowed = allowKeys
-        ? new Set(allowKeys.map((key) => JSON.stringify(key)))
-        : null;
+      if (!allowKeys?.length) {
+        throw new Error(
+          'allowKeys is required for query cache summary tool. ' +
+            'Provide an explicit allowlist of query keys.',
+        );
+      }
+
+      if (includeData && !redact) {
+        throw new Error(
+          'redact is required when includeData is true for query cache summary tool.',
+        );
+      }
+
+      const allowed = new Set(allowKeys.map((key) => JSON.stringify(key)));
       const queries = queryClient
         .getQueryCache()
         .findAll()
-        .filter((query) =>
-          allowed ? allowed.has(JSON.stringify(query.queryKey)) : true,
-        )
-        .map((query) => ({
-          key: query.queryKey,
-          status: query.state.status,
-          fetchStatus: query.state.fetchStatus,
-          stale: query.isStale?.(),
-          updatedAt: query.state.dataUpdatedAt,
-          error: query.state.error
-            ? query.state.error instanceof Error
-              ? query.state.error.message
-              : String(query.state.error)
-            : undefined,
-          dataShape: includeDataShape
-            ? summarizeShape(query.state.data)
-            : undefined,
-        }));
+        .filter((query) => allowed.has(JSON.stringify(query.queryKey)))
+        .map((query) => {
+          const summary: QuerySummary = {
+            key: query.queryKey,
+            status: query.state.status,
+            fetchStatus: query.state.fetchStatus,
+            stale: query.isStale?.(),
+            updatedAt: query.state.dataUpdatedAt,
+            error: query.state.error
+              ? query.state.error instanceof Error
+                ? query.state.error.message
+                : String(query.state.error)
+              : undefined,
+            retryCount: getRetryCount(query),
+          };
+
+          if (includeDataShape) {
+            summary.dataShape = summarizeShape(query.state.data);
+          }
+
+          if (includeData && redact) {
+            summary.data = redact(query.state.data);
+          }
+
+          return summary;
+        });
 
       return { queries };
     },

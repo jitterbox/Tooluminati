@@ -1,0 +1,18 @@
+name: Question
+description: Ask a question about usage or design
+title: '[Question]: '
+labels: ['question']
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What are you building, and which packages are involved?
+    validations:
+      required: false

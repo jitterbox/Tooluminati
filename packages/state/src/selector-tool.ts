@@ -1,4 +1,4 @@
-import type { WebMcpToolDescriptor } from '@react-webmcp-diagnostics/core';
+import type { WebMcpToolDescriptor } from '@tooluminati/core';
 import type { StateSummaryToolOptions } from './types';
 
 export function createStateSummaryTool<TState, TSummary>({

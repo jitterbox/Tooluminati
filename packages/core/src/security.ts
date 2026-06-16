@@ -69,3 +69,31 @@ export function createSecurityWarning(
 
   return `Tool "${tool.name}" has side effects or untrusted content; review annotations and redaction.`;
 }
+
+export interface AssertProductionSafeOptions {
+  production?: boolean;
+  allowlist?: string[];
+}
+
+export function assertProductionSafe(
+  tool: WebMcpToolDescriptor,
+  options: AssertProductionSafeOptions = {},
+): void {
+  const isProduction = options.production === true;
+  if (!isProduction) {
+    return;
+  }
+
+  const allowlist = new Set(options.allowlist ?? []);
+  if (allowlist.size > 0 && !allowlist.has(tool.name)) {
+    throw new WebMcpSecurityPolicyError(
+      `Tool "${tool.name}" is not approved for production WebMCP exposure.`,
+    );
+  }
+
+  if (tool.annotations?.readOnlyHint === false && !tool.confirmationHandler) {
+    throw new WebMcpSecurityPolicyError(
+      `Write-capable tool "${tool.name}" requires a confirmation handler in production.`,
+    );
+  }
+}

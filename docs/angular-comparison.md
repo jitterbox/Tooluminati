@@ -10,5 +10,5 @@ Angular 22's experimental WebMCP support is the implementation model to mirror:
 - Signal Forms integration maps to form adapters
 
 React differs by using public ecosystem APIs: form libraries, routers, data
-caches, and explicit selectors. This project intentionally avoids Fiber and
+caches, and explicit selectors. Tooluminati intentionally avoids Fiber and
 React DevTools internals.

@@ -1,10 +1,21 @@
 {
-  "name": "react-webmcp-diagnostics",
+  "name": "tooluminati",
   "version": "0.0.0",
   "private": true,
-  "description": "Opinionated React WebMCP diagnostics and agent observability toolkit.",
+  "description": "Expose tools. Share context. Empower agents.",
   "type": "module",
   "packageManager": "pnpm@10.33.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jitterbox/Tooluminati.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jitterbox/Tooluminati/issues"
+  },
+  "homepage": "https://github.com/jitterbox/Tooluminati#readme",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "pnpm -r --filter './packages/*' build",
     "typecheck": "tsc -b tsconfig.packages.json",
@@ -12,7 +23,12 @@
     "test:watch": "vitest",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",
-    "check": "pnpm typecheck && pnpm lint && pnpm test"
+    "check": "pnpm typecheck && pnpm lint && pnpm test",
+    "test:browser": "playwright test",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish",
+    "sync-package-metadata": "node scripts/sync-package-metadata.mjs"
   },
   "keywords": [
     "webmcp",
@@ -22,7 +38,10 @@
     "model-context-protocol"
   ],
   "license": "MIT",
+  "author": "jitterbox",
   "devDependencies": {
+    "@changesets/cli": "^2.29.8",
+    "@playwright/test": "^1.57.0",
     "@eslint/js": "^9.39.1",
     "@testing-library/react": "^16.3.0",
     "@types/node": "^24.10.1",

@@ -1,7 +1,11 @@
+/**
+ * @experimental Tooluminati core — public APIs may change.
+ */
 export * from './errors';
 export * from './model-context';
 export * from './name-validation';
 export * from './redaction';
+export * from './policy-types';
 export * from './registry';
 export * from './result';
 export * from './security';

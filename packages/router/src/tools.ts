@@ -1,4 +1,4 @@
-import type { WebMcpToolDescriptor } from '@react-webmcp-diagnostics/core';
+import type { WebMcpToolDescriptor } from '@tooluminati/core';
 import type {
   NavigationSummary,
   RouteContextSummary,
@@ -45,6 +45,22 @@ export function createNavigationStateTool(
   };
 }
 
+function pickAllowlistedLoaderData(
+  data: unknown,
+  allowlist: string[] | undefined,
+): unknown {
+  if (!data || typeof data !== 'object' || !allowlist?.length) {
+    return undefined;
+  }
+
+  const record = data as Record<string, unknown>;
+  return Object.fromEntries(
+    allowlist
+      .filter((key) => key in record)
+      .map((key) => [key, record[key]]),
+  );
+}
+
 export function createRouteContextTool(
   provider: RouteDiagnosticsProvider,
   name = 'get_route_context',
@@ -59,6 +75,20 @@ export function createRouteContextTool(
       additionalProperties: false,
     },
     annotations: { readOnlyHint: true },
-    execute: () => provider.getRouteContext?.() ?? {},
+    execute: () => {
+      const context = provider.getRouteContext?.() ?? {};
+      const loaderData = pickAllowlistedLoaderData(
+        context.loaderData,
+        provider.loaderAllowlist,
+      );
+
+      return {
+        routeId: context.routeId,
+        loaderStatus: context.loaderStatus,
+        dataShape: context.dataShape,
+        safeLabels: context.safeLabels,
+        ...(loaderData !== undefined ? { loaderData } : {}),
+      };
+    },
   };
 }

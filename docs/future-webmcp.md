@@ -1,6 +1,6 @@
 # Future WebMCP Compatibility
 
-This project does not ship unstable declarative or reactive WebMCP APIs yet.
+Tooluminati does not ship unstable declarative or reactive WebMCP APIs yet.
 
 ## Declarative WebMCP
 
@@ -24,7 +24,7 @@ Issue 151 proposes resource registration and subscriptions with APIs like:
 - `notifyResourceUpdated`
 - `subscribeHint`
 
-Adapters in this project are built around snapshot readers that can later become
+Tooluminati adapters are built around snapshot readers that can later become
 resource `read()` callbacks. Until the proposal stabilizes, polling tools are
 the supported mechanism.
 

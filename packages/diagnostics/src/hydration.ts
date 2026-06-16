@@ -1,4 +1,4 @@
-import type { WebMcpToolDescriptor } from '@react-webmcp-diagnostics/core';
+import type { WebMcpToolDescriptor } from '@tooluminati/core';
 
 export interface HydrationHealth {
   recoverableErrorCount: number;

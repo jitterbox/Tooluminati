@@ -1,18 +1,20 @@
 import {
+  useContext,
   useEffect,
   useMemo,
   type ReactNode,
 } from 'react';
 import {
   WebMcpRegistry,
+  type PolicyContext,
   type WebMcpRegistryOptions,
   type WebMcpToolDescriptor,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 import {
   localDevPolicy,
   type WebMcpPolicySet,
-} from '@react-webmcp-diagnostics/policies';
-import { WebMcpContext } from './WebMcpContext';
+} from '@tooluminati/policies';
+import { WebMcpContext, type WebMcpReactContextValue } from './WebMcpContext';
 
 export interface WebMcpProviderProps {
   children: ReactNode;
@@ -21,6 +23,7 @@ export interface WebMcpProviderProps {
   strict?: boolean;
   namespace?: string;
   policies?: WebMcpPolicySet;
+  policyContext?: PolicyContext;
   modelContext?: WebMcpRegistryOptions['modelContext'];
   getAppContext?: () => unknown;
   onSecurityWarning?: WebMcpRegistryOptions['onSecurityWarning'];
@@ -34,17 +37,35 @@ export function WebMcpProvider({
   strict = false,
   namespace,
   policies = localDevPolicy,
+  policyContext,
   modelContext,
   getAppContext,
   onSecurityWarning,
   onError,
 }: WebMcpProviderProps) {
+  const parentContext = useContext(WebMcpContext);
+
+  useEffect(() => {
+    if (
+      parentContext &&
+      namespace === undefined &&
+      typeof process !== 'undefined' &&
+      process.env.NODE_ENV !== 'production'
+    ) {
+      console.warn(
+        '[tooluminati] Nested WebMcpProvider detected without a namespace. Provide namespace to avoid tool collisions.',
+      );
+    }
+  }, [namespace, parentContext]);
+
   const registry = useMemo(
     () =>
       new WebMcpRegistry({
         enabled,
         strict,
         namespace,
+        policies,
+        policyContext,
         modelContext,
         getAppContext,
         onSecurityWarning,
@@ -57,6 +78,8 @@ export function WebMcpProvider({
       namespace,
       onError,
       onSecurityWarning,
+      policies,
+      policyContext,
       strict,
     ],
   );
@@ -75,10 +98,20 @@ export function WebMcpProvider({
 
   useEffect(() => () => registry.unregisterAll(), [registry]);
 
-  const value = useMemo(
-    () => ({ registry, enabled, policies }),
-    [enabled, policies, registry],
-  );
+  const value = useMemo(() => {
+    const next: WebMcpReactContextValue = {
+      registry,
+      enabled,
+      policies,
+    };
+    if (policyContext !== undefined) {
+      next.policyContext = policyContext;
+    }
+    if (namespace !== undefined) {
+      next.namespace = namespace;
+    }
+    return next;
+  }, [enabled, namespace, policies, policyContext, registry]);
 
   return (
     <WebMcpContext.Provider value={value}>{children}</WebMcpContext.Provider>

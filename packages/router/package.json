@@ -1,7 +1,7 @@
 {
-  "name": "@react-webmcp-diagnostics/router",
+  "name": "@tooluminati/router",
   "version": "0.0.0",
-  "description": "Route and navigation diagnostics for React WebMCP Diagnostics.",
+  "description": "Route and navigation diagnostics for Tooluminati.",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs",
@@ -16,11 +16,40 @@
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs && tsc -p tsconfig.json --emitDeclarationOnly",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "@react-webmcp-diagnostics/core": "workspace:*"
+    "@tooluminati/core": "workspace:*",
+    "@tooluminati/react": "workspace:*"
   },
-  "files": ["dist"],
-  "license": "MIT"
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jitterbox/Tooluminati.git",
+    "directory": "packages/router"
+  },
+  "bugs": {
+    "url": "https://github.com/jitterbox/Tooluminati/issues"
+  },
+  "homepage": "https://github.com/jitterbox/Tooluminati#readme",
+  "keywords": [
+    "tooluminati",
+    "webmcp",
+    "react",
+    "router",
+    "react-router"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
 }
