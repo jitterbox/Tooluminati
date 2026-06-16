@@ -1,7 +1,7 @@
 import type {
   VisibleToolSummary,
   WebMcpToolDescriptor,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 
 export interface AppInfo {
   name: string;

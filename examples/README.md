@@ -1,6 +1,6 @@
 # Examples
 
-Runnable demos for React WebMCP Diagnostics. Each example includes agent
+Runnable demos for Tooluminati. Each example includes agent
 prompts and expected tool outcomes.
 
 ## Comparative proof (recommended first)
@@ -55,7 +55,7 @@ Weak without WebMCP:
 
 ## Measuring advantage objectively
 
-The repo includes helpers in `@react-webmcp-diagnostics/testing`:
+The repo includes helpers in `@tooluminati/testing`:
 
 - `collectDisabledActionReasonsFromDom()` — simulates DOM-only inspection
 - `runComparativeProof()` — compares DOM vs WebMCP blocker counts

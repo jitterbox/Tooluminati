@@ -13,19 +13,19 @@
     "moduleResolution": "Bundler",
     "baseUrl": ".",
     "paths": {
-      "@react-webmcp-diagnostics/core": ["packages/core/src/index.ts"],
-      "@react-webmcp-diagnostics/policies": [
+      "@tooluminati/core": ["packages/core/src/index.ts"],
+      "@tooluminati/policies": [
         "packages/policies/src/index.ts"
       ],
-      "@react-webmcp-diagnostics/react": ["packages/react/src/index.ts"],
-      "@react-webmcp-diagnostics/diagnostics": [
+      "@tooluminati/react": ["packages/react/src/index.ts"],
+      "@tooluminati/diagnostics": [
         "packages/diagnostics/src/index.ts"
       ],
-      "@react-webmcp-diagnostics/testing": ["packages/testing/src/index.ts"],
-      "@react-webmcp-diagnostics/forms": ["packages/forms/src/index.ts"],
-      "@react-webmcp-diagnostics/router": ["packages/router/src/index.ts"],
-      "@react-webmcp-diagnostics/state": ["packages/state/src/index.ts"],
-      "@react-webmcp-diagnostics/devtools": [
+      "@tooluminati/testing": ["packages/testing/src/index.ts"],
+      "@tooluminati/forms": ["packages/forms/src/index.ts"],
+      "@tooluminati/router": ["packages/router/src/index.ts"],
+      "@tooluminati/state": ["packages/state/src/index.ts"],
+      "@tooluminati/devtools": [
         "packages/devtools/src/index.ts"
       ]
     },

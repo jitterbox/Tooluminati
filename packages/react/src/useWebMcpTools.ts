@@ -2,7 +2,7 @@ import { useEffect, type DependencyList } from 'react';
 import type {
   RegisterToolOptions,
   WebMcpToolDescriptor,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 import { useWebMcpContextValue } from './useWebMcpRegistry';
 
 export function useWebMcpTools(

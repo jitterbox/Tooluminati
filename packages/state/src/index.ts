@@ -1,5 +1,5 @@
 /**
- * @experimental React WebMCP Diagnostics state adapters — public APIs may change.
+ * @experimental Tooluminati state adapters — public APIs may change.
  */
 export * from './apollo';
 export * from './jotai';

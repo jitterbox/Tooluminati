@@ -1,5 +1,5 @@
 /**
- * @experimental React WebMCP Diagnostics testing utilities — public APIs may change.
+ * @experimental Tooluminati testing utilities — public APIs may change.
  */
 export * from './browser-helpers';
 export * from './comparative-proof';

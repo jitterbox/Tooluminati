@@ -1,6 +1,6 @@
 # Positioning
 
-React WebMCP Diagnostics is not primarily a generic React hook wrapper for
+Tooluminati is not primarily a generic React hook wrapper for
 `document.modelContext.registerTool()`.
 
 Generic hook packages are useful when an app only needs registration plumbing.

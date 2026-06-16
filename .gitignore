@@ -5,3 +5,6 @@ coverage/
 packages/*/dist/
 packages/*/*.tsbuildinfo
 examples/*/dist/
+test-results/
+playwright-report/
+blob-report/

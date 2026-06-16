@@ -4,12 +4,12 @@ import {
   classifyTool,
   createSecurityWarning,
   type WebMcpToolDescriptor,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 import {
   WebMcpProvider,
   WebMcpSecurityBanner,
   useWebMcpTools,
-} from '@react-webmcp-diagnostics/react';
+} from '@tooluminati/react';
 
 const demoTools: WebMcpToolDescriptor[] = [
   {

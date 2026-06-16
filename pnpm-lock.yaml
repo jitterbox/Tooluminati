@@ -71,13 +71,13 @@ importers:
 
   examples/agent-troubleshooting-demo:
     dependencies:
-      '@react-webmcp-diagnostics/diagnostics':
+      '@tooluminati/diagnostics':
         specifier: workspace:*
         version: link:../../packages/diagnostics
-      '@react-webmcp-diagnostics/react':
+      '@tooluminati/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@react-webmcp-diagnostics/testing':
+      '@tooluminati/testing':
         specifier: workspace:*
         version: link:../../packages/testing
       react:
@@ -99,13 +99,13 @@ importers:
 
   examples/diagnostics-quickstart:
     dependencies:
-      '@react-webmcp-diagnostics/diagnostics':
+      '@tooluminati/diagnostics':
         specifier: workspace:*
         version: link:../../packages/diagnostics
-      '@react-webmcp-diagnostics/policies':
+      '@tooluminati/policies':
         specifier: workspace:*
         version: link:../../packages/policies
-      '@react-webmcp-diagnostics/react':
+      '@tooluminati/react':
         specifier: workspace:*
         version: link:../../packages/react
       react:
@@ -127,10 +127,10 @@ importers:
 
   examples/react-hook-form-support-ticket:
     dependencies:
-      '@react-webmcp-diagnostics/forms':
+      '@tooluminati/forms':
         specifier: workspace:*
         version: link:../../packages/forms
-      '@react-webmcp-diagnostics/react':
+      '@tooluminati/react':
         specifier: workspace:*
         version: link:../../packages/react
       react:
@@ -152,13 +152,13 @@ importers:
 
   examples/react-router-dashboard:
     dependencies:
-      '@react-webmcp-diagnostics/diagnostics':
+      '@tooluminati/diagnostics':
         specifier: workspace:*
         version: link:../../packages/diagnostics
-      '@react-webmcp-diagnostics/react':
+      '@tooluminati/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@react-webmcp-diagnostics/router':
+      '@tooluminati/router':
         specifier: workspace:*
         version: link:../../packages/router
       react:
@@ -180,10 +180,10 @@ importers:
 
   examples/security-playground:
     dependencies:
-      '@react-webmcp-diagnostics/core':
+      '@tooluminati/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@react-webmcp-diagnostics/react':
+      '@tooluminati/react':
         specifier: workspace:*
         version: link:../../packages/react
       react:
@@ -205,10 +205,10 @@ importers:
 
   examples/tanstack-query-diagnostics:
     dependencies:
-      '@react-webmcp-diagnostics/react':
+      '@tooluminati/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@react-webmcp-diagnostics/state':
+      '@tooluminati/state':
         specifier: workspace:*
         version: link:../../packages/state
       react:
@@ -230,10 +230,10 @@ importers:
 
   examples/vite-basic:
     dependencies:
-      '@react-webmcp-diagnostics/diagnostics':
+      '@tooluminati/diagnostics':
         specifier: workspace:*
         version: link:../../packages/diagnostics
-      '@react-webmcp-diagnostics/react':
+      '@tooluminati/react':
         specifier: workspace:*
         version: link:../../packages/react
       react:
@@ -257,10 +257,10 @@ importers:
 
   packages/devtools:
     dependencies:
-      '@react-webmcp-diagnostics/core':
+      '@tooluminati/core':
         specifier: workspace:*
         version: link:../core
-      '@react-webmcp-diagnostics/react':
+      '@tooluminati/react':
         specifier: workspace:*
         version: link:../react
       react:
@@ -269,16 +269,16 @@ importers:
 
   packages/diagnostics:
     dependencies:
-      '@react-webmcp-diagnostics/core':
+      '@tooluminati/core':
         specifier: workspace:*
         version: link:../core
 
   packages/forms:
     dependencies:
-      '@react-webmcp-diagnostics/core':
+      '@tooluminati/core':
         specifier: workspace:*
         version: link:../core
-      '@react-webmcp-diagnostics/react':
+      '@tooluminati/react':
         specifier: workspace:*
         version: link:../react
       react:
@@ -287,16 +287,16 @@ importers:
 
   packages/policies:
     dependencies:
-      '@react-webmcp-diagnostics/core':
+      '@tooluminati/core':
         specifier: workspace:*
         version: link:../core
 
   packages/react:
     dependencies:
-      '@react-webmcp-diagnostics/core':
+      '@tooluminati/core':
         specifier: workspace:*
         version: link:../core
-      '@react-webmcp-diagnostics/policies':
+      '@tooluminati/policies':
         specifier: workspace:*
         version: link:../policies
       react:
@@ -305,10 +305,10 @@ importers:
 
   packages/router:
     dependencies:
-      '@react-webmcp-diagnostics/core':
+      '@tooluminati/core':
         specifier: workspace:*
         version: link:../core
-      '@react-webmcp-diagnostics/react':
+      '@tooluminati/react':
         specifier: workspace:*
         version: link:../react
       react:
@@ -317,13 +317,13 @@ importers:
 
   packages/state:
     dependencies:
-      '@react-webmcp-diagnostics/core':
+      '@tooluminati/core':
         specifier: workspace:*
         version: link:../core
 
   packages/testing:
     dependencies:
-      '@react-webmcp-diagnostics/core':
+      '@tooluminati/core':
         specifier: workspace:*
         version: link:../core
 

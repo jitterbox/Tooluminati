@@ -1,5 +1,5 @@
 /**
- * @experimental React WebMCP Diagnostics policies — public APIs may change.
+ * @experimental Tooluminati policies — public APIs may change.
  */
 export * from './adapter-policies';
 export * from './confirmation-policy';

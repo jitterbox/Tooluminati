@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { isWebMcpSupported } from '@react-webmcp-diagnostics/core';
+import { isWebMcpSupported } from '@tooluminati/core';
 import { useWebMcpContextValue } from './useWebMcpRegistry';
 
 export function useWebMcpSecurityBanner() {

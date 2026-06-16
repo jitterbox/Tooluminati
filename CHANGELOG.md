@@ -2,7 +2,7 @@
 
 ## 0.0.0
 
-Initial experimental release of React WebMCP Diagnostics.
+Initial experimental release of Tooluminati.
 
 - Core registry, security, and redaction primitives
 - React provider, hooks, scopes, and security banner

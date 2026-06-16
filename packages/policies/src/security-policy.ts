@@ -4,7 +4,7 @@ import {
   validateExposedOrigins,
   type WebMcpToolDescriptor,
   type RegisterToolOptions,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 import type { PolicyContext, PolicyDecision, SecurityPolicy } from './types';
 
 export interface SecurityPolicyOptions {

@@ -1,7 +1,7 @@
 import type {
   JsonSchema,
   WebMcpToolAnnotations,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 
 export interface FormError {
   path: string;

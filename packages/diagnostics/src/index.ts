@@ -1,5 +1,5 @@
 /**
- * @experimental React WebMCP Diagnostics diagnostics tools — public APIs may change.
+ * @experimental Tooluminati diagnostics tools — public APIs may change.
  */
 export * from './action-availability';
 export * from './app-info';

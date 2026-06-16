@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import type { WebMcpRegistry } from '@react-webmcp-diagnostics/core';
+import type { WebMcpRegistry } from '@tooluminati/core';
 import { WebMcpContext } from './WebMcpContext';
 
 export function useWebMcpRegistry() {

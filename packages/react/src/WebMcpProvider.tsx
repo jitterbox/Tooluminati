@@ -9,11 +9,11 @@ import {
   type PolicyContext,
   type WebMcpRegistryOptions,
   type WebMcpToolDescriptor,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 import {
   localDevPolicy,
   type WebMcpPolicySet,
-} from '@react-webmcp-diagnostics/policies';
+} from '@tooluminati/policies';
 import { WebMcpContext, type WebMcpReactContextValue } from './WebMcpContext';
 
 export interface WebMcpProviderProps {
@@ -53,7 +53,7 @@ export function WebMcpProvider({
       process.env.NODE_ENV !== 'production'
     ) {
       console.warn(
-        '[react-webmcp-diagnostics] Nested WebMcpProvider detected without a namespace. Provide namespace to avoid tool collisions.',
+        '[tooluminati] Nested WebMcpProvider detected without a namespace. Provide namespace to avoid tool collisions.',
       );
     }
   }, [namespace, parentContext]);

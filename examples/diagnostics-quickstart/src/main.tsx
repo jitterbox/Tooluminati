@@ -1,17 +1,17 @@
 import { createRoot } from 'react-dom/client';
 import { useMemo, useState } from 'react';
-import { redactObject } from '@react-webmcp-diagnostics/core';
+import { redactObject } from '@tooluminati/core';
 import {
   createActionAvailabilityTool,
   createAppInfoTool,
   type AppInfo,
-} from '@react-webmcp-diagnostics/diagnostics';
-import { localDevPolicy } from '@react-webmcp-diagnostics/policies';
+} from '@tooluminati/diagnostics';
+import { localDevPolicy } from '@tooluminati/policies';
 import {
   WebMcpProvider,
   WebMcpSecurityBanner,
   useWebMcpTool,
-} from '@react-webmcp-diagnostics/react';
+} from '@tooluminati/react';
 
 function Quickstart() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);

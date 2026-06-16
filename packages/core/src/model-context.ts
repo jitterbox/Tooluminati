@@ -47,7 +47,7 @@ export function getModelContext(
       process.env.NODE_ENV !== 'production'
     ) {
       console.warn(
-        '[react-webmcp-diagnostics] Using deprecated navigator.modelContext fallback. Prefer document.modelContext.',
+        '[tooluminati] Using deprecated navigator.modelContext fallback. Prefer document.modelContext.',
       );
     }
   }

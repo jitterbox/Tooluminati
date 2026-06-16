@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import {
   MODEL_CONTEXT_MOCK_INIT_SCRIPT,
   runComparativeProof,
-} from '@react-webmcp-diagnostics/testing';
+} from '@tooluminati/testing';
 
 test.describe('agent-troubleshooting-demo comparative proof', () => {
   test.beforeEach(async ({ page }) => {

@@ -3,7 +3,7 @@ import type {
   RegisterToolOptions,
   WebMcpRegistry,
   WebMcpToolDescriptor,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 import { useLatestRef } from './useLatestRef';
 import { useWebMcpContextValue } from './useWebMcpRegistry';
 

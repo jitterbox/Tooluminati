@@ -3,7 +3,7 @@ import {
   expectWebMcpTool,
   invokeWebMcpTool,
   MODEL_CONTEXT_MOCK_INIT_SCRIPT,
-} from '@react-webmcp-diagnostics/testing';
+} from '@tooluminati/testing';
 
 test.describe('vite-basic example', () => {
   test.beforeEach(async ({ page }) => {
@@ -13,7 +13,7 @@ test.describe('vite-basic example', () => {
   test('registers diagnostics tools and get_page_state', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page.getByRole('heading', { name: 'React WebMCP Diagnostics' }))
+    await expect(page.getByRole('heading', { name: 'Tooluminati' }))
       .toBeVisible();
     await expectWebMcpTool(page, 'get_app_info');
     await expectWebMcpTool(page, 'get_page_state');
@@ -24,7 +24,7 @@ test.describe('vite-basic example', () => {
       {},
     );
 
-    expect(pageState.title).toContain('React WebMCP Diagnostics');
+    expect(pageState.title).toContain('Tooluminati');
     expect(pageState.dirty).toBe(false);
   });
 });

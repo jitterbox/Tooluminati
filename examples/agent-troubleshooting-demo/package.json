@@ -7,9 +7,9 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@react-webmcp-diagnostics/diagnostics": "workspace:*",
-    "@react-webmcp-diagnostics/react": "workspace:*",
-    "@react-webmcp-diagnostics/testing": "workspace:*",
+    "@tooluminati/diagnostics": "workspace:*",
+    "@tooluminati/react": "workspace:*",
+    "@tooluminati/testing": "workspace:*",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "vite": "^7.2.7"

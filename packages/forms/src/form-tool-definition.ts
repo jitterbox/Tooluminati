@@ -1,4 +1,4 @@
-import type { JsonSchema } from '@react-webmcp-diagnostics/core';
+import type { JsonSchema } from '@tooluminati/core';
 
 /** @internal Declarative-compat metadata; not shipped as a browser polyfill. */
 export interface FormToolDefinition<TValues = Record<string, unknown>> {

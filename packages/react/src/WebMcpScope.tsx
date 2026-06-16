@@ -2,7 +2,7 @@ import { useMemo, type ReactNode } from 'react';
 import type {
   WebMcpToolDescriptor,
   WebMcpToolSource,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 import { useWebMcpContextValue } from './useWebMcpRegistry';
 import { useWebMcpTools } from './useWebMcpTools';
 

@@ -1,7 +1,7 @@
 {
-  "name": "@react-webmcp-diagnostics/diagnostics",
+  "name": "@tooluminati/diagnostics",
   "version": "0.0.0",
-  "description": "Opinionated runtime diagnostics tools for React WebMCP Diagnostics.",
+  "description": "Runtime diagnostic tool factories for Tooluminati.",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs",
@@ -16,11 +16,36 @@
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs && tsc -p tsconfig.json --emitDeclarationOnly",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "@react-webmcp-diagnostics/core": "workspace:*"
+    "@tooluminati/core": "workspace:*"
   },
-  "files": ["dist"],
-  "license": "MIT"
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jitterbox/Tooluminati.git",
+    "directory": "packages/diagnostics"
+  },
+  "bugs": {
+    "url": "https://github.com/jitterbox/Tooluminati/issues"
+  },
+  "homepage": "https://github.com/jitterbox/Tooluminati#readme",
+  "keywords": [
+    "tooluminati",
+    "webmcp",
+    "react",
+    "diagnostics",
+    "observability"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
 }

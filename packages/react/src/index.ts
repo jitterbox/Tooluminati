@@ -1,5 +1,5 @@
 /**
- * @experimental React WebMCP Diagnostics React bindings — public APIs may change.
+ * @experimental Tooluminati React bindings — public APIs may change.
  */
 export * from './WebMcpContext';
 export * from './WebMcpProvider';

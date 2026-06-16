@@ -3,11 +3,11 @@ import { createRoot } from 'react-dom/client';
 import {
   type ReactHookFormLike,
   useReactHookFormWebMcpTool,
-} from '@react-webmcp-diagnostics/forms';
+} from '@tooluminati/forms';
 import {
   WebMcpProvider,
   WebMcpSecurityBanner,
-} from '@react-webmcp-diagnostics/react';
+} from '@tooluminati/react';
 
 interface TicketValues {
   subject: string;

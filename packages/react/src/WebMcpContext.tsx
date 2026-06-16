@@ -2,8 +2,8 @@ import { createContext } from 'react';
 import type {
   PolicyContext,
   WebMcpRegistry,
-} from '@react-webmcp-diagnostics/core';
-import type { WebMcpPolicySet } from '@react-webmcp-diagnostics/policies';
+} from '@tooluminati/core';
+import type { WebMcpPolicySet } from '@tooluminati/policies';
 
 export interface WebMcpReactContextValue {
   registry: WebMcpRegistry;

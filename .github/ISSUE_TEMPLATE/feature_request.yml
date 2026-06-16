@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest an improvement or new capability
+title: '[Feature]: '
+labels: ['enhancement']
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What agent or developer workflow is hard today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Area
+      options:
+        - label: core / registry
+        - label: policies / security
+        - label: react lifecycle
+        - label: diagnostics adapters
+        - label: examples / docs
+        - label: publishing / CI

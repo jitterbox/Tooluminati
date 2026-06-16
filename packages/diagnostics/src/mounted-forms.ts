@@ -1,7 +1,7 @@
 import type {
   JsonSchema,
   WebMcpToolDescriptor,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 
 export interface MountedFormSummary {
   name: string;

@@ -1,6 +1,6 @@
 # Testing
 
-Use `@react-webmcp-diagnostics/testing` for unit tests.
+Use `@tooluminati/testing` for unit tests.
 
 ```ts
 const mock = installModelContextMock();
@@ -40,7 +40,7 @@ Helpers:
 import {
   runComparativeProof,
   collectDisabledActionReasonsFromDom,
-} from '@react-webmcp-diagnostics/testing';
+} from '@tooluminati/testing';
 ```
 
 `runComparativeProof()` returns `webMcpIsStrictlyMoreInformative: true` when

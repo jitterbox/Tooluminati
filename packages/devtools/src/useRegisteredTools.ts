@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import type { VisibleToolSummary } from '@react-webmcp-diagnostics/core';
-import { useWebMcpRegistry } from '@react-webmcp-diagnostics/react';
+import type { VisibleToolSummary } from '@tooluminati/core';
+import { useWebMcpRegistry } from '@tooluminati/react';
 
 export function useRegisteredTools(): VisibleToolSummary[] {
   const registry = useWebMcpRegistry();

@@ -1,6 +1,6 @@
 import { useMemo, type DependencyList } from 'react';
-import type { WebMcpToolDescriptor } from '@react-webmcp-diagnostics/core';
-import { useWebMcpTools } from '@react-webmcp-diagnostics/react';
+import type { WebMcpToolDescriptor } from '@tooluminati/core';
+import { useWebMcpTools } from '@tooluminati/react';
 import { inferSchemaFromValue } from './infer-schema';
 import type {
   FormDiagnosticSummary,

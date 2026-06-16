@@ -8,6 +8,6 @@ export type {
   RedactionPolicy,
   SecurityPolicy,
   WebMcpPolicySet,
-} from '@react-webmcp-diagnostics/core';
+} from '@tooluminati/core';
 
-export { permissivePolicySet } from '@react-webmcp-diagnostics/core';
+export { permissivePolicySet } from '@tooluminati/core';

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { WebMcpToolDescriptor } from '@react-webmcp-diagnostics/core';
+import type { WebMcpToolDescriptor } from '@tooluminati/core';
 import { productionOffPolicy } from './production-policy';
 import { ciStrictSecurityPolicy } from './security-policy';
 

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { MockModelContext } from '@react-webmcp-diagnostics/testing';
+import { MockModelContext } from '@tooluminati/testing';
 import {
   WebMcpConfirmationRequiredError,
   WebMcpExecutionValidationError,

@@ -3,9 +3,9 @@
 Install the packages you need:
 
 ```bash
-pnpm add @react-webmcp-diagnostics/core \
-  @react-webmcp-diagnostics/react \
-  @react-webmcp-diagnostics/diagnostics
+pnpm add @tooluminati/core \
+  @tooluminati/react \
+  @tooluminati/diagnostics
 ```
 
 Wrap your app with explicit enablement:

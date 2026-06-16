@@ -1,4 +1,4 @@
-import type { JsonSchema } from '@react-webmcp-diagnostics/core';
+import type { JsonSchema } from '@tooluminati/core';
 
 export function inferSchemaFromValue(value: unknown): JsonSchema | undefined {
   if (typeof value === 'string') {

@@ -1,6 +1,6 @@
 import { useMemo, type ReactNode } from 'react';
-import type { WebMcpToolDescriptor } from '@react-webmcp-diagnostics/core';
-import { WebMcpScope } from '@react-webmcp-diagnostics/react';
+import type { WebMcpToolDescriptor } from '@tooluminati/core';
+import { WebMcpScope } from '@tooluminati/react';
 import {
   createCurrentRouteTool,
   createNavigationStateTool,

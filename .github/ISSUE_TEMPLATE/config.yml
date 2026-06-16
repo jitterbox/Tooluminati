@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/jitterbox/Tooluminati/tree/main/docs
+    about: Read setup, security, and adapter guides before opening an issue.
+  - name: Examples
+    url: https://github.com/jitterbox/Tooluminati/tree/main/examples
+    about: Runnable demos with agent prompts and comparative proof tests.

@@ -1,17 +1,17 @@
 import { StrictMode, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { createActionAvailabilityTool } from '@react-webmcp-diagnostics/diagnostics';
+import { createActionAvailabilityTool } from '@tooluminati/diagnostics';
 import {
   WebMcpProvider,
   WebMcpScope,
   WebMcpSecurityBanner,
   useWebMcpTool,
-} from '@react-webmcp-diagnostics/react';
+} from '@tooluminati/react';
 import {
   createCurrentRouteTool,
   createNavigationStateTool,
   createReactRouterDiagnosticsProvider,
-} from '@react-webmcp-diagnostics/router';
+} from '@tooluminati/router';
 
 const routes = [
   { path: '/dashboard', label: 'Dashboard' },

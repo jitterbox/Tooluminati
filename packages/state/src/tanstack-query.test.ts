@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { redactObject } from '@react-webmcp-diagnostics/core';
+import { redactObject } from '@tooluminati/core';
 import { createQueryCacheSummaryTool } from './tanstack-query';
 
 describe('createQueryCacheSummaryTool security', () => {

@@ -1,8 +1,8 @@
 import { render, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { MockModelContext } from '@react-webmcp-diagnostics/testing';
-import { WebMcpSecurityPolicyError } from '@react-webmcp-diagnostics/core';
-import { ciStrictPolicy } from '@react-webmcp-diagnostics/policies';
+import { MockModelContext } from '@tooluminati/testing';
+import { WebMcpSecurityPolicyError } from '@tooluminati/core';
+import { ciStrictPolicy } from '@tooluminati/policies';
 import { WebMcpProvider } from './WebMcpProvider';
 import { useWebMcpTool } from './useWebMcpTool';
 

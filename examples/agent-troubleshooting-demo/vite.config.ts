@@ -10,19 +10,19 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@react-webmcp-diagnostics/core': path.resolve(
+      '@tooluminati/core': path.resolve(
         repoRoot,
         'packages/core/src/index.ts',
       ),
-      '@react-webmcp-diagnostics/diagnostics': path.resolve(
+      '@tooluminati/diagnostics': path.resolve(
         repoRoot,
         'packages/diagnostics/src/index.ts',
       ),
-      '@react-webmcp-diagnostics/react': path.resolve(
+      '@tooluminati/react': path.resolve(
         repoRoot,
         'packages/react/src/index.ts',
       ),
-      '@react-webmcp-diagnostics/testing': path.resolve(
+      '@tooluminati/testing': path.resolve(
         repoRoot,
         'packages/testing/src/index.ts',
       ),

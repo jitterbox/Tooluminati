@@ -1,17 +1,17 @@
 import { StrictMode, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import type { WebMcpToolDescriptor } from '@react-webmcp-diagnostics/core';
+import type { WebMcpToolDescriptor } from '@tooluminati/core';
 import {
   createActionAvailabilityTool,
   createAppInfoTool,
   createVisibleToolsTool,
   type ActionAvailabilityProvider,
-} from '@react-webmcp-diagnostics/diagnostics';
+} from '@tooluminati/diagnostics';
 import {
   WebMcpProvider,
   WebMcpSecurityBanner,
   useWebMcpTools,
-} from '@react-webmcp-diagnostics/react';
+} from '@tooluminati/react';
 
 function createPageStateTool(
   getState: () => { title: string; dirty: boolean },
@@ -31,7 +31,7 @@ function createPageStateTool(
 
 function Demo() {
   const [dirty, setDirty] = useState(false);
-  const pageTitle = 'React WebMCP Diagnostics';
+  const pageTitle = 'Tooluminati';
 
   const actions = useMemo<ActionAvailabilityProvider>(
     () => ({

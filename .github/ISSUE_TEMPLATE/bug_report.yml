@@ -1,0 +1,31 @@
+name: Bug report
+description: Report a bug or unexpected behavior
+title: '[Bug]: '
+labels: ['bug']
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Steps to reproduce, expected vs actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, React version, package versions, and flags enabled.
+      value: |
+        - Browser:
+        - React:
+        - Package(s):
+        - WebMCP flags enabled:
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Link to a repo, CodeSandbox, or example steps.
+    validations:
+      required: false

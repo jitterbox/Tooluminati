@@ -1,5 +1,5 @@
 /**
- * @experimental React WebMCP Diagnostics form adapters — public APIs may change.
+ * @experimental Tooluminati form adapters — public APIs may change.
  */
 export * from './errors';
 export * from './formik';

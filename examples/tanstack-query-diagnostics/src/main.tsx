@@ -4,11 +4,11 @@ import {
   WebMcpProvider,
   WebMcpSecurityBanner,
   useWebMcpTool,
-} from '@react-webmcp-diagnostics/react';
+} from '@tooluminati/react';
 import {
   createQueryCacheSummaryTool,
   type QueryClientLike,
-} from '@react-webmcp-diagnostics/state';
+} from '@tooluminati/state';
 
 function QueryDiagnosticsDemo() {
   const queryClient = useMemo<QueryClientLike>(

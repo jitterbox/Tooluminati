@@ -1,5 +1,5 @@
 /**
- * @experimental React WebMCP Diagnostics core — public APIs may change.
+ * @experimental Tooluminati core — public APIs may change.
  */
 export * from './errors';
 export * from './model-context';

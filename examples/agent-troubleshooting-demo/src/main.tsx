@@ -4,16 +4,16 @@ import {
   createActionAvailabilityTool,
   createAppInfoTool,
   type ActionAvailabilityProvider,
-} from '@react-webmcp-diagnostics/diagnostics';
+} from '@tooluminati/diagnostics';
 import {
   WebMcpProvider,
   WebMcpSecurityBanner,
   useWebMcpTools,
-} from '@react-webmcp-diagnostics/react';
+} from '@tooluminati/react';
 import {
   collectDisabledActionReasonsFromDom,
   type DisabledActionDomFinding,
-} from '@react-webmcp-diagnostics/testing';
+} from '@tooluminati/testing';
 
 const CHECKOUT_ACTION_ID = 'complete-checkout';
 const CHECKOUT_BUTTON_LABEL = 'Complete checkout';

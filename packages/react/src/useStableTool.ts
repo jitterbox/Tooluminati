@@ -1,5 +1,5 @@
 import { useMemo, type DependencyList } from 'react';
-import type { WebMcpToolDescriptor } from '@react-webmcp-diagnostics/core';
+import type { WebMcpToolDescriptor } from '@tooluminati/core';
 
 export function useStableTool<TArgs, TResult>(
   factory: () => WebMcpToolDescriptor<TArgs, TResult>,

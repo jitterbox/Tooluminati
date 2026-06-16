@@ -1,4 +1,4 @@
-import { redactObject } from '@react-webmcp-diagnostics/core';
+import { redactObject } from '@tooluminati/core';
 import { createStateSummaryTool } from './selector-tool';
 
 export interface ReduxStoreLike<TState> {
