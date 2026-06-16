@@ -1,0 +1,13 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/policies" },
+    { "path": "./packages/react" },
+    { "path": "./packages/diagnostics" },
+    { "path": "./packages/testing" },
+    { "path": "./packages/forms" },
+    { "path": "./packages/router" },
+    { "path": "./packages/state" }
+  ]
+}
