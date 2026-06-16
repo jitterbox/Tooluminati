@@ -21,7 +21,25 @@ Run objective comparison tests:
 pnpm test:browser
 ```
 
-## All examples
+## Angular examples
+
+| Example | React counterpart | Port |
+|---------|-------------------|------|
+| [angular-troubleshooting-demo](./angular-troubleshooting-demo/README.md) | agent-troubleshooting-demo | 4176 |
+| [angular-basic](./angular-basic/README.md) | vite-basic | 4175 |
+| [angular-diagnostics-quickstart](./angular-diagnostics-quickstart/README.md) | diagnostics-quickstart | 4177 |
+| [angular-router-dashboard](./angular-router-dashboard/README.md) | react-router-dashboard | 4178 |
+| [angular-signal-form-ticket](./angular-signal-form-ticket/README.md) | react-hook-form-support-ticket | 4179 |
+| [angular-ngrx-diagnostics](./angular-ngrx-diagnostics/README.md) | tanstack-query-diagnostics | 4180 |
+| [angular-security-playground](./angular-security-playground/README.md) | security-playground | 4181 |
+
+Run the Angular comparative proof demo:
+
+```bash
+pnpm --filter angular-troubleshooting-demo dev
+```
+
+## All React examples
 
 | Example | Agent scenario | Key tool(s) | DOM-only gap |
 |---------|----------------|-------------|--------------|

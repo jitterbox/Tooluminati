@@ -1,0 +1,25 @@
+body {
+  font-family: system-ui, sans-serif;
+  margin: 2rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  margin-top: 0.25rem;
+}
+
+textarea {
+  min-height: 6rem;
+}
+
+button {
+  margin-top: 0.5rem;
+}

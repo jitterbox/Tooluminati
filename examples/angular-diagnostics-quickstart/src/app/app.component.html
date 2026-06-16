@@ -1,0 +1,16 @@
+<web-mcp-security-banner></web-mcp-security-banner>
+<label>
+  <input
+    type="checkbox"
+    [checked]="acceptedTerms()"
+    (change)="onTermsChange($event)"
+  />
+  Accept terms
+</label>
+<button type="button" [disabled]="!acceptedTerms()">Continue</button>
+<button type="button" (click)="showRedactedInfo()">
+  Show redacted app info
+</button>
+@if (displayInfo) {
+  <pre>{{ displayInfo | json }}</pre>
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "../angular/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "paths": {
+      "@tooluminati/angular": ["../angular/dist/index.d.ts"],
+      "@tooluminati/devtools": ["../devtools/dist/index.d.ts"]
+    }
+  },
+  "references": [{ "path": "../angular" }, { "path": "../devtools" }],
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts"]
+}

@@ -1,0 +1,57 @@
+{
+  "name": "@tooluminati/angular-forms",
+  "version": "0.0.0",
+  "description": "Angular Signal Forms adapters for Tooluminati.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "ngc -p tsconfig.build.json",
+    "typecheck": "ngc -p tsconfig.json --noEmit",
+    "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "@tooluminati/angular": "workspace:*",
+    "@tooluminati/forms": "workspace:*",
+    "tslib": "^2.8.0"
+  },
+  "peerDependencies": {
+    "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "tooluminati",
+    "webmcp",
+    "angular",
+    "forms",
+    "signals"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jitterbox/Tooluminati.git",
+    "directory": "packages/angular-forms"
+  },
+  "bugs": {
+    "url": "https://github.com/jitterbox/Tooluminati/issues"
+  },
+  "homepage": "https://github.com/jitterbox/Tooluminati#readme",
+  "engines": {
+    "node": ">=18"
+  }
+}

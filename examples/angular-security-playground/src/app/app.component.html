@@ -1,0 +1,16 @@
+<web-mcp-security-banner></web-mcp-security-banner>
+<h1>Security Playground</h1>
+<p>Review tool risk classifications before exposing tools to agents.</p>
+<ul>
+  @for (entry of toolEntries(); track entry.name) {
+    <li>
+      <strong>{{ entry.name }}</strong> ({{ entry.risk }}) —
+      @if (entry.registered) {
+        registered
+      } @else {
+        blocked by strict policy
+      }
+      — {{ entry.warning ?? 'No warning.' }}
+    </li>
+  }
+</ul>

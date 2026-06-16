@@ -41,11 +41,38 @@ export default defineConfig({
         repoRoot,
         'packages/state/src/index.ts',
       ),
+      '@tooluminati/angular': path.resolve(
+        repoRoot,
+        'packages/angular/src/index.ts',
+      ),
+      '@tooluminati/angular-forms': path.resolve(
+        repoRoot,
+        'packages/angular-forms/src/index.ts',
+      ),
+      '@tooluminati/angular-router': path.resolve(
+        repoRoot,
+        'packages/angular-router/src/index.ts',
+      ),
+      '@tooluminati/angular-state': path.resolve(
+        repoRoot,
+        'packages/angular-state/src/index.ts',
+      ),
+      '@tooluminati/angular-devtools': path.resolve(
+        repoRoot,
+        'packages/angular-devtools/src/index.ts',
+      ),
+      '@tooluminati/devtools': path.resolve(
+        repoRoot,
+        'packages/devtools/src/index.ts',
+      ),
     },
   },
   test: {
     environment: 'jsdom',
     globals: true,
-    include: ['packages/**/*.test.ts', 'packages/**/*.test.tsx'],
+    include: [
+      'packages/**/*.test.ts',
+      'packages/**/*.test.tsx',
+    ],
   },
 });

@@ -26,6 +26,21 @@ expected CI default.
 Run real Chrome WebMCP checks only in environments with Chrome 149+ flags
 enabled. Keep mock-context tests as the default CI path.
 
+## Angular unit tests
+
+Angular packages use Vitest with Angular `TestBed` (`packages/angular/src/test-setup.ts`).
+Import the setup file at the top of Angular `*.test.ts` files:
+
+```ts
+import './test-setup';
+```
+
+Run Angular provider tests:
+
+```bash
+pnpm test -- packages/angular
+```
+
 ## Comparative proof (DOM vs WebMCP)
 
 The flagship [agent-troubleshooting-demo](../examples/agent-troubleshooting-demo/README.md)

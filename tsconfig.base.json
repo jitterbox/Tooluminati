@@ -27,6 +27,19 @@
       "@tooluminati/state": ["packages/state/src/index.ts"],
       "@tooluminati/devtools": [
         "packages/devtools/src/index.ts"
+      ],
+      "@tooluminati/angular": ["packages/angular/src/index.ts"],
+      "@tooluminati/angular-forms": [
+        "packages/angular-forms/src/index.ts"
+      ],
+      "@tooluminati/angular-router": [
+        "packages/angular-router/src/index.ts"
+      ],
+      "@tooluminati/angular-state": [
+        "packages/angular-state/src/index.ts"
+      ],
+      "@tooluminati/angular-devtools": [
+        "packages/angular-devtools/src/index.ts"
       ]
     },
     "resolveJsonModule": true,

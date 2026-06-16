@@ -1,5 +1,7 @@
 # Getting Started with Tooluminati
 
+> **Angular apps:** see [angular-getting-started.md](angular-getting-started.md).
+
 Install the packages you need:
 
 ```bash

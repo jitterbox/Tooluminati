@@ -1,0 +1,15 @@
+<web-mcp-security-banner></web-mcp-security-banner>
+<h1>Router Dashboard</h1>
+<nav>
+  @for (route of routes; track route.path) {
+    <button type="button" (click)="navigate(route.path)">
+      {{ route.label }}
+    </button>
+  }
+</nav>
+<p>Current route: {{ pathname() }}</p>
+<button type="button" disabled>Export report</button>
+<section>
+  <h2>Route-scoped tools</h2>
+  <p>Route tools are registered under the route.* namespace.</p>
+</section>

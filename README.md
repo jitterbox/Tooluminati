@@ -27,7 +27,7 @@
   </a>
 </p>
 
-Tooluminati is an opinionated React toolkit for the emerging WebMCP browser API.
+Tooluminati is an opinionated **React and Angular** toolkit for the emerging WebMCP browser API.
 It helps apps expose safe, structured diagnostics so agents can troubleshoot
 forms, routers, data caches, action availability, errors, hydration, and
 production security policy — not just register another `useWebMcpTool` hook.
@@ -38,13 +38,25 @@ change as the draft evolves.
 
 ## Install
 
+### React
+
 Primary packages:
 
 ```bash
 pnpm add @tooluminati/core @tooluminati/react
 ```
 
-Recommended diagnostics bundle:
+### Angular
+
+Primary packages:
+
+```bash
+pnpm add @tooluminati/core @tooluminati/angular
+```
+
+Guide: [docs/angular-getting-started.md](docs/angular-getting-started.md)
+
+### Shared diagnostics bundle
 
 ```bash
 pnpm add @tooluminati/core \
@@ -109,10 +121,16 @@ pnpm test:browser
 | `@tooluminati/state` | Redux / TanStack Query adapters |
 | `@tooluminati/testing` | Test and Playwright helpers |
 | `@tooluminati/devtools` | Debug panel UI |
+| `@tooluminati/angular` | Angular provider, scopes, banner |
+| `@tooluminati/angular-forms` | Signal Forms / reactive form adapters |
+| `@tooluminati/angular-router` | Angular Router diagnostics |
+| `@tooluminati/angular-state` | NgRx / signal state adapters |
+| `@tooluminati/angular-devtools` | Angular debug panel |
 
 ## Documentation
 
-- [Getting started](docs/getting-started.md)
+- [Getting started (React)](docs/getting-started.md)
+- [Getting started (Angular)](docs/angular-getting-started.md)
 - [Positioning](docs/positioning.md)
 - [Security](docs/security.md)
 - [Diagnostics tools](docs/diagnostics.md)

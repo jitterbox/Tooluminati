@@ -12,7 +12,12 @@
       "@tooluminati/forms",
       "@tooluminati/router",
       "@tooluminati/state",
-      "@tooluminati/devtools"
+      "@tooluminati/devtools",
+      "@tooluminati/angular",
+      "@tooluminati/angular-forms",
+      "@tooluminati/angular-router",
+      "@tooluminati/angular-state",
+      "@tooluminati/angular-devtools"
     ]
   ],
   "linked": [],

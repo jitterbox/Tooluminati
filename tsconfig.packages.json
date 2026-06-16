@@ -9,6 +9,11 @@
     { "path": "./packages/forms" },
     { "path": "./packages/router" },
     { "path": "./packages/state" },
-    { "path": "./packages/devtools" }
+    { "path": "./packages/devtools" },
+    { "path": "./packages/angular" },
+    { "path": "./packages/angular-forms" },
+    { "path": "./packages/angular-router" },
+    { "path": "./packages/angular-state" },
+    { "path": "./packages/angular-devtools" }
   ]
 }

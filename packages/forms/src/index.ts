@@ -8,4 +8,5 @@ export * from './native-form';
 export * from './react-hook-form';
 export * from './tanstack-form';
 export * from './types';
+export * from './create-form-tools';
 export * from './useWebMcpFormTool';

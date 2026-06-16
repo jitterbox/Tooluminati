@@ -8,3 +8,5 @@ examples/*/dist/
 test-results/
 playwright-report/
 blob-report/
+.angular/
+examples/*/.angular/
