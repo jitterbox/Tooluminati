@@ -16,7 +16,9 @@
             "index": "src/index.html",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "styles": ["src/styles.css"]
+            "styles": [
+              "src/styles.css"
+            ]
           },
           "configurations": {
             "development": {
@@ -37,7 +39,11 @@
               "buildTarget": "angular-diagnostics-quickstart:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4177,
+            "host": "127.0.0.1"
+          }
         }
       }
     }

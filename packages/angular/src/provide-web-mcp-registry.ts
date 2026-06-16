@@ -4,6 +4,7 @@ import {
   isDevMode,
   makeEnvironmentProviders,
   Optional,
+  signal,
   SkipSelf,
 } from '@angular/core';
 import {
@@ -37,11 +38,13 @@ export interface WebMcpRegistryConfig {
 function buildContextValue(
   registry: WebMcpRegistry,
   config: WebMcpRegistryConfig,
+  registryRevision: ReturnType<typeof signal<number>>,
 ): WebMcpAngularContextValue {
   const value: WebMcpAngularContextValue = {
     registry,
     enabled: config.enabled ?? false,
     policies: config.policies ?? localDevPolicy,
+    registryRevision,
   };
 
   if (config.policyContext !== undefined) {
@@ -76,6 +79,11 @@ export function provideWebMcpRegistry(
           );
         }
 
+        const registryRevision = signal(0);
+        const bumpRegistryRevision = () => {
+          registryRevision.update((value) => value + 1);
+        };
+
         const registry = new WebMcpRegistry({
           enabled: config.enabled ?? false,
           strict: config.strict ?? false,
@@ -86,6 +94,7 @@ export function provideWebMcpRegistry(
           getAppContext: config.getAppContext,
           onSecurityWarning: config.onSecurityWarning,
           onError: config.onError,
+          onRegister: () => bumpRegistryRevision(),
         });
 
         const tools = config.tools ?? [];
@@ -99,9 +108,10 @@ export function provideWebMcpRegistry(
           }
 
           registry.unregisterAll();
+          bumpRegistryRevision();
         });
 
-        return buildContextValue(registry, config);
+        return buildContextValue(registry, config, registryRevision);
       },
       deps: [[new Optional(), new SkipSelf(), WEB_MCP_CONTEXT], DestroyRef],
     },
@@ -128,5 +138,5 @@ export function createWebMcpRegistryForTesting(
     registry.registerTool(tool, { source: 'provider' });
   }
 
-  return buildContextValue(registry, config);
+  return buildContextValue(registry, config, signal(0));
 }

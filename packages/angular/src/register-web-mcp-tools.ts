@@ -8,6 +8,7 @@ import type {
   WebMcpToolDescriptor,
 } from '@tooluminati/core';
 import { injectWebMcpRegistry } from './inject-web-mcp-registry';
+import { WEB_MCP_CONTEXT } from './web-mcp-context';
 
 export function registerWebMcpTools(
   tools: WebMcpToolDescriptor[],
@@ -15,6 +16,7 @@ export function registerWebMcpTools(
 ): void {
   assertInInjectionContext(registerWebMcpTools);
   const registry = injectWebMcpRegistry();
+  const context = inject(WEB_MCP_CONTEXT, { optional: true });
   const destroyRef = inject(DestroyRef);
   const source = options.source ?? 'scope';
 
@@ -29,5 +31,6 @@ export function registerWebMcpTools(
     for (const registration of registrations) {
       registration.abort();
     }
+    context?.registryRevision?.update((value) => value + 1);
   });
 }

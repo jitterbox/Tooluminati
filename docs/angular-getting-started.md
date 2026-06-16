@@ -94,7 +94,23 @@ export class ProfileComponent {
 ```
 
 The `execute` closure reads the latest component state without re-registering on
-every change — the same invariant as the React hooks.
+every change — the same invariant as the React hooks. Pass `definitionDeps` with
+signals when tool metadata (name, schema, annotations) must re-register.
+
+## Scoped tools
+
+Use `WebMcpScopeComponent` or route-level providers to register scoped tools with
+an optional namespace segment:
+
+```typescript
+import { WebMcpScopeComponent } from '@tooluminati/angular';
+
+@Component({
+  imports: [WebMcpScopeComponent],
+  template: '<web-mcp-scope namespaceSegment="checkout"><ng-content /></web-mcp-scope>',
+})
+export class CheckoutShellComponent {}
+```
 
 ## Security banner
 
@@ -113,8 +129,9 @@ export class AppComponent {}
 | Package | API |
 |---------|-----|
 | `@tooluminati/angular-router` | `provideWebMcpRouteTools(provider)` |
-| `@tooluminati/angular-forms` | `provideWebMcpFormTool(options)` |
-| `@tooluminati/angular-state` | `provideSignalStateWebMcpTools({ state, selector })` |
+| `@tooluminati/angular-forms` | `provideWebMcpFormTool(options)`, `provideWebMcpFormTools([...])`, `provideSignalFormWebMcpTool(options)` |
+| `@tooluminati/angular-state` | `provideSignalStateWebMcpTools({ state, selector })`, `provideNgRxWebMcpTools(store, selectors)` |
+| `@tooluminati/angular-devtools` | `WebMcpDebugPanelComponent`, `webMcpRegisteredTools()` |
 
 See the Angular examples under `examples/angular-*` and
 [docs/angular-comparison.md](angular-comparison.md) for React parity notes.

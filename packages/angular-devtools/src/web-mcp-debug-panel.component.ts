@@ -1,6 +1,6 @@
-import { Component, computed } from '@angular/core';
-import { injectWebMcpRegistry } from '@tooluminati/angular';
+import { Component } from '@angular/core';
 import { webMcpComponentCatalog } from '@tooluminati/devtools';
+import { webMcpRegisteredTools } from './use-registered-tools';
 
 @Component({
   selector: 'web-mcp-debug-panel',
@@ -33,17 +33,15 @@ import { webMcpComponentCatalog } from '@tooluminati/devtools';
           }
         </ul>
       }
-      @if (catalog().length > 0) {
+      @if (catalog.length > 0) {
         <p style="margin: 0.75rem 0 0">
-          Catalog entries: {{ catalog().length }}
+          Catalog entries: {{ catalog.length }}
         </p>
       }
     </section>
   `,
 })
 export class WebMcpDebugPanelComponent {
-  private readonly registry = injectWebMcpRegistry();
-
-  readonly tools = computed(() => this.registry.getVisibleToolSummaries());
-  readonly catalog = computed(() => webMcpComponentCatalog);
+  readonly tools = webMcpRegisteredTools();
+  readonly catalog = webMcpComponentCatalog;
 }

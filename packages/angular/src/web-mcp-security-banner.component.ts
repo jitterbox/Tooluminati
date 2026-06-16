@@ -28,12 +28,16 @@ import { isWebMcpSupported } from '@tooluminati/core';
 export class WebMcpSecurityBannerComponent {
   private readonly context = injectWebMcpContextValue();
 
-  readonly banner = computed(() => ({
-    enabled: this.context.enabled,
-    supported: isWebMcpSupported(),
-    registeredTools: this.context.registry.getRegisteredToolNames(),
-    message: this.context.enabled
-      ? 'Tooluminati diagnostics are enabled for this page.'
-      : 'Tooluminati diagnostics are disabled.',
-  }));
+  readonly banner = computed(() => {
+    this.context.registryRevision?.();
+
+    return {
+      enabled: this.context.enabled,
+      supported: isWebMcpSupported(),
+      registeredTools: this.context.registry.getRegisteredToolNames(),
+      message: this.context.enabled
+        ? 'Tooluminati diagnostics are enabled for this page.'
+        : 'Tooluminati diagnostics are disabled.',
+    };
+  });
 }

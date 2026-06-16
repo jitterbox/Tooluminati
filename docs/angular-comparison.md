@@ -6,7 +6,7 @@ parity with React.
 
 ## Lifecycle mapping
 
-| Angular 20+ (experimental) | Tooluminati Angular |
+| Angular 20+ (experimental; peer `^20.0.0` in packages) | Tooluminati Angular |
 |---|---|
 | Injector lifecycle | `provideWebMcpRegistry()` |
 | `DestroyRef.onDestroy()` | `registration.abort()` via `DestroyRef` |

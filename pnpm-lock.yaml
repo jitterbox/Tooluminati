@@ -166,7 +166,7 @@ importers:
         specifier: ^2.8.0
         version: 2.8.1
       zone.js:
-        specifier: ^0.15.0
+        specifier: ^0.15.1
         version: 0.15.1
     devDependencies:
       '@angular/build':
@@ -215,7 +215,7 @@ importers:
         specifier: ^2.8.0
         version: 2.8.1
       zone.js:
-        specifier: ^0.15.0
+        specifier: ^0.15.1
         version: 0.15.1
     devDependencies:
       '@angular/build':
@@ -261,7 +261,7 @@ importers:
         specifier: ^2.8.0
         version: 2.8.1
       zone.js:
-        specifier: ^0.15.0
+        specifier: ^0.15.1
         version: 0.15.1
     devDependencies:
       '@angular/build':
@@ -313,7 +313,7 @@ importers:
         specifier: ^2.8.0
         version: 2.8.1
       zone.js:
-        specifier: ^0.15.0
+        specifier: ^0.15.1
         version: 0.15.1
     devDependencies:
       '@angular/build':
@@ -362,7 +362,7 @@ importers:
         specifier: ^2.8.0
         version: 2.8.1
       zone.js:
-        specifier: ^0.15.0
+        specifier: ^0.15.1
         version: 0.15.1
     devDependencies:
       '@angular/build':
@@ -414,7 +414,7 @@ importers:
         specifier: ^2.8.0
         version: 2.8.1
       zone.js:
-        specifier: ^0.15.0
+        specifier: ^0.15.1
         version: 0.15.1
     devDependencies:
       '@angular/build':
@@ -463,7 +463,7 @@ importers:
         specifier: ^2.8.0
         version: 2.8.1
       zone.js:
-        specifier: ^0.15.0
+        specifier: ^0.15.1
         version: 0.15.1
     devDependencies:
       '@angular/build':

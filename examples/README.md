@@ -30,7 +30,7 @@ pnpm test:browser
 | [angular-diagnostics-quickstart](./angular-diagnostics-quickstart/README.md) | diagnostics-quickstart | 4177 |
 | [angular-router-dashboard](./angular-router-dashboard/README.md) | react-router-dashboard | 4178 |
 | [angular-signal-form-ticket](./angular-signal-form-ticket/README.md) | react-hook-form-support-ticket | 4179 |
-| [angular-ngrx-diagnostics](./angular-ngrx-diagnostics/README.md) | tanstack-query-diagnostics | 4180 |
+| [angular-ngrx-diagnostics](./angular-ngrx-diagnostics/README.md) | tanstack-query-diagnostics (signal state) | 4180 |
 | [angular-security-playground](./angular-security-playground/README.md) | security-playground | 4181 |
 
 Run the Angular comparative proof demo:

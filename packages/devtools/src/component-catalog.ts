@@ -36,4 +36,34 @@ export const webMcpComponentCatalog: WebMcpComponentCatalogEntry[] = [
     description: 'Inspects registered tools and their safe metadata.',
     category: 'ui',
   },
+  {
+    name: 'provideWebMcpRegistry',
+    packageName: '@tooluminati/angular',
+    description: 'Registers tools and applies WebMCP policies for an Angular app.',
+    category: 'provider',
+  },
+  {
+    name: 'WebMcpScopeComponent',
+    packageName: '@tooluminati/angular',
+    description: 'Registers scoped tools with optional namespace segments.',
+    category: 'provider',
+  },
+  {
+    name: 'WebMcpSecurityBannerComponent',
+    packageName: '@tooluminati/angular',
+    description: 'Shows when diagnostics mode is enabled and lists tool names.',
+    category: 'ui',
+  },
+  {
+    name: 'registerWebMcpTool',
+    packageName: '@tooluminati/angular',
+    description: 'Registers a single tool for the lifetime of a component.',
+    category: 'hook',
+  },
+  {
+    name: 'WebMcpDebugPanelComponent',
+    packageName: '@tooluminati/angular-devtools',
+    description: 'Inspects registered tools and their safe metadata.',
+    category: 'ui',
+  },
 ];

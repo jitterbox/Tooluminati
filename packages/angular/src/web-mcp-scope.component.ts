@@ -10,6 +10,7 @@ import type {
   WebMcpToolSource,
 } from '@tooluminati/core';
 import { injectWebMcpRegistry } from './inject-web-mcp-registry';
+import { WEB_MCP_CONTEXT } from './web-mcp-context';
 
 @Component({
   selector: 'web-mcp-scope',
@@ -23,6 +24,7 @@ export class WebMcpScopeComponent {
 
   constructor() {
     const registry = injectWebMcpRegistry();
+    const context = inject(WEB_MCP_CONTEXT, { optional: true });
     const destroyRef = inject(DestroyRef);
 
     effect((onCleanup) => {
@@ -44,6 +46,7 @@ export class WebMcpScopeComponent {
         for (const registration of registrations) {
           registration.abort();
         }
+        context?.registryRevision?.update((value) => value + 1);
       });
     });
 
