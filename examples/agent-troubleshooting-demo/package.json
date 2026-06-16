@@ -1,0 +1,21 @@
+{
+  "name": "agent-troubleshooting-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@react-webmcp-diagnostics/diagnostics": "workspace:*",
+    "@react-webmcp-diagnostics/react": "workspace:*",
+    "@react-webmcp-diagnostics/testing": "workspace:*",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "vite": "^7.2.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.1",
+    "typescript": "^5.9.3"
+  }
+}

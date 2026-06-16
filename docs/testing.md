@@ -26,6 +26,27 @@ expected CI default.
 Run real Chrome WebMCP checks only in environments with Chrome 149+ flags
 enabled. Keep mock-context tests as the default CI path.
 
+## Comparative proof (DOM vs WebMCP)
+
+The flagship [agent-troubleshooting-demo](../examples/agent-troubleshooting-demo/README.md)
+and `tests/browser/comparative-proof.spec.ts` assert an objective gap:
+
+- DOM-only inspection finds **0** checkout blocker reasons
+- WebMCP `why_is_action_unavailable` returns **≥ 2** actionable reasons
+
+Helpers:
+
+```ts
+import {
+  runComparativeProof,
+  collectDisabledActionReasonsFromDom,
+} from '@react-webmcp-diagnostics/testing';
+```
+
+`runComparativeProof()` returns `webMcpIsStrictlyMoreInformative: true` when
+WebMCP provides strictly more diagnostic data than DOM inspection for the same
+UI state.
+
 ## Chrome 149 validation checklist
 
 Use this checklist when validating against real Chrome WebMCP (not CI mocks):

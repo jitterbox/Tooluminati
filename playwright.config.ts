@@ -6,14 +6,35 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? 'github' : 'list',
-  use: {
-    baseURL: 'http://127.0.0.1:4173',
-    trace: 'on-first-retry',
-  },
-  webServer: {
-    command: 'pnpm --filter vite-basic dev --host 127.0.0.1 --port 4173',
-    port: 4173,
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  projects: [
+    {
+      name: 'vite-basic',
+      testMatch: '**/vite-basic.spec.ts',
+      use: {
+        baseURL: 'http://127.0.0.1:4173',
+      },
+    },
+    {
+      name: 'agent-troubleshooting-demo',
+      testMatch: '**/comparative-proof.spec.ts',
+      use: {
+        baseURL: 'http://127.0.0.1:4174',
+      },
+    },
+  ],
+  webServer: [
+    {
+      command: 'pnpm --filter vite-basic dev --host 127.0.0.1 --port 4173',
+      port: 4173,
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
+    {
+      command:
+        'pnpm --filter agent-troubleshooting-demo dev --host 127.0.0.1 --port 4174',
+      port: 4174,
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
+  ],
 });

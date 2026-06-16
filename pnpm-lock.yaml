@@ -69,6 +69,34 @@ importers:
         specifier: ^4.0.15
         version: 4.1.9(@types/node@24.13.2)(jsdom@27.4.0)(vite@7.3.5(@types/node@24.13.2))
 
+  examples/agent-troubleshooting-demo:
+    dependencies:
+      '@react-webmcp-diagnostics/diagnostics':
+        specifier: workspace:*
+        version: link:../../packages/diagnostics
+      '@react-webmcp-diagnostics/react':
+        specifier: workspace:*
+        version: link:../../packages/react
+      '@react-webmcp-diagnostics/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      react:
+        specifier: ^19.2.3
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.7(react@19.2.7)
+      vite:
+        specifier: ^7.2.7
+        version: 7.3.5(@types/node@24.13.2)
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^5.1.1
+        version: 5.2.0(vite@7.3.5(@types/node@24.13.2))
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   examples/diagnostics-quickstart:
     dependencies:
       '@react-webmcp-diagnostics/diagnostics':

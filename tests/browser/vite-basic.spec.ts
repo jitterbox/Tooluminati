@@ -2,60 +2,12 @@ import { expect, test } from '@playwright/test';
 import {
   expectWebMcpTool,
   invokeWebMcpTool,
+  MODEL_CONTEXT_MOCK_INIT_SCRIPT,
 } from '@react-webmcp-diagnostics/testing';
 
 test.describe('vite-basic example', () => {
   test.beforeEach(async ({ page }) => {
-    await page.addInitScript(() => {
-      const tools = new Map<
-        string,
-        {
-          name: string;
-          execute: (args: unknown) => unknown | Promise<unknown>;
-        }
-      >();
-
-      Object.defineProperty(document, 'modelContext', {
-        configurable: true,
-        value: {
-          registerTool(
-            tool: {
-              name: string;
-              execute: (args: unknown) => unknown | Promise<unknown>;
-            },
-            options: { signal?: AbortSignal } = {},
-          ) {
-            if (options.signal?.aborted) {
-              return;
-            }
-
-            tools.set(tool.name, tool);
-            options.signal?.addEventListener(
-              'abort',
-              () => {
-                tools.delete(tool.name);
-              },
-              { once: true },
-            );
-          },
-          async getTools() {
-            return [...tools.values()];
-          },
-          async executeTool(toolOrName: unknown, argsJson = '{}') {
-            const name =
-              typeof toolOrName === 'string'
-                ? toolOrName
-                : (toolOrName as { name?: string }).name;
-            const tool = name ? tools.get(name) : undefined;
-            if (!tool) {
-              throw new Error(`Tool not found: ${name}`);
-            }
-
-            return tool.execute(JSON.parse(argsJson));
-          },
-        },
-      });
-    });
+    await page.addInitScript(MODEL_CONTEXT_MOCK_INIT_SCRIPT);
   });
 
   test('registers diagnostics tools and get_page_state', async ({ page }) => {
