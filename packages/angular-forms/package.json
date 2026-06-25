@@ -1,6 +1,6 @@
 {
   "name": "@tooluminati/angular-forms",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Angular Signal Forms adapters for Tooluminati.",
   "type": "module",
   "sideEffects": false,

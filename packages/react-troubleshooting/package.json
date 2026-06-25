@@ -1,0 +1,68 @@
+{
+  "name": "@tooluminati/react-troubleshooting",
+  "version": "0.1.0",
+  "description": "React troubleshooting bundle with timeline, blockers, and dev panel.",
+  "type": "module",
+  "sideEffects": [
+    "**/webmcp-declarative-attributes.*"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs && tsc -p tsconfig.json --emitDeclarationOnly",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "@tooluminati/core": "workspace:*",
+    "@tooluminati/diagnostics": "workspace:*",
+    "@tooluminati/forms": "workspace:*",
+    "@tooluminati/policies": "workspace:*",
+    "@tooluminati/react": "workspace:*",
+    "@tooluminati/state": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "@tanstack/react-query": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@tanstack/react-query": {
+      "optional": true
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jitterbox/Tooluminati.git",
+    "directory": "packages/react-troubleshooting"
+  },
+  "keywords": [
+    "tooluminati",
+    "webmcp",
+    "react",
+    "troubleshooting",
+    "diagnostics"
+  ],
+  "bugs": {
+    "url": "https://github.com/jitterbox/Tooluminati/issues"
+  },
+  "homepage": "https://github.com/jitterbox/Tooluminati#readme",
+  "engines": {
+    "node": ">=18"
+  }
+}

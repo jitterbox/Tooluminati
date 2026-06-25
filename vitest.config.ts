@@ -65,6 +65,14 @@ export default defineConfig({
         repoRoot,
         'packages/devtools/src/index.ts',
       ),
+      '@tooluminati/react-troubleshooting': path.resolve(
+        repoRoot,
+        'packages/react-troubleshooting/src/index.ts',
+      ),
+      '@tooluminati/angular-troubleshooting': path.resolve(
+        repoRoot,
+        'packages/angular-troubleshooting/src/index.ts',
+      ),
     },
   },
   test: {

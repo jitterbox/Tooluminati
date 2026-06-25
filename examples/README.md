@@ -8,6 +8,8 @@ prompts and expected tool outcomes.
 | Example | What it proves |
 |---------|----------------|
 | [agent-troubleshooting-demo](./agent-troubleshooting-demo/README.md) | DOM-only agents see a disabled button but **zero blockers**; WebMCP returns **actionable reasons** (automated Playwright proof) |
+| [failed-request-troubleshooting](./failed-request-troubleshooting/README.md) | Timeline captures HTTP failures DOM cannot explain |
+| [form-query-troubleshooting](./form-query-troubleshooting/README.md) | Form validation + query errors via `get_workflow_blockers`; optional declarative `toolname` markup |
 
 Run the flagship demo:
 
@@ -49,6 +51,8 @@ pnpm --filter angular-troubleshooting-demo dev
 | [react-router-dashboard](./react-router-dashboard/README.md) | Where am I in the app? | route tools | Loader params not rendered |
 | [react-hook-form-support-ticket](./react-hook-form-support-ticket/README.md) | What failed validation? | form submit + summary tools | Field errors not summarized in DOM |
 | [tanstack-query-diagnostics](./tanstack-query-diagnostics/README.md) | Which queries are stale? | query cache summary | Full cache not safely visible |
+| [form-query-troubleshooting](./form-query-troubleshooting/README.md) | Form + query blockers | `get_workflow_blockers`, declarative `toolname` | Disabled button only in DOM |
+| [failed-request-troubleshooting](./failed-request-troubleshooting/README.md) | Checkout save failed | `get_troubleshooting_timeline` | Fetch cause not in DOM |
 | [security-playground](./security-playground/README.md) | Which tools are risky? | classification helpers | Risk metadata not in DOM |
 
 ## How to prompt agents
@@ -83,8 +87,10 @@ diagnostic data than DOM inspection for the same UI state.
 
 ## Dev-only enablement
 
-All examples use `enabled={import.meta.env.DEV}`. See
-[docs/production.md](../docs/production.md) before enabling in production.
+Most examples use `enabled={import.meta.env.DEV}` or Angular `isDevMode()`.
+The troubleshooting demos under `failed-request-troubleshooting` and
+`form-query-troubleshooting` intentionally enable WebMCP for browser proofs.
+See [docs/production.md](../docs/production.md) before enabling in production.
 
 ## Chrome setup
 

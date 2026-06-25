@@ -20,6 +20,20 @@ const packageKeywords = {
   'angular-router': ['tooluminati', 'webmcp', 'angular', 'router'],
   'angular-state': ['tooluminati', 'webmcp', 'angular', 'ngrx', 'signals'],
   'angular-devtools': ['tooluminati', 'webmcp', 'angular', 'devtools', 'debug'],
+  'react-troubleshooting': [
+    'tooluminati',
+    'webmcp',
+    'react',
+    'troubleshooting',
+    'diagnostics',
+  ],
+  'angular-troubleshooting': [
+    'tooluminati',
+    'webmcp',
+    'angular',
+    'troubleshooting',
+    'diagnostics',
+  ],
 };
 
 const packageDescriptions = {
@@ -37,6 +51,10 @@ const packageDescriptions = {
   'angular-router': 'Angular Router diagnostics adapters for Tooluminati.',
   'angular-state': 'NgRx and signal state adapters for Tooluminati.',
   'angular-devtools': 'Angular debug panel for Tooluminati.',
+  'react-troubleshooting':
+    'React troubleshooting bundle with timeline, blockers, and dev panel.',
+  'angular-troubleshooting':
+    'Angular troubleshooting bundle with timeline, blockers, and dev panel.',
 };
 
 const packages = Object.keys(packageKeywords);
@@ -57,6 +75,10 @@ for (const name of packages) {
   json.keywords = packageKeywords[name];
   json.engines = { node: '>=18' };
   json.scripts.prepublishOnly = 'pnpm run build';
+
+  if (name === 'react-troubleshooting') {
+    json.sideEffects = ['**/webmcp-declarative-attributes.*'];
+  }
 
   writeFileSync(file, `${JSON.stringify(json, null, 2)}\n`);
 }

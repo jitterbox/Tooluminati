@@ -75,6 +75,13 @@ pnpm add @tooluminati/policies \
   @tooluminati/devtools
 ```
 
+Troubleshooting bundles (timeline, blockers, dev panel):
+
+```bash
+pnpm add @tooluminati/react-troubleshooting
+# Angular: @tooluminati/angular-troubleshooting
+```
+
 Packages publish to npm under `@tooluminati/*`. See
 [docs/releasing.md](docs/releasing.md) for maintainer publishing setup.
 
@@ -126,6 +133,8 @@ pnpm test:browser
 | `@tooluminati/angular-router` | Angular Router diagnostics |
 | `@tooluminati/angular-state` | NgRx / signal state adapters |
 | `@tooluminati/angular-devtools` | Angular debug panel |
+| `@tooluminati/react-troubleshooting` | React troubleshooting bundle and dev panel |
+| `@tooluminati/angular-troubleshooting` | Angular troubleshooting bundle and dev panel |
 
 ## Documentation
 
@@ -134,6 +143,9 @@ pnpm test:browser
 - [Positioning](docs/positioning.md)
 - [Security](docs/security.md)
 - [Diagnostics tools](docs/diagnostics.md)
+- [React troubleshooting](docs/react-troubleshooting.md)
+- [Angular troubleshooting](docs/angular-troubleshooting.md)
+- [Troubleshooting panel](docs/troubleshooting-panel.md)
 - [Chrome setup](docs/chrome-setup.md)
 - [Releasing to npm](docs/releasing.md)
 

@@ -1,19 +1,10 @@
-import {
-  EnvironmentProviders,
-  isDevMode,
-  makeEnvironmentProviders,
-  provideEnvironmentInitializer,
-} from '@angular/core';
+import { isDevMode } from '@angular/core';
 import type { WebMcpToolDescriptor } from '@tooluminati/core';
 import {
-  createActionAvailabilityTool,
   createAppInfoTool,
   type ActionAvailabilityProvider,
 } from '@tooluminati/diagnostics';
-import {
-  provideWebMcpRegistry,
-  registerWebMcpTools,
-} from '@tooluminati/angular';
+import { provideWebMcpTroubleshooting } from '@tooluminati/angular-troubleshooting';
 
 export const CHECKOUT_ACTION_ID = 'complete-checkout';
 export const CHECKOUT_BUTTON_LABEL = 'Complete checkout';
@@ -52,26 +43,17 @@ function createCheckoutActionsProvider(): ActionAvailabilityProvider {
   };
 }
 
-export function provideCheckoutDiagnostics(): EnvironmentProviders {
-  return makeEnvironmentProviders([
-    provideEnvironmentInitializer(() => {
-      const actions = createCheckoutActionsProvider();
-      registerWebMcpTools(
-        [
-          createAppInfoTool(() => ({
-            name: 'Angular Troubleshooting Demo',
-            environment: isDevMode() ? 'development' : 'production',
-            webMcpEnabled: isDevMode(),
-          })) as WebMcpToolDescriptor,
-          createActionAvailabilityTool(actions) as WebMcpToolDescriptor,
-        ],
-        { source: 'scope' },
-      );
-    }),
-  ]);
-}
-
 export const appProviders = [
-  provideWebMcpRegistry({ enabled: isDevMode() }),
-  provideCheckoutDiagnostics(),
+  provideWebMcpTroubleshooting({
+    enabled: isDevMode(),
+    actionProvider: createCheckoutActionsProvider(),
+    panel: { enabled: 'auto', render: 'auto', startCollapsed: true },
+    extraTools: [
+      createAppInfoTool(() => ({
+        name: 'Angular Troubleshooting Demo',
+        environment: isDevMode() ? 'development' : 'production',
+        webMcpEnabled: isDevMode(),
+      })) as WebMcpToolDescriptor,
+    ],
+  }),
 ];

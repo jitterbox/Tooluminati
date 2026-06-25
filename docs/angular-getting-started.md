@@ -143,6 +143,26 @@ Angular 20+ ships experimental `provideWebMcpTools` / Signal Forms
 `WebMcpRegistry` instead so policy, redaction, and security presets match the
 React packages. Do not double-register the same tool through both APIs.
 
+## Troubleshooting bundle
+
+For timeline, workflow blockers, and the dev panel:
+
+```typescript
+import { isDevMode } from '@angular/core';
+import { provideWebMcpTroubleshooting } from '@tooluminati/angular-troubleshooting';
+
+export const appConfig = {
+  providers: [
+    provideWebMcpTroubleshooting({
+      enabled: isDevMode(),
+      panel: { enabled: 'auto', render: 'auto', startCollapsed: true },
+    }),
+  ],
+};
+```
+
+See [angular-troubleshooting.md](angular-troubleshooting.md).
+
 ## Examples
 
 ```bash

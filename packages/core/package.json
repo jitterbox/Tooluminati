@@ -1,6 +1,6 @@
 {
   "name": "@tooluminati/core",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Core WebMCP registry and browser adapter for Tooluminati.",
   "type": "module",
   "sideEffects": false,

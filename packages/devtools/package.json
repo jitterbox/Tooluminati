@@ -1,6 +1,6 @@
 {
   "name": "@tooluminati/devtools",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Developer tools panel for Tooluminati.",
   "type": "module",
   "sideEffects": false,

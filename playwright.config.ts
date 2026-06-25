@@ -35,6 +35,27 @@ export default defineConfig({
         baseURL: 'http://127.0.0.1:4176',
       },
     },
+    {
+      name: 'failed-request-troubleshooting',
+      testMatch: '**/failed-request-comparative-proof.spec.ts',
+      use: {
+        baseURL: 'http://127.0.0.1:4183',
+      },
+    },
+    {
+      name: 'form-query-troubleshooting',
+      testMatch: '**/form-query-comparative-proof.spec.ts',
+      use: {
+        baseURL: 'http://127.0.0.1:4184',
+      },
+    },
+    {
+      name: 'angular-form-query-troubleshooting',
+      testMatch: '**/angular-form-query-comparative-proof.spec.ts',
+      use: {
+        baseURL: 'http://127.0.0.1:4176',
+      },
+    },
   ],
   webServer: [
     {
@@ -61,6 +82,20 @@ export default defineConfig({
       command:
         'pnpm --filter angular-troubleshooting-demo dev',
       port: 4176,
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
+    {
+      command:
+        'pnpm --filter failed-request-troubleshooting dev --host 127.0.0.1 --port 4183',
+      port: 4183,
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
+    {
+      command:
+        'pnpm --filter form-query-troubleshooting dev --host 127.0.0.1 --port 4184',
+      port: 4184,
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,
     },

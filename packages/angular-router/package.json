@@ -1,6 +1,6 @@
 {
   "name": "@tooluminati/angular-router",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Angular Router diagnostics adapters for Tooluminati.",
   "type": "module",
   "sideEffects": false,

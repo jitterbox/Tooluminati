@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; background:#f4f5f3; }
+    .doc-frame { width:100%; border-collapse:collapse; }
+    .doc-frame td { padding:0; }
+    .hdr-space, .ftr-space { display:none; }
+    @page { size: letter; margin: 0; }
+    @media print {
+      html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      html, body { margin:0; padding:0; background:#fff; }
+      .doc { max-width:none !important; margin:0 !important; padding:0 0.7in !important; box-shadow:none !important; }
+      .hdr-space, .ftr-space { display:table-cell; height:0.7in; }
+      h1,h2,h3 { break-after: avoid; }
+      tr, .keepwhole { break-inside: avoid; }
+      p, li { orphans:3; widows:3; }
+    }
+  </style>
+</helmet>
+<main class="doc" style="box-sizing:border-box; max-width:8.2in; margin:0 auto; background:#ffffff; padding:0 0 96px; font-family:'IBM Plex Sans',system-ui,sans-serif; color:#1a2233; line-height:1.62; box-shadow:0 1px 40px rgba(20,30,60,.07);">
+  <table class="doc-frame" role="presentation">
+    <thead><tr><td class="hdr-space"></td></tr></thead>
+    <tbody><tr><td>
+
+    <!-- masthead -->
+    <div style="background:#0a0e1a; color:#eef2fa; padding:34px 56px 30px; display:flex; align-items:flex-start; gap:16px;">
+      <span style="position:relative; width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto; margin-top:3px;">
+        <span style="width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-bottom:29px solid #17316A; position:absolute; top:0;"></span>
+        <span style="position:relative; width:9px; height:9px; border-radius:50%; background:#FECD10; margin-top:8px; box-shadow:0 0 9px #FECD10;"></span>
+      </span>
+      <div style="flex:1;">
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:2.5px; color:#5EC8F7; text-transform:uppercase; margin-bottom:7px;">Tooluminati · Component Spec</div>
+        <h1 style="margin:0; font-size:27px; font-weight:700; letter-spacing:-.3px; color:#fff;">WebMcpTroubleshootingPanel</h1>
+        <p style="margin:9px 0 0; font-size:14px; color:#aeb7cb; max-width:62ch;">An in-app developer panel that verifies WebMCP setup at a glance — support, registered tools, recent timeline events, environment warnings, and client errors — without opening the Chrome inspector extension.</p>
+      </div>
+    </div>
+    <div style="display:flex; gap:0; border-bottom:1px solid #e7e9e4; font-family:'IBM Plex Mono',monospace; font-size:11.5px;">
+      <div style="flex:1; padding:11px 56px; border-right:1px solid #e7e9e4;"><span style="color:#8a93a0;">Package&nbsp;&nbsp;</span><span style="color:#17316A; font-weight:600;">@tooluminati/diagnostics</span></div>
+      <div style="flex:1; padding:11px 24px; border-right:1px solid #e7e9e4;"><span style="color:#8a93a0;">Status&nbsp;&nbsp;</span><span style="color:#17316A; font-weight:600;">Draft v0.1</span></div>
+      <div style="flex:1; padding:11px 24px;"><span style="color:#8a93a0;">Surface&nbsp;&nbsp;</span><span style="color:#17316A; font-weight:600;">Dev-only / read-only</span></div>
+    </div>
+
+    <div style="padding:30px 56px 0;">
+
+      <!-- 1 Purpose -->
+      <h2 style="font-size:13px; font-family:'IBM Plex Mono',monospace; letter-spacing:1.5px; text-transform:uppercase; color:#17316A; margin:26px 0 11px; padding-bottom:8px; border-bottom:2px solid #FECD10; display:inline-block;">1 · Purpose</h2>
+      <p style="font-size:14.5px; margin:6px 0 12px;">Developers integrating Tooluminati need a fast answer to one question: <em>is WebMCP actually wired up and behaving on this page?</em> Today that requires installing and opening Chrome's Model Context Inspector Extension. The panel brings the five signals a developer checks most into the running app itself, as a draggable corner widget.</p>
+      <p style="font-size:14.5px; margin:6px 0 12px;">It is a verification surface, not a replacement for the inspector. It renders only data Tooluminati already collects via the diagnostics tools, applies the same redaction policy, and reads — never mutates — runtime state.</p>
+
+      <!-- 2 Placement -->
+      <h2 style="font-size:13px; font-family:'IBM Plex Mono',monospace; letter-spacing:1.5px; text-transform:uppercase; color:#17316A; margin:30px 0 11px; padding-bottom:8px; border-bottom:2px solid #FECD10; display:inline-block;">2 · Placement &amp; form factor</h2>
+      <ul style="font-size:14.5px; margin:6px 0 12px; padding-left:20px;">
+        <li style="margin-bottom:6px;"><strong>Docked corner widget</strong>, fixed bottom-right, above app chrome (<code style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; background:#f0f1ee; padding:1px 5px; border-radius:4px;">z-index</code> above app, below modals it does not own).</li>
+        <li style="margin-bottom:6px;"><strong>Collapsed badge ⇄ expanded panel.</strong> Collapsed shows the brand mark, support state, tool count, and an issue dot. Expanded is a ~412px panel with a scrolling body.</li>
+        <li style="margin-bottom:6px;"><strong>Dev-build only.</strong> The host tree-shakes it out of production unless explicitly opted in; it never ships to end users by default.</li>
+      </ul>
+
+      <!-- 3 API -->
+      <h2 style="font-size:13px; font-family:'IBM Plex Mono',monospace; letter-spacing:1.5px; text-transform:uppercase; color:#17316A; margin:30px 0 11px; padding-bottom:8px; border-bottom:2px solid #FECD10; display:inline-block;">3 · Public API (props)</h2>
+      <table class="keepwhole" style="width:100%; border-collapse:collapse; font-size:13px; margin:8px 0 14px;">
+        <thead><tr style="background:#0a0e1a; color:#eef2fa;">
+          <th style="text-align:left; padding:8px 11px; font-family:'IBM Plex Mono',monospace; font-weight:500;">prop</th>
+          <th style="text-align:left; padding:8px 11px; font-family:'IBM Plex Mono',monospace; font-weight:500;">type</th>
+          <th style="text-align:left; padding:8px 11px; font-family:'IBM Plex Mono',monospace; font-weight:500;">default</th>
+          <th style="text-align:left; padding:8px 11px; font-weight:600;">notes</th>
+        </tr></thead>
+        <tbody style="font-family:'IBM Plex Mono',monospace;">
+          <tr style="border-bottom:1px solid #ececec;"><td style="padding:7px 11px; color:#17316A; font-weight:600;">sources</td><td style="padding:7px 11px; color:#555;">TimelineBuffer · EnvSummary · ErrorBuffer</td><td style="padding:7px 11px; color:#999;">required</td><td style="padding:7px 11px; font-family:'IBM Plex Sans'; color:#444;">The diagnostics instances to read from. No data is fetched independently.</td></tr>
+          <tr style="border-bottom:1px solid #ececec;"><td style="padding:7px 11px; color:#17316A; font-weight:600;">position</td><td style="padding:7px 11px; color:#555;">'br'|'bl'|'tr'|'tl'</td><td style="padding:7px 11px; color:#999;">'br'</td><td style="padding:7px 11px; font-family:'IBM Plex Sans'; color:#444;">Docking corner.</td></tr>
+          <tr style="border-bottom:1px solid #ececec;"><td style="padding:7px 11px; color:#17316A; font-weight:600;">startCollapsed</td><td style="padding:7px 11px; color:#555;">boolean</td><td style="padding:7px 11px; color:#999;">false</td><td style="padding:7px 11px; font-family:'IBM Plex Sans'; color:#444;">Initial collapsed badge vs expanded panel.</td></tr>
+          <tr style="border-bottom:1px solid #ececec;"><td style="padding:7px 11px; color:#17316A; font-weight:600;">eventLimit</td><td style="padding:7px 11px; color:#555;">number</td><td style="padding:7px 11px; color:#999;">20</td><td style="padding:7px 11px; font-family:'IBM Plex Sans'; color:#444;">Hard cap on timeline rows shown, matching tool budget.</td></tr>
+          <tr style="border-bottom:1px solid #ececec;"><td style="padding:7px 11px; color:#17316A; font-weight:600;">pollMs</td><td style="padding:7px 11px; color:#555;">number | null</td><td style="padding:7px 11px; color:#999;">2000</td><td style="padding:7px 11px; font-family:'IBM Plex Sans'; color:#444;">Refresh cadence; <code>null</code> = manual refresh only.</td></tr>
+          <tr><td style="padding:7px 11px; color:#17316A; font-weight:600;">onCopyDiagnostics</td><td style="padding:7px 11px; color:#555;">(json) =&gt; void</td><td style="padding:7px 11px; color:#999;">clipboard</td><td style="padding:7px 11px; font-family:'IBM Plex Sans'; color:#444;">Override the copy handler (e.g. POST to a bug tracker).</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:13px; color:#667; margin:4px 0 12px;">React: <code style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; background:#f0f1ee; padding:1px 5px; border-radius:4px;">&lt;WebMcpTroubleshootingPanel /&gt;</code> auto-discovers sources from <code style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; background:#f0f1ee; padding:1px 5px; border-radius:4px;">WebMcpTroubleshootingProvider</code>. Angular: <code style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; background:#f0f1ee; padding:1px 5px; border-radius:4px;">&lt;webmcp-troubleshooting-panel&gt;</code> via <code style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; background:#f0f1ee; padding:1px 5px; border-radius:4px;">provideWebMcpTroubleshooting()</code>.</p>
+
+      <!-- 4 Data contracts -->
+      <h2 style="font-size:13px; font-family:'IBM Plex Mono',monospace; letter-spacing:1.5px; text-transform:uppercase; color:#17316A; margin:30px 0 11px; padding-bottom:8px; border-bottom:2px solid #FECD10; display:inline-block;">4 · The five signals</h2>
+      <table class="keepwhole" style="width:100%; border-collapse:collapse; font-size:13px; margin:8px 0 14px;">
+        <thead><tr style="background:#0a0e1a; color:#eef2fa;">
+          <th style="text-align:left; padding:8px 11px; font-weight:600; width:24%;">Panel section</th>
+          <th style="text-align:left; padding:8px 11px; font-family:'IBM Plex Mono',monospace; font-weight:500;">Source</th>
+          <th style="text-align:left; padding:8px 11px; font-weight:600;">Shown</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #ececec;"><td style="padding:8px 11px; font-weight:600; color:#17316A;">WebMCP support</td><td style="padding:8px 11px; font-family:'IBM Plex Mono',monospace; color:#555; font-size:12px;">get_webmcp_environment</td><td style="padding:8px 11px; color:#444;">Supported / Unsupported from <code style="font-family:'IBM Plex Mono',monospace; font-size:12px;">document.modelContext</code>, deprecated <code style="font-family:'IBM Plex Mono',monospace; font-size:12px;">navigator</code> fallback flag.</td></tr>
+          <tr style="border-bottom:1px solid #ececec;"><td style="padding:8px 11px; font-weight:600; color:#17316A;">Registered tools</td><td style="padding:8px 11px; font-family:'IBM Plex Mono',monospace; color:#555; font-size:12px;">EnvironmentSummary</td><td style="padding:8px 11px; color:#444;">Count of currently registered tools; amber when zero.</td></tr>
+          <tr style="border-bottom:1px solid #ececec;"><td style="padding:8px 11px; font-weight:600; color:#17316A;">Timeline events</td><td style="padding:8px 11px; font-family:'IBM Plex Mono',monospace; color:#555; font-size:12px;">get_troubleshooting_timeline</td><td style="padding:8px 11px; color:#444;">Recent ring-buffer events, filterable by category, newest first.</td></tr>
+          <tr style="border-bottom:1px solid #ececec;"><td style="padding:8px 11px; font-weight:600; color:#17316A;">Environment warnings</td><td style="padding:8px 11px; font-family:'IBM Plex Mono',monospace; color:#555; font-size:12px;">EnvironmentSummary.warnings</td><td style="padding:8px 11px; color:#444;">Origin isolation, Permissions-Policy, output-budget, fallback-in-use checks.</td></tr>
+          <tr><td style="padding:8px 11px; font-weight:600; color:#17316A;">Client errors</td><td style="padding:8px 11px; font-family:'IBM Plex Mono',monospace; color:#555; font-size:12px;">ClientErrorBuffer</td><td style="padding:8px 11px; color:#444;">Recent errors with de-dup count; stacks expand in dev only.</td></tr>
+        </tbody>
+      </table>
+
+      <!-- 5 Timeline categories -->
+      <h2 style="font-size:13px; font-family:'IBM Plex Mono',monospace; letter-spacing:1.5px; text-transform:uppercase; color:#17316A; margin:30px 0 11px; padding-bottom:8px; border-bottom:2px solid #FECD10; display:inline-block;">5 · Timeline categories</h2>
+      <p style="font-size:14.5px; margin:6px 0 10px;">Event tags map 1:1 to the <code style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; background:#f0f1ee; padding:1px 5px; border-radius:4px;">TroubleshootingEvent</code> union. Filter chips group them as <em>failures · blocked · tools · nav</em>.</p>
+      <div class="keepwhole" style="display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 14px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; padding:4px 9px; border-radius:5px; background:rgba(255,92,108,.1); color:#c0392b;">NET&nbsp; fetch_failure</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; padding:4px 9px; border-radius:5px; background:rgba(255,92,108,.1); color:#c0392b;">ERR&nbsp; client_error</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; padding:4px 9px; border-radius:5px; background:rgba(180,140,0,.13); color:#8a6a00;">BLK&nbsp; action_blocked</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; padding:4px 9px; border-radius:5px; background:#eef0ec; color:#4a5160;">NAV&nbsp; route_change</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; padding:4px 9px; border-radius:5px; background:rgba(10,173,242,.12); color:#0a6ea8;">TOOL&nbsp; tool_activated</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; padding:4px 9px; border-radius:5px; background:rgba(10,173,242,.12); color:#0a6ea8;">REG&nbsp; tool_change</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; padding:4px 9px; border-radius:5px; background:rgba(10,173,242,.12); color:#0a6ea8;">FORM&nbsp; agent_form_submit</span>
+      </div>
+
+      <!-- 6 States -->
+      <h2 style="font-size:13px; font-family:'IBM Plex Mono',monospace; letter-spacing:1.5px; text-transform:uppercase; color:#17316A; margin:30px 0 11px; padding-bottom:8px; border-bottom:2px solid #FECD10; display:inline-block;">6 · States</h2>
+      <table class="keepwhole" style="width:100%; border-collapse:collapse; font-size:13px; margin:8px 0 14px;">
+        <thead><tr style="background:#0a0e1a; color:#eef2fa;">
+          <th style="text-align:left; padding:8px 11px; font-family:'IBM Plex Mono',monospace; font-weight:500;">state</th>
+          <th style="text-align:left; padding:8px 11px; font-weight:600;">Header dot</th>
+          <th style="text-align:left; padding:8px 11px; font-weight:600;">When</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #ececec;"><td style="padding:7px 11px; font-family:'IBM Plex Mono',monospace; color:#17316A; font-weight:600;">ok</td><td style="padding:7px 11px; color:#0a6ea8;">● cyan</td><td style="padding:7px 11px; color:#444;">Supported, tools registered, no warnings or errors.</td></tr>
+          <tr style="border-bottom:1px solid #ececec;"><td style="padding:7px 11px; font-family:'IBM Plex Mono',monospace; color:#17316A; font-weight:600;">attention</td><td style="padding:7px 11px; color:#8a6a00;">● amber / red</td><td style="padding:7px 11px; color:#444;">Supported but warnings and/or client errors present.</td></tr>
+          <tr style="border-bottom:1px solid #ececec;"><td style="padding:7px 11px; font-family:'IBM Plex Mono',monospace; color:#17316A; font-weight:600;">unsupported</td><td style="padding:7px 11px; color:#c0392b;">● red (pulsing)</td><td style="padding:7px 11px; color:#444;">No <code style="font-family:'IBM Plex Mono',monospace; font-size:12px;">document.modelContext</code>; tools cannot register.</td></tr>
+          <tr><td style="padding:7px 11px; font-family:'IBM Plex Mono',monospace; color:#17316A; font-weight:600;">empty</td><td style="padding:7px 11px; color:#0a6ea8;">● cyan</td><td style="padding:7px 11px; color:#444;">Fresh setup — supported, nothing logged yet.</td></tr>
+        </tbody>
+      </table>
+
+      <!-- 7 Interactions -->
+      <h2 style="font-size:13px; font-family:'IBM Plex Mono',monospace; letter-spacing:1.5px; text-transform:uppercase; color:#17316A; margin:30px 0 11px; padding-bottom:8px; border-bottom:2px solid #FECD10; display:inline-block;">7 · Interactions</h2>
+      <ul style="font-size:14.5px; margin:6px 0 12px; padding-left:20px;">
+        <li style="margin-bottom:6px;"><strong>Collapse / expand</strong> — badge ⇄ panel; remembers last state per session.</li>
+        <li style="margin-bottom:6px;"><strong>Expandable rows</strong> — click any environment check, timeline event, or error to reveal detail + redacted metadata.</li>
+        <li style="margin-bottom:6px;"><strong>Category filter</strong> — chips scope the timeline; counts update live.</li>
+        <li style="margin-bottom:6px;"><strong>Copy diagnostics</strong> — serializes all five signals to JSON for bug reports (or <code style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; background:#f0f1ee; padding:1px 5px; border-radius:4px;">onCopyDiagnostics</code>).</li>
+        <li style="margin-bottom:6px;"><strong>Refresh</strong> — re-runs the environment check and re-reads buffers on demand.</li>
+      </ul>
+
+      <!-- 8 Visual -->
+      <h2 style="font-size:13px; font-family:'IBM Plex Mono',monospace; letter-spacing:1.5px; text-transform:uppercase; color:#17316A; margin:30px 0 11px; padding-bottom:8px; border-bottom:2px solid #FECD10; display:inline-block;">8 · Visual spec</h2>
+      <div class="keepwhole" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:8px 0 14px;">
+        <div style="border:1px solid #e7e9e4; border-radius:9px; padding:13px 15px;">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:#8a93a0; margin-bottom:9px;">Palette</div>
+          <div style="display:flex; flex-direction:column; gap:6px; font-family:'IBM Plex Mono',monospace; font-size:12px;">
+            <span style="display:flex; align-items:center; gap:8px;"><span style="width:14px;height:14px;border-radius:4px;background:#0a0e1a;"></span> #0A0E1A surface</span>
+            <span style="display:flex; align-items:center; gap:8px;"><span style="width:14px;height:14px;border-radius:4px;background:#17316A;"></span> #17316A brand navy</span>
+            <span style="display:flex; align-items:center; gap:8px;"><span style="width:14px;height:14px;border-radius:4px;background:#FECD10;"></span> #FECD10 amber · warn</span>
+            <span style="display:flex; align-items:center; gap:8px;"><span style="width:14px;height:14px;border-radius:4px;background:#0AADF2;"></span> #0AADF2 cyan · ok</span>
+            <span style="display:flex; align-items:center; gap:8px;"><span style="width:14px;height:14px;border-radius:4px;background:#FF5C6C;"></span> #FF5C6C red · error</span>
+          </div>
+        </div>
+        <div style="border:1px solid #e7e9e4; border-radius:9px; padding:13px 15px;">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:#8a93a0; margin-bottom:9px;">Type &amp; metrics</div>
+          <ul style="margin:0; padding-left:16px; font-size:12.5px; line-height:1.85;">
+            <li>UI: IBM Plex Sans · data &amp; tags: IBM Plex Mono</li>
+            <li>Panel width 412px · radius 15px</li>
+            <li>Row height 34–38px · 8px gaps</li>
+            <li>Min tap target 30px (dev tool)</li>
+            <li>Color is never the only signal — every status carries an icon + label</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 9 Safety -->
+      <h2 style="font-size:13px; font-family:'IBM Plex Mono',monospace; letter-spacing:1.5px; text-transform:uppercase; color:#17316A; margin:30px 0 11px; padding-bottom:8px; border-bottom:2px solid #FECD10; display:inline-block;">9 · Safety &amp; non-goals</h2>
+      <ul style="font-size:14.5px; margin:6px 0 12px; padding-left:20px;">
+        <li style="margin-bottom:6px;"><strong>Read-only.</strong> The panel never calls a mutating tool; it only reads buffers and the environment summary.</li>
+        <li style="margin-bottom:6px;"><strong>Same redaction.</strong> Query strings, response bodies, and PII are stripped upstream by the diagnostics layer; the panel renders what it is given.</li>
+        <li style="margin-bottom:6px;"><strong>Stacks in dev only</strong>, mirroring <code style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; background:#f0f1ee; padding:1px 5px; border-radius:4px;">ClientErrorBuffer</code> behavior.</li>
+        <li style="margin-bottom:6px;"><strong>Not</strong> the full inspector: no live tool execution, no schema browser, no eval runner — those stay in Chrome's extension.</li>
+      </ul>
+
+    </div>
+    </td></tr></tbody>
+    <tfoot><tr><td class="ftr-space"></td></tr></tfoot>
+  </table>
+</main>
+</x-dc>
+</body>
+</html>

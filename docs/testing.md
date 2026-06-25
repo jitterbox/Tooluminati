@@ -23,6 +23,17 @@ For DevTools MCP integration helpers, use `listWebMcpTools()` and
 return empty results or throw when WebMCP is unavailable, which is the
 expected CI default.
 
+WebMCP eval-style helpers:
+
+- `snapshotRegisteredTools(page)`
+- `createToolCallEvalFixture(tools, cases)`
+- `assertToolSchemaBudgets(tools)`
+- `runToolSelectionSmokeTest(tools, prompt, expected)`
+- `runTimelineComparativeProof(page, options)`
+
+See [chrome-setup.md](chrome-setup.md) for the Model Context Inspector
+Extension workflow.
+
 Run real Chrome WebMCP checks only in environments with Chrome 149+ flags
 enabled. Keep mock-context tests as the default CI path.
 

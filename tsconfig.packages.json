@@ -14,6 +14,8 @@
     { "path": "./packages/angular-forms" },
     { "path": "./packages/angular-router" },
     { "path": "./packages/angular-state" },
-    { "path": "./packages/angular-devtools" }
+    { "path": "./packages/angular-devtools" },
+    { "path": "./packages/react-troubleshooting" },
+    { "path": "./packages/angular-troubleshooting" }
   ]
 }

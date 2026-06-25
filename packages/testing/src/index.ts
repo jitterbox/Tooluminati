@@ -8,3 +8,4 @@ export * from './dom-only-inspection';
 export * from './install-model-context-mock';
 export * from './mock-model-context';
 export * from './model-context-mock-script';
+export * from './webmcp-evals';

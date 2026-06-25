@@ -1,11 +1,20 @@
 # Changelog
 
+## 0.1.0
+
+Initial public release of Tooluminati.
+
+- Core registry, security, browser adapter, and policy presets
+- React and Angular provider families with scoped tools and security banner
+- Diagnostics, forms, router, state, testing, and devtools packages
+- `@tooluminati/react-troubleshooting` and `@tooluminati/angular-troubleshooting`
+  bundles: timeline, workflow blockers, error collection, and dev panel
+- React declarative helpers emit WebMCP spec attributes (`toolname`,
+  `tooldescription`, `toolautosubmit`, `toolparamdescription`) with JSX module
+  augmentation
+- Angular declarative directives bind the same spec attributes
+- Example apps, comparative Playwright proofs, and maintainer release workflow
+
 ## 0.0.0
 
-Initial experimental release of Tooluminati.
-
-- Core registry, security, and redaction primitives
-- React provider, hooks, scopes, and security banner
-- Diagnostics, forms, router, and state adapter packages
-- Testing utilities and browser Playwright checks
-- Example apps and developer tools panel
+Internal monorepo bootstrap (unpublished).

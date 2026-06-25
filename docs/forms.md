@@ -13,5 +13,15 @@ Recommended defaults:
   unions, and ambiguous values.
 - Return validation errors with stable field paths.
 
+Declarative WebMCP markup (spec attributes on native form elements):
+
+| Framework | Helper |
+|-----------|--------|
+| React | `WebMcpForm`, `WebMcpInput`, … from `@tooluminati/react-troubleshooting` |
+| Angular | `WebMcpFormDirective`, `WebMcpParamDescriptionDirective` from `@tooluminati/angular-troubleshooting` |
+
+Imperative form tools (validation summaries, submit/fill tools) use
+`@tooluminati/forms` and `@tooluminati/angular-forms`.
+
 Adapters currently include generic forms, React Hook Form, TanStack Form,
 Formik, and native forms. Native forms require explicit schemas.

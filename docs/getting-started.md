@@ -41,3 +41,19 @@ useWebMcpTools([
 
 Production enablement should be deliberate and reviewed. Use policy presets to
 make that decision explicit.
+
+## Troubleshooting bundle
+
+For timeline, workflow blockers, environment checks, and a dev panel, add
+`@tooluminati/react-troubleshooting`:
+
+```tsx
+import { WebMcpTroubleshootingProvider } from '@tooluminati/react-troubleshooting';
+
+<WebMcpTroubleshootingProvider enabled={import.meta.env.DEV}>
+  <App />
+</WebMcpTroubleshootingProvider>;
+```
+
+See [react-troubleshooting.md](react-troubleshooting.md) and
+[troubleshooting-panel.md](troubleshooting-panel.md).

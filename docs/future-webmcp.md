@@ -1,10 +1,10 @@
 # Future WebMCP Compatibility
 
-Tooluminati does not ship unstable declarative or reactive WebMCP APIs yet.
+Tooluminati does not ship unstable reactive WebMCP APIs yet.
 
 ## Declarative WebMCP
 
-The declarative explainer currently discusses form attributes such as:
+The declarative explainer defines form attributes:
 
 - `toolname`
 - `tooldescription`
@@ -12,8 +12,21 @@ The declarative explainer currently discusses form attributes such as:
 - `toolparamdescription`
 
 It also discusses `SubmitEvent.respondWith()` and form-active pseudo-classes.
-The form adapter package keeps metadata close to these concepts, but does not
-polyfill browser declarative behavior.
+
+**Supported today:**
+
+- `@tooluminati/react-troubleshooting` — `WebMcpForm` / `WebMcpInput` /
+  `WebMcpSelect` / `WebMcpTextarea` emit spec attributes; importing the package
+  augments React JSX types for native elements.
+- `@tooluminati/angular-troubleshooting` — `WebMcpFormDirective` and
+  `WebMcpParamDescriptionDirective` bind spec attributes.
+- `@tooluminati/diagnostics` — `get_workflow_blockers` and the troubleshooting
+  timeline discover `form[toolname]` in the DOM.
+
+Tooluminati does **not** polyfill browser declarative registration. When Chrome
+implements declarative WebMCP, spec-marked forms should work without markup
+changes. Imperative form tools from `@tooluminati/forms` remain the supported
+path for React Hook Form, TanStack Form, and similar libraries.
 
 ## Resources And Subscriptions
 

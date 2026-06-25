@@ -66,4 +66,18 @@ export const webMcpComponentCatalog: WebMcpComponentCatalogEntry[] = [
     description: 'Inspects registered tools and their safe metadata.',
     category: 'ui',
   },
+  {
+    name: 'WebMcpTroubleshootingPanel',
+    packageName: '@tooluminati/react-troubleshooting',
+    description:
+      'Dev-only docked panel for WebMCP support, timeline, and errors.',
+    category: 'ui',
+  },
+  {
+    name: 'WebMcpTroubleshootingPanelComponent',
+    packageName: '@tooluminati/angular-troubleshooting',
+    description:
+      'Angular dev panel mirroring WebMcpTroubleshootingPanel.',
+    category: 'ui',
+  },
 ];

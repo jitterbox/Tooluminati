@@ -1,6 +1,6 @@
 # Releasing Tooluminati to npm
 
-Tooluminati packages publish under the `@tooluminati` scope on npm. All fourteen
+Tooluminati packages publish under the `@tooluminati` scope on npm. All sixteen
 packages version together via Changesets.
 
 ## Published packages
@@ -21,6 +21,8 @@ packages version together via Changesets.
 | `@tooluminati/angular-router` | Angular Router adapters |
 | `@tooluminati/angular-state` | NgRx / signal state adapters |
 | `@tooluminati/angular-devtools` | Angular debug panel |
+| `@tooluminati/react-troubleshooting` | React timeline, blockers, dev panel |
+| `@tooluminati/angular-troubleshooting` | Angular timeline, blockers, dev panel |
 
 Examples in `examples/` are **not** published.
 
@@ -61,12 +63,22 @@ Root scripts:
 pnpm changeset          # create a changeset
 pnpm version-packages   # bump versions locally (CI does this)
 pnpm release            # build + publish to npm (CI does this)
+pnpm sync-package-metadata  # refresh publish metadata on all packages
+```
+
+Before the first publish (or after adding packages), run:
+
+```bash
+pnpm sync-package-metadata
+pnpm check
+pnpm build
 ```
 
 ## Manual publish (emergency only)
 
 ```bash
 pnpm install
+pnpm sync-package-metadata
 pnpm build
 npm whoami   # verify login
 pnpm release
@@ -76,8 +88,9 @@ Prefer the automated workflow so changelogs and git tags stay consistent.
 
 ## Pre-1.0 policy
 
-All public APIs are marked `@experimental` in source. Breaking changes may ship
-in minor releases until 1.0. Document behavior changes in changesets clearly.
+All public APIs are marked `@experimental` in source. The first npm release is
+**0.1.0**. Breaking changes may ship in minor releases until 1.0. Document
+behavior changes in changesets clearly.
 
 ## Verify a release
 
@@ -86,6 +99,7 @@ After publish:
 ```bash
 npm view @tooluminati/core version
 npm install @tooluminati/core@latest
+npm install @tooluminati/react-troubleshooting@latest
 ```
 
 Check package pages on npm and the GitHub Release notes created by Changesets.

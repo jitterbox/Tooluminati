@@ -12,6 +12,7 @@
     "@angular/core": "^20.0.0",
     "@angular/platform-browser": "^20.0.0",
     "@tooluminati/angular": "workspace:*",
+    "@tooluminati/angular-troubleshooting": "workspace:*",
     "@tooluminati/core": "workspace:*",
     "@tooluminati/diagnostics": "workspace:*",
     "@tooluminati/testing": "workspace:*",

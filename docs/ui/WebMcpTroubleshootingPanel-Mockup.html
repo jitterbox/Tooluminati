@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    @keyframes tlmFlash { 0% { opacity: 0; } 100% { opacity: 1; } }
+    @keyframes tlmPulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+    @keyframes tlmSpin { to { transform: rotate(360deg); } }
+    .tlm-scroll::-webkit-scrollbar { width: 9px; }
+    .tlm-scroll::-webkit-scrollbar-thumb { background: #232c40; border-radius: 6px; border: 2px solid #0b0f1a; }
+    .tlm-scroll::-webkit-scrollbar-track { background: transparent; }
+  </style>
+</helmet>
+<div style="position:relative; width:100%; min-height:100vh; background:#06080f; font-family:'IBM Plex Sans',system-ui,sans-serif; overflow:hidden;">
+
+  <!-- faux app backdrop -->
+  <div style="position:absolute; inset:0; opacity:.5;">
+    <div style="height:52px; background:#0c1120; border-bottom:1px solid #18203400; display:flex; align-items:center; gap:14px; padding:0 22px;">
+      <div style="width:11px;height:11px;border-radius:50%;background:#2a3550;"></div>
+      <div style="width:11px;height:11px;border-radius:50%;background:#2a3550;"></div>
+      <div style="width:11px;height:11px;border-radius:50%;background:#2a3550;"></div>
+      <div style="margin-left:14px;width:300px;height:18px;border-radius:5px;background:#141b2e;"></div>
+    </div>
+    <div style="padding:34px 44px; display:flex; gap:30px;">
+      <div style="flex:0 0 200px; display:flex; flex-direction:column; gap:14px;">
+        <div style="height:30px;width:70%;border-radius:6px;background:#10182a;"></div>
+        <div style="height:14px;width:90%;border-radius:5px;background:#0d1424;"></div>
+        <div style="height:14px;width:80%;border-radius:5px;background:#0d1424;"></div>
+        <div style="height:14px;width:85%;border-radius:5px;background:#0d1424;"></div>
+        <div style="height:14px;width:60%;border-radius:5px;background:#0d1424;"></div>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; gap:18px;">
+        <div style="height:170px;border-radius:10px;background:repeating-linear-gradient(135deg,#0e1525,#0e1525 11px,#0b1120 11px,#0b1120 22px);"></div>
+        <div style="display:flex; gap:18px;">
+          <div style="flex:1;height:110px;border-radius:10px;background:#0e1626;"></div>
+          <div style="flex:1;height:110px;border-radius:10px;background:#0e1626;"></div>
+          <div style="flex:1;height:110px;border-radius:10px;background:#0e1626;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLLAPSED BADGE -->
+  <sc-if value="{{ isCollapsed }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ toggleExpanded }}" style="position:fixed; right:26px; bottom:26px; display:flex; align-items:center; gap:11px; padding:11px 15px 11px 13px; background:#0d1322; border:1px solid #1f2940; border-radius:13px; cursor:pointer; box-shadow:0 14px 40px rgba(0,0,0,.5); font-family:'IBM Plex Sans',sans-serif;">
+      <span style="position:relative; width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center;">
+        <span style="width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-bottom:22px solid #17316A; position:absolute; top:1px;"></span>
+        <span style="position:relative; width:7px; height:7px; border-radius:50%; background:#FECD10; margin-top:6px; box-shadow:0 0 7px #FECD10;"></span>
+      </span>
+      <span style="display:flex; flex-direction:column; align-items:flex-start; line-height:1.15;">
+        <span style="font-size:12px; font-weight:600; color:#e7ecf6;">WebMCP</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:{{ supportColor }};">{{ badgeStatus }}</span>
+      </span>
+      <span style="display:flex; align-items:center; gap:6px; padding-left:11px; margin-left:3px; border-left:1px solid #20293f;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#aeb7cb;">{{ toolCount }}</span>
+        <sc-if value="{{ hasIssues }}" hint-placeholder-val="{{ false }}">
+          <span style="width:8px;height:8px;border-radius:50%;background:{{ issueColor }}; box-shadow:0 0 6px {{ issueColor }};"></span>
+        </sc-if>
+      </span>
+    </button>
+  </sc-if>
+
+  <!-- EXPANDED PANEL -->
+  <sc-if value="{{ isExpanded }}" hint-placeholder-val="{{ true }}">
+  <div style="position:fixed; right:26px; bottom:26px; width:412px; max-height:calc(100vh - 52px); display:flex; flex-direction:column; background:#0a0e1a; border:1px solid #1c2438; border-radius:15px; box-shadow:0 26px 70px rgba(0,0,0,.62), 0 0 0 1px rgba(255,255,255,.015) inset; overflow:hidden;">
+
+    <!-- header -->
+    <div style="display:flex; align-items:center; gap:11px; padding:13px 14px; border-bottom:1px solid #161d2e; background:linear-gradient(180deg,#0d1322,#0a0e1a);">
+      <span style="position:relative; width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;">
+        <span style="width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-bottom:22px solid #17316A; position:absolute; top:1px;"></span>
+        <span style="position:relative; width:7px; height:7px; border-radius:50%; background:#FECD10; margin-top:6px; box-shadow:0 0 8px #FECD10;"></span>
+      </span>
+      <div style="display:flex; flex-direction:column; line-height:1.2; margin-right:auto;">
+        <span style="font-size:13.5px; font-weight:600; color:#eef2fa; letter-spacing:.1px;">WebMCP Troubleshooting</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:1.6px; color:#5f6a82; text-transform:uppercase;">Tooluminati · dev panel</span>
+      </div>
+      <button onClick="{{ refresh }}" title="Re-run checks" style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:8px; background:#121a2b; border:1px solid #1f2840; color:#9aa5bd; cursor:pointer; font-size:14px;" style-hover="background:#17203400; color:#0AADF2;">
+        <span style="display:inline-block; animation:{{ spinAnim }};">⟳</span>
+      </button>
+      <button onClick="{{ copyDiag }}" title="Copy diagnostics JSON" style="display:inline-flex; align-items:center; justify-content:center; height:30px; padding:0 10px; gap:6px; border-radius:8px; background:#121a2b; border:1px solid #1f2840; color:{{ copyColor }}; cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:11px;">{{ copyLabel }}</button>
+      <button onClick="{{ toggleExpanded }}" title="Minimize" style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:8px; background:#121a2b; border:1px solid #1f2840; color:#9aa5bd; cursor:pointer; font-size:15px; line-height:1;" style-hover="color:#eef2fa;">–</button>
+    </div>
+
+    <!-- status tiles -->
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:#161d2e; border-bottom:1px solid #161d2e;">
+      <div style="background:#0a0e1a; padding:12px 13px; display:flex; flex-direction:column; gap:7px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:1px; color:#5f6a82; text-transform:uppercase;">WebMCP</span>
+        <span style="display:flex; align-items:center; gap:7px;">
+          <span style="width:9px; height:9px; border-radius:50%; background:{{ supportColor }}; box-shadow:0 0 8px {{ supportColor }}; animation:{{ supportPulse }};"></span>
+          <span style="font-size:14px; font-weight:600; color:#eef2fa;">{{ supportLabel }}</span>
+        </span>
+      </div>
+      <div style="background:#0a0e1a; padding:12px 13px; display:flex; flex-direction:column; gap:5px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:1px; color:#5f6a82; text-transform:uppercase;">Tools</span>
+        <span style="display:flex; align-items:baseline; gap:6px;">
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:21px; font-weight:600; color:{{ toolCountColor }}; line-height:1;">{{ toolCount }}</span>
+          <span style="font-size:11px; color:#6b768c;">registered</span>
+        </span>
+      </div>
+      <div style="background:#0a0e1a; padding:12px 13px; display:flex; flex-direction:column; gap:5px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:1px; color:#5f6a82; text-transform:uppercase;">Issues</span>
+        <span style="display:flex; align-items:baseline; gap:6px;">
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:21px; font-weight:600; color:{{ issueCountColor }}; line-height:1;">{{ issueCount }}</span>
+          <span style="font-size:11px; color:#6b768c;">{{ issueWord }}</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- scroll body -->
+    <div class="tlm-scroll" style="overflow-y:auto; overflow-x:hidden; flex:1; min-height:0;">
+
+      <!-- ENVIRONMENT -->
+      <div style="padding:13px 14px 6px; display:flex; align-items:center; gap:8px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1.5px; color:#7b8aa6; text-transform:uppercase; font-weight:600;">Environment</span>
+        <span style="flex:1; height:1px; background:linear-gradient(90deg,#1a2236,transparent);"></span>
+      </div>
+      <div style="padding:2px 12px 8px; display:flex; flex-direction:column; gap:3px;">
+        <sc-for list="{{ checks }}" as="check" hint-placeholder-count="4">
+          <div style="border-radius:8px; overflow:hidden; background:{{ check.bg }};">
+            <div onClick="{{ check.onToggle }}" style="display:flex; align-items:center; gap:10px; padding:8px 10px; cursor:{{ check.cursor }};">
+              <span style="flex:0 0 auto; width:16px; height:16px; border-radius:5px; display:inline-flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; color:{{ check.iconColor }}; background:{{ check.iconBg }};">{{ check.icon }}</span>
+              <span style="font-size:12.5px; color:#d3dae8; flex:1;">{{ check.label }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:{{ check.valColor }};">{{ check.value }}</span>
+              <sc-if value="{{ check.hint }}" hint-placeholder-val="{{ false }}">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5f6a82; width:11px; text-align:center;">{{ check.caret }}</span>
+              </sc-if>
+            </div>
+            <sc-if value="{{ check.open }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:0 12px 11px 36px; font-size:11.5px; line-height:1.55; color:#9aa5bd;">{{ check.hint }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- TIMELINE -->
+      <div style="padding:9px 14px 6px; display:flex; align-items:center; gap:8px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1.5px; color:#7b8aa6; text-transform:uppercase; font-weight:600;">Timeline</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#4f5870;">{{ eventTotalLabel }}</span>
+        <span style="flex:1; height:1px; background:linear-gradient(90deg,#1a2236,transparent);"></span>
+      </div>
+      <div style="padding:0 12px 8px; display:flex; flex-wrap:wrap; gap:6px;">
+        <sc-for list="{{ chips }}" as="chip" hint-placeholder-count="4">
+          <button onClick="{{ chip.onClick }}" style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; padding:4px 9px; border-radius:20px; cursor:pointer; border:1px solid {{ chip.border }}; background:{{ chip.bg }}; color:{{ chip.color }};">{{ chip.label }}</button>
+        </sc-for>
+      </div>
+      <div style="padding:0 12px 8px; display:flex; flex-direction:column; gap:3px;">
+        <sc-if value="{{ hasEvents }}" hint-placeholder-val="{{ true }}">
+          <sc-for list="{{ events }}" as="ev" hint-placeholder-count="4">
+            <div style="border-radius:8px; overflow:hidden; background:{{ ev.bg }}; border-left:2px solid {{ ev.bar }};">
+              <div onClick="{{ ev.onToggle }}" style="display:flex; align-items:center; gap:9px; padding:7px 10px; cursor:pointer;">
+                <span style="flex:0 0 auto; font-family:'IBM Plex Mono',monospace; font-size:8.5px; font-weight:600; letter-spacing:.4px; padding:2px 5px; border-radius:4px; color:{{ ev.tagColor }}; background:{{ ev.tagBg }};">{{ ev.tag }}</span>
+                <span style="font-size:12px; color:#d6dce9; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ ev.title }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#58627a;">{{ ev.time }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#586279; width:11px; text-align:center;">{{ ev.caret }}</span>
+              </div>
+              <sc-if value="{{ ev.open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:2px 12px 11px 12px; display:flex; flex-direction:column; gap:6px;">
+                  <div style="font-size:11.5px; line-height:1.55; color:#9aa5bd;">{{ ev.detail }}</div>
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#6b768c; background:#070b14; border:1px solid #161d2e; border-radius:6px; padding:7px 9px; white-space:pre-wrap; word-break:break-all;">{{ ev.meta }}</div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ noEvents }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:16px 10px; text-align:center; font-size:12px; color:#586279; font-family:'IBM Plex Mono',monospace;">{{ emptyEventsLabel }}</div>
+        </sc-if>
+      </div>
+
+      <!-- CLIENT ERRORS -->
+      <div style="padding:9px 14px 6px; display:flex; align-items:center; gap:8px;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1.5px; color:#7b8aa6; text-transform:uppercase; font-weight:600;">Client Errors</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#4f5870;">{{ errorTotalLabel }}</span>
+        <span style="flex:1; height:1px; background:linear-gradient(90deg,#1a2236,transparent);"></span>
+      </div>
+      <div style="padding:0 12px 14px; display:flex; flex-direction:column; gap:3px;">
+        <sc-if value="{{ hasErrors }}" hint-placeholder-val="{{ false }}">
+          <sc-for list="{{ errors }}" as="er" hint-placeholder-count="2">
+            <div style="border-radius:8px; overflow:hidden; background:rgba(255,92,108,.05); border-left:2px solid #FF5C6C;">
+              <div onClick="{{ er.onToggle }}" style="display:flex; align-items:center; gap:9px; padding:7px 10px; cursor:pointer;">
+                <span style="flex:0 0 auto; font-family:'IBM Plex Mono',monospace; font-size:8.5px; font-weight:600; padding:2px 5px; border-radius:4px; color:#FF8088; background:rgba(255,92,108,.12);">ERR</span>
+                <span style="font-size:12px; color:#e7d2d4; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-family:'IBM Plex Mono',monospace;">{{ er.message }}</span>
+                <sc-if value="{{ er.showCount }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:#FF8088; background:rgba(255,92,108,.12); padding:1px 6px; border-radius:10px;">×{{ er.count }}</span>
+                </sc-if>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#58627a;">{{ er.time }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#586279; width:11px; text-align:center;">{{ er.caret }}</span>
+              </div>
+              <sc-if value="{{ er.open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:2px 12px 11px 12px; display:flex; flex-direction:column; gap:6px;">
+                  <div style="font-size:11px; color:#8b94a8;">{{ er.source }}</div>
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; line-height:1.6; color:#94707a; background:#0d0809; border:1px solid #2a1418; border-radius:6px; padding:8px 9px; white-space:pre-wrap;">{{ er.stack }}</div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ noErrors }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:12px 10px; display:flex; align-items:center; gap:8px; font-size:12px; color:#586279;">
+            <span style="width:16px;height:16px;border-radius:5px;background:rgba(10,173,242,.12);color:#0AADF2;display:inline-flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;">✓</span>
+            <span style="font-family:'IBM Plex Mono',monospace;">No errors captured this session</span>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div style="display:flex; align-items:center; gap:8px; padding:9px 14px; border-top:1px solid #161d2e; background:#0c1120;">
+      <span style="width:6px;height:6px;border-radius:50%;background:#0AADF2;"></span>
+      <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#6b768c;">{{ updatedLabel }}</span>
+      <span style="flex:1;"></span>
+      <a href="#" style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#5f6a82; text-decoration:none;" style-hover="color:#0AADF2;">Inspector Extension ↗</a>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:760},&quot;state&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;attention&quot;,&quot;ok&quot;,&quot;unsupported&quot;,&quot;empty&quot;],&quot;default&quot;:&quot;attention&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;startCollapsed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { collapsed: null, openChecks: {}, openEvents: {}, openErrors: {}, filter: 'all', copied: false, spinning: false, bumped: 0 };
+
+  catMeta(cat) {
+    const m = {
+      fetch_failure:  { tag: 'NET',  color: '#FF8088', bg: 'rgba(255,92,108,.12)', bar: '#FF5C6C', sev: 'error' },
+      client_error:   { tag: 'ERR',  color: '#FF8088', bg: 'rgba(255,92,108,.12)', bar: '#FF5C6C', sev: 'error' },
+      action_blocked: { tag: 'BLK',  color: '#FFD86B', bg: 'rgba(254,205,16,.13)', bar: '#FECD10', sev: 'warn' },
+      route_change:   { tag: 'NAV',  color: '#9aa5bd', bg: 'rgba(154,165,189,.1)', bar: '#3a455f', sev: 'info' },
+      tool_activated: { tag: 'TOOL', color: '#5EC8F7', bg: 'rgba(10,173,242,.13)', bar: '#0AADF2', sev: 'info' },
+      tool_change:    { tag: 'REG',  color: '#5EC8F7', bg: 'rgba(10,173,242,.13)', bar: '#0AADF2', sev: 'info' },
+      agent_form_submit: { tag: 'FORM', color: '#5EC8F7', bg: 'rgba(10,173,242,.13)', bar: '#0AADF2', sev: 'info' },
+    };
+    return m[cat] || m.route_change;
+  }
+
+  dataset() {
+    const s = this.props.state || 'attention';
+    const D = {};
+    // ---- attention (default, healthy support but real incidents) ----
+    D.attention = {
+      supported: true, toolCount: 14, origin: 'https://app.acme.dev',
+      checks: [
+        { id:'c1', label:'document.modelContext', value:'available', status:'ok' },
+        { id:'c2', label:'navigator.modelContext fallback', value:'not used', status:'ok' },
+        { id:'c3', label:'Origin isolation', value:'review', status:'warn',
+          hint:'Origin-Agent-Cluster: ?0 detected via document.domain access. Cross-origin tool exposure may be blocked. Remove document.domain writes or set Origin-Agent-Cluster: ?1.' },
+        { id:'c4', label:'tools Permissions-Policy', value:'self', status:'ok' },
+        { id:'c5', label:'Tool output budget', value:'1 over', status:'warn',
+          hint:'get_query_cache_summary emitted ~1.9K chars (budget ~1.5K). Trim fields or enable redaction to stay within Chrome guidance.' },
+      ],
+      events: [
+        { id:'e1', cat:'fetch_failure', title:'POST /api/checkout — 403', time:'2s',
+          detail:'Checkout mutation rejected by server before the submit button was disabled. DOM only shows the disabled state — the cause lives here.',
+          meta:'host: app.acme.dev\nstatus: 403 Forbidden\nmethod: POST · 248 ms\nbody: <redacted>' },
+        { id:'e2', cat:'action_blocked', title:'submit_order unavailable', time:'2s',
+          detail:'Action availability flipped to unavailable. Reason chain surfaced to agents via why_is_action_unavailable.',
+          meta:'reason: dependent fetch failed (403)\nblocker: checkout.session.expired' },
+        { id:'e3', cat:'client_error', title:'TypeError: cart.total is undefined', time:'3s',
+          detail:'Render error caught by WebMcpErrorBoundary and pushed to the client error buffer + timeline.',
+          meta:'component: <CheckoutSummary>\nsource: checkout/Summary.tsx:42' },
+        { id:'e4', cat:'tool_change', title:'2 tools added · 0 removed', time:'14s',
+          detail:'document.modelContext toolchange fired after the checkout route mounted its diagnostic tools.',
+          meta:'added: get_workflow_blockers, get_query_cache_summary' },
+        { id:'e5', cat:'route_change', title:'/cart → /checkout', time:'18s',
+          detail:'SPA navigation captured for causal context.',
+          meta:'from: /cart\nto: /checkout' },
+        { id:'e6', cat:'tool_activated', title:'agent activated update_address', time:'31s',
+          detail:'Declarative form tool activated by the agent (toolactivated).',
+          meta:'form: #address-form\nautosubmit: false' },
+      ],
+      errors: [
+        { id:'r1', message:"TypeError: cart.total is undefined", source:'checkout/Summary.tsx:42 · <CheckoutSummary>', count:3, time:'3s',
+          stack:"at CheckoutSummary (Summary.tsx:42:18)\nat renderWithHooks (react-dom.js:14985)\nat mountIndeterminateComponent (react-dom.js:17811)" },
+        { id:'r2', message:"NetworkError: failed to fetch /api/checkout", source:'lib/api/checkout.ts:19 · mutationFn', count:1, time:'2s',
+          stack:"at checkoutMutation (checkout.ts:19:11)\nat Object.mutationFn (react-query.js:1204)" },
+      ],
+    };
+    // ---- ok (healthy) ----
+    D.ok = {
+      supported: true, toolCount: 14, origin: 'https://app.acme.dev',
+      checks: [
+        { id:'c1', label:'document.modelContext', value:'available', status:'ok' },
+        { id:'c2', label:'navigator.modelContext fallback', value:'not used', status:'ok' },
+        { id:'c3', label:'Origin isolation', value:'ok', status:'ok' },
+        { id:'c4', label:'tools Permissions-Policy', value:'self', status:'ok' },
+        { id:'c5', label:'Tool output budgets', value:'within', status:'ok' },
+      ],
+      events: [
+        { id:'e1', cat:'tool_activated', title:'agent activated get_workflow_blockers', time:'4s',
+          detail:'Agent invoked the aggregate blockers tool; returned 0 actionable blockers.', meta:'duration: 18 ms\nresult: { blockers: 0 }' },
+        { id:'e2', cat:'route_change', title:'/dashboard → /orders', time:'22s', detail:'SPA navigation captured for causal context.', meta:'from: /dashboard\nto: /orders' },
+        { id:'e3', cat:'tool_change', title:'3 tools added · 0 removed', time:'41s', detail:'Orders route registered its diagnostic tools.', meta:'added: list_orders, get_order_status, refund_order' },
+      ],
+      errors: [],
+    };
+    // ---- unsupported ----
+    D.unsupported = {
+      supported: false, toolCount: 0, origin: 'https://app.acme.dev',
+      checks: [
+        { id:'c1', label:'document.modelContext', value:'missing', status:'fail',
+          hint:'No document.modelContext on this page. WebMCP is unavailable. In Chrome, enable the WebMCP origin trial / flag, or run a build that polyfills the API. Tools cannot be registered until this resolves.' },
+        { id:'c2', label:'navigator.modelContext fallback', value:'in use', status:'warn',
+          hint:'Deprecated navigator.modelContext path detected. Migrate to document.modelContext; the fallback is not a supported long-term surface.' },
+        { id:'c3', label:'Browser context', value:'none', status:'fail',
+          hint:'No agent/browser context visible to the page. Open in a WebMCP-capable Chrome build, or attach the Model Context Inspector Extension.' },
+        { id:'c4', label:'Origin isolation', value:'n/a', status:'muted' },
+      ],
+      events: [
+        { id:'e1', cat:'tool_change', title:'registration skipped — no host', time:'1s',
+          detail:'Tooluminati attempted to register 14 tools but found no modelContext host, so registration was deferred.', meta:'pending: 14 tools\nretry: on modelContext available' },
+      ],
+      errors: [
+        { id:'r1', message:"WebMcpUnavailable: document.modelContext is undefined", source:'@tooluminati/core · ensureHost()', count:1, time:'1s',
+          stack:"at ensureHost (core/host.ts:31:9)\nat WebMcpProvider (react/Provider.tsx:58)" },
+      ],
+    };
+    // ---- empty (fresh setup) ----
+    D.empty = {
+      supported: true, toolCount: 0, origin: 'https://localhost:5173',
+      checks: [
+        { id:'c1', label:'document.modelContext', value:'available', status:'ok' },
+        { id:'c2', label:'navigator.modelContext fallback', value:'not used', status:'ok' },
+        { id:'c3', label:'Origin isolation', value:'ok', status:'ok' },
+        { id:'c4', label:'tools Permissions-Policy', value:'self', status:'ok' },
+      ],
+      events: [],
+      errors: [],
+    };
+    return D[s] || D.attention;
+  }
+
+  isCollapsed() {
+    if (this.state.collapsed === null) return this.props.startCollapsed === true;
+    return this.state.collapsed;
+  }
+
+  toggleExpanded = () => this.setState(s => ({ collapsed: !((s.collapsed === null) ? (this.props.startCollapsed === true) : s.collapsed) }));
+  toggleCheck = (id) => this.setState(s => ({ openChecks: { ...s.openChecks, [id]: !s.openChecks[id] } }));
+  toggleEvent = (id) => this.setState(s => ({ openEvents: { ...s.openEvents, [id]: !s.openEvents[id] } }));
+  toggleError = (id) => this.setState(s => ({ openErrors: { ...s.openErrors, [id]: !s.openErrors[id] } }));
+  setFilter = (f) => this.setState({ filter: f });
+
+  refresh = () => {
+    this.setState({ spinning: true });
+    clearTimeout(this._sp);
+    this._sp = setTimeout(() => this.setState(s => ({ spinning: false, bumped: s.bumped + 1 })), 650);
+  };
+
+  copyDiag = () => {
+    const d = this.dataset();
+    const payload = JSON.stringify({ webmcp: { supported: d.supported, toolCount: d.toolCount, origin: d.origin },
+      checks: d.checks.map(c => ({ label: c.label, value: c.value, status: c.status })),
+      timeline: d.events.map(e => ({ category: e.cat, title: e.title, t: e.time })),
+      clientErrors: d.errors.map(e => ({ message: e.message, count: e.count })) }, null, 2);
+    try { navigator.clipboard && navigator.clipboard.writeText(payload); } catch (e) {}
+    this.setState({ copied: true });
+    clearTimeout(this._cp);
+    this._cp = setTimeout(() => this.setState({ copied: false }), 1500);
+  };
+
+  groupOf(cat) {
+    if (cat === 'fetch_failure' || cat === 'client_error') return 'failures';
+    if (cat === 'tool_activated' || cat === 'tool_change') return 'tools';
+    if (cat === 'route_change' || cat === 'agent_form_submit') return 'nav';
+    if (cat === 'action_blocked') return 'blocked';
+    return 'other';
+  }
+
+  renderVals() {
+    const d = this.dataset();
+    const collapsed = this.isCollapsed();
+    const supportColor = d.supported ? '#0AADF2' : '#FF5C6C';
+    const issueCount = d.checks.filter(c => c.status === 'warn' || c.status === 'fail').length + d.errors.length;
+    const hasIssues = issueCount > 0;
+    const issueColor = d.errors.length ? '#FF5C6C' : (hasIssues ? '#FECD10' : '#0AADF2');
+
+    // checks
+    const checks = d.checks.map(c => {
+      const map = {
+        ok:    { icon:'✓', iconColor:'#5EC8F7', iconBg:'rgba(10,173,242,.12)', valColor:'#7d8aa3' },
+        warn:  { icon:'!', iconColor:'#FFD86B', iconBg:'rgba(254,205,16,.14)', valColor:'#FFD86B' },
+        fail:  { icon:'✕', iconColor:'#FF8088', iconBg:'rgba(255,92,108,.14)', valColor:'#FF8088' },
+        muted: { icon:'·', iconColor:'#586279', iconBg:'rgba(154,165,189,.08)', valColor:'#586279' },
+      }[c.status] || {};
+      const open = !!this.state.openChecks[c.id];
+      return { ...c, ...map, bg: open ? '#0e1424' : 'transparent', cursor: c.hint ? 'pointer' : 'default',
+        open: open && !!c.hint, caret: open ? '▾' : '▸',
+        onToggle: c.hint ? () => this.toggleCheck(c.id) : () => {} };
+    });
+
+    // chips
+    const groups = [
+      { key:'all', label:'all' }, { key:'failures', label:'failures' }, { key:'blocked', label:'blocked' },
+      { key:'tools', label:'tools' }, { key:'nav', label:'nav' },
+    ];
+    const counts = {};
+    d.events.forEach(e => { const g = this.groupOf(e.cat); counts[g] = (counts[g]||0)+1; });
+    const chips = groups
+      .filter(g => g.key === 'all' || counts[g.key])
+      .map(g => {
+        const active = this.state.filter === g.key;
+        const n = g.key === 'all' ? d.events.length : (counts[g.key]||0);
+        return { key:g.key, label:`${g.label} ${n}`, onClick:() => this.setFilter(g.key),
+          bg: active ? 'rgba(10,173,242,.13)' : '#0d1322',
+          border: active ? '#0AADF2' : '#1f2840',
+          color: active ? '#5EC8F7' : '#8893a8' };
+      });
+
+    // events (filtered)
+    const filtered = d.events.filter(e => this.state.filter === 'all' || this.groupOf(e.cat) === this.state.filter);
+    const events = filtered.map(e => {
+      const m = this.catMeta(e.cat);
+      const open = !!this.state.openEvents[e.id];
+      return { ...e, tag:m.tag, tagColor:m.color, tagBg:m.bg, bar:m.bar,
+        bg: open ? '#0e1424' : '#0b0f1c', open, caret: open ? '▾' : '▸',
+        onToggle: () => this.toggleEvent(e.id) };
+    });
+
+    const errors = d.errors.map(e => {
+      const open = !!this.state.openErrors[e.id];
+      return { ...e, open, caret: open ? '▾' : '▸', showCount: e.count > 1,
+        onToggle: () => this.toggleError(e.id) };
+    });
+
+    return {
+      isCollapsed: collapsed, isExpanded: !collapsed,
+      toggleExpanded: this.toggleExpanded, refresh: this.refresh, copyDiag: this.copyDiag,
+      supportColor,
+      supportLabel: d.supported ? 'Supported' : 'Unsupported',
+      supportPulse: d.supported ? 'none' : 'tlmPulse 1.3s ease-in-out infinite',
+      badgeStatus: d.supported ? 'supported' : 'unsupported',
+      toolCount: d.toolCount,
+      toolCountColor: d.toolCount > 0 ? '#eef2fa' : '#FFD86B',
+      issueCount, issueWord: issueCount === 1 ? 'to review' : 'to review',
+      issueCountColor: d.errors.length ? '#FF8088' : (issueCount ? '#FFD86B' : '#5EC8F7'),
+      hasIssues, issueColor,
+      checks, toggleCheck: this.toggleCheck,
+      chips,
+      events, hasEvents: events.length > 0, noEvents: events.length === 0,
+      emptyEventsLabel: d.events.length === 0 ? 'No timeline activity yet' : 'No events in this filter',
+      eventTotalLabel: `${d.events.length} captured`,
+      errors, hasErrors: errors.length > 0, noErrors: errors.length === 0,
+      errorTotalLabel: d.errors.length ? `${d.errors.length} captured` : 'clean',
+      copyLabel: this.state.copied ? 'Copied ✓' : 'Copy JSON',
+      copyColor: this.state.copied ? '#5EC8F7' : '#9aa5bd',
+      spinAnim: this.state.spinning ? 'tlmSpin .65s linear' : 'none',
+      updatedLabel: this.state.spinning ? 'Re-running checks…' : (this.state.bumped ? 'Updated just now' : 'Live · updated 2s ago'),
+    };
+  }
+}
+</script>
+</body>
+</html>

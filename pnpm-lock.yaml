@@ -447,6 +447,9 @@ importers:
       '@tooluminati/angular':
         specifier: workspace:*
         version: link:../../packages/angular
+      '@tooluminati/angular-troubleshooting':
+        specifier: workspace:*
+        version: link:../../packages/angular-troubleshooting
       '@tooluminati/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -490,6 +493,59 @@ importers:
       '@tooluminati/react':
         specifier: workspace:*
         version: link:../../packages/react
+      react:
+        specifier: ^19.2.3
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.7(react@19.2.7)
+      vite:
+        specifier: ^7.2.7
+        version: 7.3.5(@types/node@24.13.2)(sass@1.90.0)
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^5.1.1
+        version: 5.2.0(vite@7.3.5(@types/node@24.13.2)(sass@1.90.0))
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  examples/failed-request-troubleshooting:
+    dependencies:
+      '@tooluminati/diagnostics':
+        specifier: workspace:*
+        version: link:../../packages/diagnostics
+      '@tooluminati/react-troubleshooting':
+        specifier: workspace:*
+        version: link:../../packages/react-troubleshooting
+      '@tooluminati/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      react:
+        specifier: ^19.2.3
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.7(react@19.2.7)
+      vite:
+        specifier: ^7.2.7
+        version: 7.3.5(@types/node@24.13.2)(sass@1.90.0)
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^5.1.1
+        version: 5.2.0(vite@7.3.5(@types/node@24.13.2)(sass@1.90.0))
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  examples/form-query-troubleshooting:
+    dependencies:
+      '@tanstack/react-query':
+        specifier: ^5.90.12
+        version: 5.101.1(react@19.2.7)
+      '@tooluminati/react-troubleshooting':
+        specifier: workspace:*
+        version: link:../../packages/react-troubleshooting
       react:
         specifier: ^19.2.3
         version: 19.2.7
@@ -728,6 +784,33 @@ importers:
         specifier: ^2.8.0
         version: 2.8.1
 
+  packages/angular-troubleshooting:
+    dependencies:
+      '@angular/core':
+        specifier: ^20.0.0
+        version: 20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1)
+      '@angular/forms':
+        specifier: ^20.0.0
+        version: 20.3.25(@angular/common@20.3.25(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.3.25(@angular/common@20.3.25(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
+      '@tooluminati/angular':
+        specifier: workspace:*
+        version: link:../angular
+      '@tooluminati/core':
+        specifier: workspace:*
+        version: link:../core
+      '@tooluminati/diagnostics':
+        specifier: workspace:*
+        version: link:../diagnostics
+      '@tooluminati/forms':
+        specifier: workspace:*
+        version: link:../forms
+      '@tooluminati/policies':
+        specifier: workspace:*
+        version: link:../policies
+      tslib:
+        specifier: ^2.8.0
+        version: 2.8.1
+
   packages/core: {}
 
   packages/devtools:
@@ -777,6 +860,33 @@ importers:
       react:
         specifier: '>=18.0.0'
         version: 19.2.7
+
+  packages/react-troubleshooting:
+    dependencies:
+      '@tooluminati/core':
+        specifier: workspace:*
+        version: link:../core
+      '@tooluminati/diagnostics':
+        specifier: workspace:*
+        version: link:../diagnostics
+      '@tooluminati/forms':
+        specifier: workspace:*
+        version: link:../forms
+      '@tooluminati/policies':
+        specifier: workspace:*
+        version: link:../policies
+      '@tooluminati/react':
+        specifier: workspace:*
+        version: link:../react
+      '@tooluminati/state':
+        specifier: workspace:*
+        version: link:../state
+      react:
+        specifier: '>=18.0.0'
+        version: 19.2.7
+      react-dom:
+        specifier: '>=18.0.0'
+        version: 19.2.7(react@19.2.7)
 
   packages/router:
     dependencies:
@@ -2412,6 +2522,14 @@ packages:
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
+  '@tanstack/query-core@5.101.1':
+    resolution: {integrity: sha512-Y6Y92dkXtNqx67m2pMSxUsA3zOCwv862JexZRP8/EPwvKXMPu9m8rv43spiXWzOUIggQ3SQApttALStzhA8B4g==}
+
+  '@tanstack/react-query@5.101.1':
+    resolution: {integrity: sha512-ZnONUuQKJe1bJMStXUL1s5uKN9FcfC28j5cK+iDZcdSHtUv1wtin1cGc/Oewhf2Oc4eKY7lggtpvT/AbMmhHew==}
+    peerDependencies:
+      react: ^18 || ^19
 
   '@testing-library/dom@10.4.1':
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
@@ -6084,6 +6202,13 @@ snapshots:
       '@sigstore/protobuf-specs': 0.5.1
 
   '@standard-schema/spec@1.1.0': {}
+
+  '@tanstack/query-core@5.101.1': {}
+
+  '@tanstack/react-query@5.101.1(react@19.2.7)':
+    dependencies:
+      '@tanstack/query-core': 5.101.1
+      react: 19.2.7
 
   '@testing-library/dom@10.4.1':
     dependencies:

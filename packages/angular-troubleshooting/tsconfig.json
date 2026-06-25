@@ -1,0 +1,23 @@
+{
+  "extends": "../angular/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "paths": {
+      "@tooluminati/angular": ["../angular/dist/index.d.ts"],
+      "@tooluminati/core": ["../core/dist/index.d.ts"],
+      "@tooluminati/diagnostics": ["../diagnostics/dist/index.d.ts"],
+      "@tooluminati/forms": ["../forms/dist/index.d.ts"],
+      "@tooluminati/policies": ["../policies/dist/index.d.ts"]
+    }
+  },
+  "references": [
+    { "path": "../angular" },
+    { "path": "../core" },
+    { "path": "../diagnostics" },
+    { "path": "../forms" },
+    { "path": "../policies" }
+  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts", "src/test-setup.ts"]
+}

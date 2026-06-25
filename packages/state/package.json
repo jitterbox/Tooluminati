@@ -1,6 +1,6 @@
 {
   "name": "@tooluminati/state",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Safe state and data-cache summaries for Tooluminati.",
   "type": "module",
   "sideEffects": false,

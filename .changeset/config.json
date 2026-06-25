@@ -17,7 +17,9 @@
       "@tooluminati/angular-forms",
       "@tooluminati/angular-router",
       "@tooluminati/angular-state",
-      "@tooluminati/angular-devtools"
+      "@tooluminati/angular-devtools",
+      "@tooluminati/react-troubleshooting",
+      "@tooluminati/angular-troubleshooting"
     ]
   ],
   "linked": [],

@@ -40,6 +40,12 @@
       ],
       "@tooluminati/angular-devtools": [
         "packages/angular-devtools/src/index.ts"
+      ],
+      "@tooluminati/react-troubleshooting": [
+        "packages/react-troubleshooting/src/index.ts"
+      ],
+      "@tooluminati/angular-troubleshooting": [
+        "packages/angular-troubleshooting/src/index.ts"
       ]
     },
     "resolveJsonModule": true,
