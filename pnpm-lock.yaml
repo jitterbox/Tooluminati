@@ -863,6 +863,9 @@ importers:
 
   packages/react-troubleshooting:
     dependencies:
+      '@tanstack/react-query':
+        specifier: '>=5.0.0'
+        version: 5.101.1(react@19.2.7)
       '@tooluminati/core':
         specifier: workspace:*
         version: link:../core
