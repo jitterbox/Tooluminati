@@ -23,7 +23,7 @@
   "devDependencies": {
     "@angular/build": "^20.0.0",
     "@angular/cli": "^20.0.0",
-    "@types/node": "^24.10.1",
+    "@types/node": "^26.0.1",
     "typescript": "^5.9.3"
   }
 }
