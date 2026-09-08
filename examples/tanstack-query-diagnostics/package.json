@@ -9,8 +9,8 @@
   "dependencies": {
     "@tooluminati/react": "workspace:*",
     "@tooluminati/state": "workspace:*",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "vite": "^7.2.7"
   },
   "devDependencies": {
