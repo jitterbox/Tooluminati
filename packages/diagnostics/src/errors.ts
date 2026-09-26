@@ -128,7 +128,11 @@ export function createRecentClientErrorsTool(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true, untrustedContentHint: true },
+    annotations: {
+      readOnlyHint: true,
+      untrustedContentHint: true,
+      debugging: true,
+    },
     execute: () => ({ errors: buffer.list() }),
   };
 }

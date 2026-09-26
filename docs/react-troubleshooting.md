@@ -25,7 +25,8 @@ visibility and styling references.
 - `useTanStackQueryWebMcpTools`
 - `useFormSubmitBlockers`, `createFormSubmitBlockersProvider`
 - `WebMcpForm`, `WebMcpInput`, `WebMcpSelect`, `WebMcpTextarea`
-- `useAgentInvokedSubmit`, `useDeclarativeFormToolEvents`
+- `useAgentInvokedSubmit`, `useAgentSubmitRespondWith`,
+  `respondWithAgentResult`
 - `showWebMcpTroubleshootingPanel`, `hideWebMcpTroubleshootingPanel`,
   `toggleWebMcpTroubleshootingPanel`
 
@@ -36,7 +37,9 @@ Registered diagnostic tools include:
 - `get_workflow_blockers`
 - `get_recent_client_errors`
 
-Example: [form-query-troubleshooting](../examples/form-query-troubleshooting/)
+Chrome's React docs point at community `usewebmcp` for generic tool
+registration. Use Tooluminati when you need policy, redaction, and
+diagnostic tools. Do not register the same names through both.
 
 ## Declarative WebMCP forms (spec attributes)
 
@@ -50,12 +53,13 @@ import {
   WebMcpForm,
   WebMcpInput,
   useAgentInvokedSubmit,
+  respondWithAgentResult,
 } from '@tooluminati/react-troubleshooting';
 
 function ProfileForm() {
   const onSubmit = useAgentInvokedSubmit((event) => {
     event.preventDefault();
-    // agent invoked this submit
+    respondWithAgentResult(event.nativeEvent, 'Profile saved.');
   });
 
   return (
@@ -111,3 +115,14 @@ useTanStackQueryWebMcpTools(queryClient, {
 
 Pass `querySummaries` to `WebMcpTroubleshootingProvider` so
 `get_workflow_blockers` includes query error context.
+
+## Agent result handling
+
+`useAgentSubmitRespondWith(getResult)` calls `respondWith` synchronously with a
+promise, then evaluates `getResult`. It does not run result work for human
+submissions or browsers without `respondWith`. Thrown errors and rejected
+promises reach the browser as rejected results. Keep ordinary user-submit
+behavior in your application's normal form handling.
+
+See the [0.2.0 migration guide](migration-0.2.0.md) for cancellation and helper
+input changes.

@@ -34,6 +34,8 @@ export type JsonSchema =
 export interface WebMcpToolAnnotations {
   readOnlyHint?: boolean;
   untrustedContentHint?: boolean;
+  consequentialHint?: boolean;
+  debugging?: boolean;
   [key: string]: unknown;
 }
 
@@ -102,22 +104,41 @@ export interface WebMcpRegisterToolOptions {
   exposedTo?: string[] | undefined;
 }
 
+export interface WebMcpGetToolsOptions {
+  fromOrigins?: string[] | undefined;
+}
+
+export interface WebMcpExecuteToolOptions {
+  signal?: AbortSignal | undefined;
+}
+
+export interface BrowserRegisteredTool {
+  name: string;
+  title?: string | undefined;
+  description?: string | undefined;
+  inputSchema?: JsonSchema | undefined;
+  annotations?: WebMcpToolAnnotations | undefined;
+  origin?: string | undefined;
+}
+
 export interface BrowserModelContext extends EventTarget {
   registerTool(
     tool: BrowserWebMcpToolDescriptor,
     options?: WebMcpRegisterToolOptions,
   ): void | Promise<void>;
+  getTools?(
+    options?: WebMcpGetToolsOptions,
+  ): Promise<BrowserRegisteredTool[]>;
+  executeTool?(
+    tool: BrowserRegisteredTool | unknown,
+    input?: object | string,
+    options?: WebMcpExecuteToolOptions,
+  ): Promise<unknown>;
   ontoolchange?: ((event: Event) => void) | null;
 }
 
-export interface BrowserModelContextTestingExtensions extends BrowserModelContext {
-  getTools?: (options?: { fromOrigins?: string[] }) => Promise<unknown[]>;
-  executeTool?: (
-    tool: unknown,
-    argsJson: string,
-    options?: { signal?: AbortSignal },
-  ) => Promise<unknown>;
-}
+/** @deprecated Use BrowserModelContext. Kept for existing test mocks. */
+export type BrowserModelContextTestingExtensions = BrowserModelContext;
 
 export interface RegisteredWebMcpTool {
   name: string;
@@ -125,6 +146,7 @@ export interface RegisteredWebMcpTool {
   source: WebMcpToolSource;
   signal: AbortSignal;
   abort: () => void;
+  ready: Promise<void>;
   title?: string | undefined;
   description: string;
   annotations?: WebMcpToolAnnotations | undefined;

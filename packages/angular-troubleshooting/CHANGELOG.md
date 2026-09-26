@@ -1,5 +1,32 @@
 # @tooluminati/angular-troubleshooting
 
+## 0.2.0
+
+### Minor Changes
+
+- Align Tooluminati with the 2 September 2026 WebMCP CG draft: document.modelContext feature detection, registerTool ready promises, Chrome 153 execute-signal semantics, object executeTool input, debugging/consequentialHint annotations, and Chrome 150+/OT docs.
+
+### Patch Changes
+
+- Updated dependencies
+  - @tooluminati/core@0.2.0
+  - @tooluminati/policies@0.2.0
+  - @tooluminati/diagnostics@0.2.0
+  - @tooluminati/forms@0.2.0
+  - @tooluminati/angular@0.2.0
+
+## 0.1.1
+
+### Patch Changes
+
+- Treat Chrome 149 `navigator.modelContext` fallback as supported WebMCP in environment diagnostics instead of reporting missing `document.modelContext` as a hard failure.
+- Updated dependencies
+  - @tooluminati/core@0.1.1
+  - @tooluminati/policies@0.1.1
+  - @tooluminati/diagnostics@0.1.1
+  - @tooluminati/forms@0.1.1
+  - @tooluminati/angular@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes

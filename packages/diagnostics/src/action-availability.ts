@@ -36,7 +36,7 @@ export function createActionAvailabilityTool(
       required: ['actionId'],
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     validateArgs(args) {
       if (
         typeof args !== 'object' ||
@@ -70,7 +70,7 @@ export function createListActionsTool(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () => ({ actions: provider.listActions?.() ?? [] }),
   };
 }

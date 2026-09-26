@@ -102,7 +102,7 @@ describe('@tooluminati/angular WebMcp registry', () => {
     fixture.componentInstance.updateValue('second');
     fixture.detectChanges();
 
-    const result = await modelContext.executeTool('get_value', '{}');
+    const result = await modelContext.executeTool('get_value', {});
     expect(result).toEqual({ value: 'second' });
   });
 

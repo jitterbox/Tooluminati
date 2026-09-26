@@ -29,7 +29,10 @@ async function diagnoseFromWebMcp(actionId: string): Promise<WebMcpDiagnosis> {
     document as Document & {
       modelContext?: {
         getTools: () => Promise<Array<{ name: string }>>;
-        executeTool: (tool: unknown, argsJson: string) => Promise<unknown>;
+        executeTool: (
+          tool: unknown,
+          input?: object | string,
+        ) => Promise<unknown>;
       };
     }
   ).modelContext;
@@ -46,10 +49,9 @@ async function diagnoseFromWebMcp(actionId: string): Promise<WebMcpDiagnosis> {
     throw new Error('why_is_action_unavailable is not registered.');
   }
 
-  const result = (await context.executeTool(
-    tool,
-    JSON.stringify({ actionId }),
-  )) as WebMcpDiagnosis;
+  const result = (await context.executeTool(tool, {
+    actionId,
+  })) as WebMcpDiagnosis;
 
   return {
     actionId: result.actionId,

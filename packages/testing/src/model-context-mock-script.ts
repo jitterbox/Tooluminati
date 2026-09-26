@@ -2,6 +2,13 @@ export const MODEL_CONTEXT_MOCK_INIT_SCRIPT = `
 (() => {
   const tools = new Map();
 
+  function parseInput(input) {
+    if (typeof input === 'string') {
+      return JSON.parse(input || '{}');
+    }
+    return input ?? {};
+  }
+
   Object.defineProperty(document, 'modelContext', {
     configurable: true,
     value: {
@@ -22,7 +29,7 @@ export const MODEL_CONTEXT_MOCK_INIT_SCRIPT = `
       async getTools() {
         return [...tools.values()];
       },
-      async executeTool(toolOrName, argsJson = '{}') {
+      async executeTool(toolOrName, input = {}, options = {}) {
         const name =
           typeof toolOrName === 'string'
             ? toolOrName
@@ -32,7 +39,9 @@ export const MODEL_CONTEXT_MOCK_INIT_SCRIPT = `
           throw new Error('Tool not found: ' + name);
         }
 
-        return tool.execute(JSON.parse(argsJson));
+        return tool.execute(parseInput(input), {
+          signal: options.signal ?? new AbortController().signal,
+        });
       },
     },
   });

@@ -32,6 +32,9 @@ import type {
   WebMcpToolDescriptor,
 } from './types';
 
+const idleExecuteSignal = new AbortController().signal;
+const resolvedReady = Promise.resolve();
+
 export class WebMcpRegistry implements WebMcpRegistryLike {
   private readonly registrations = new Map<string, RegisteredWebMcpTool>();
   private readonly browserNames = new Set<string>();
@@ -75,18 +78,10 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
     const browserName = toBrowserToolName(this.options.namespace, tool.name);
     validateToolName(browserName);
 
-    if (!this.evaluateRegistrationPolicies(tool as WebMcpToolDescriptor, options)) {
-      const controller = new AbortController();
-      return {
-        name: tool.name,
-        browserName,
-        source: options.source ?? 'manual',
-        signal: controller.signal,
-        abort: () => controller.abort(),
-        title: tool.title,
-        description: tool.description,
-        annotations: tool.annotations,
-      };
+    if (
+      !this.evaluateRegistrationPolicies(tool as WebMcpToolDescriptor, options)
+    ) {
+      return this.createLocalRegistration(tool, browserName, options, false);
     }
 
     if (this.browserNames.has(browserName)) {
@@ -98,16 +93,13 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
       [controller.signal, options.signal].filter(Boolean) as AbortSignal[],
     );
     const source = options.source ?? 'manual';
-    const registration: RegisteredWebMcpTool = {
-      name: tool.name,
+    const registration = this.createRegistrationRecord(
+      tool,
       browserName,
       source,
       signal,
-      abort: () => controller.abort(),
-      title: tool.title,
-      description: tool.description,
-      annotations: tool.annotations,
-    };
+      () => controller.abort(),
+    );
 
     if (signal.aborted) {
       return registration;
@@ -115,15 +107,9 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
 
     this.registrations.set(tool.name, registration);
     this.browserNames.add(browserName);
-
     signal.addEventListener(
       'abort',
-      () => {
-        this.registrations.delete(tool.name);
-        this.browserNames.delete(browserName);
-        this.logEvent('unregister', { toolName: tool.name });
-        this.options.onUnregister?.(tool.name);
-      },
+      () => this.onRegistrationAborted(registration),
       { once: true },
     );
 
@@ -139,46 +125,14 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
     }
 
     if (!this.modelContext) {
-      this.cleanupRegistration(tool.name, browserName);
+      this.cleanupRegistration(registration);
       if (this.options.strict) {
         throw new WebMcpUnsupportedError();
       }
       return registration;
     }
 
-    const browserTool = this.toBrowserTool(tool, browserName, signal, source);
-    const registerOptions =
-      options.exposedTo === undefined
-        ? { signal }
-        : { signal, exposedTo: options.exposedTo };
-
-    try {
-      const result = this.modelContext.registerTool(browserTool, registerOptions);
-      if (result instanceof Promise) {
-        void result.catch((error) => {
-          this.cleanupRegistration(tool.name, browserName);
-          this.options.onError?.(error, {
-            operation: 'registerTool',
-            toolName: tool.name,
-          });
-          if (this.options.strict) {
-            throw new WebMcpRegistrationError(tool.name, error);
-          }
-        });
-      }
-      this.logEvent('register', { toolName: tool.name });
-      this.options.onRegister?.(tool as WebMcpToolDescriptor);
-    } catch (error) {
-      this.cleanupRegistration(tool.name, browserName);
-      this.options.onError?.(error, {
-        operation: 'registerTool',
-        toolName: tool.name,
-      });
-      if (this.options.strict) {
-        throw new WebMcpRegistrationError(tool.name, error);
-      }
-    }
-
+    this.bindBrowserRegistration(tool, registration, options, signal, source);
     return registration;
   }
 
@@ -215,6 +169,108 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
 
   isEnabled(): boolean {
     return this.enabled;
+  }
+
+  private createLocalRegistration<TArgs, TResult>(
+    tool: WebMcpToolDescriptor<TArgs, TResult>,
+    browserName: string,
+    options: RegisterToolOptions,
+    track: boolean,
+  ): RegisteredWebMcpTool {
+    const controller = new AbortController();
+    const registration = this.createRegistrationRecord(
+      tool,
+      browserName,
+      options.source ?? 'manual',
+      controller.signal,
+      () => controller.abort(),
+    );
+    if (track) {
+      this.registrations.set(tool.name, registration);
+      this.browserNames.add(browserName);
+    }
+    return registration;
+  }
+
+  private createRegistrationRecord<TArgs, TResult>(
+    tool: WebMcpToolDescriptor<TArgs, TResult>,
+    browserName: string,
+    source: WebMcpExecutionContext['source'],
+    signal: AbortSignal,
+    abort: () => void,
+  ): RegisteredWebMcpTool {
+    return {
+      name: tool.name,
+      browserName,
+      source,
+      signal,
+      abort,
+      ready: resolvedReady,
+      title: tool.title,
+      description: tool.description,
+      annotations: tool.annotations,
+    };
+  }
+
+  private onRegistrationAborted(registration: RegisteredWebMcpTool): void {
+    if (this.registrations.get(registration.name) !== registration) return;
+    this.cleanupRegistration(registration);
+    this.logEvent('unregister', { toolName: registration.name });
+    this.options.onUnregister?.(registration.name);
+  }
+
+  private bindBrowserRegistration<TArgs, TResult>(
+    tool: WebMcpToolDescriptor<TArgs, TResult>,
+    registration: RegisteredWebMcpTool,
+    options: RegisterToolOptions,
+    signal: AbortSignal,
+    source: WebMcpExecutionContext['source'],
+  ): void {
+    const browserTool = this.toBrowserTool(
+      tool,
+      registration.browserName,
+      source,
+    );
+    const registerOptions =
+      options.exposedTo === undefined
+        ? { signal }
+        : { signal, exposedTo: options.exposedTo };
+
+    try {
+      const result = this.modelContext!.registerTool(
+        browserTool,
+        registerOptions,
+      );
+      if (result !== undefined) {
+        registration.ready = Promise.resolve(result).then(
+          () => undefined,
+          (error: unknown) => {
+            this.cleanupRegistration(registration);
+            this.options.onError?.(error, {
+              operation: 'registerTool',
+              toolName: tool.name,
+            });
+            throw new WebMcpRegistrationError(tool.name, error);
+          },
+        );
+        void registration.ready.catch(() => undefined);
+      }
+      this.logEvent('register', { toolName: tool.name });
+      this.options.onRegister?.(tool as WebMcpToolDescriptor);
+    } catch (error) {
+      this.cleanupRegistration(registration);
+      this.options.onError?.(error, {
+        operation: 'registerTool',
+        toolName: tool.name,
+      });
+      if (this.options.strict) {
+        throw new WebMcpRegistrationError(tool.name, error);
+      }
+      registration.ready = Promise.reject(
+        new WebMcpRegistrationError(tool.name, error),
+      );
+      void registration.ready.catch(() => undefined);
+    }
   }
 
   private evaluateRegistrationPolicies(
@@ -257,92 +313,22 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
     return false;
   }
 
-  private cleanupRegistration(name: string, browserName: string): void {
-    this.registrations.delete(name);
-    this.browserNames.delete(browserName);
+  private cleanupRegistration(registration: RegisteredWebMcpTool): void {
+    if (this.registrations.get(registration.name) !== registration) return;
+    this.registrations.delete(registration.name);
+    this.browserNames.delete(registration.browserName);
   }
 
   private toBrowserTool<TArgs, TResult>(
     tool: WebMcpToolDescriptor<TArgs, TResult>,
     browserName: string,
-    signal: AbortSignal,
     source: WebMcpExecutionContext['source'],
   ): BrowserWebMcpToolDescriptor {
     const browserTool: BrowserWebMcpToolDescriptor = {
       name: browserName,
       description: tool.description,
-      execute: async (rawArgs: unknown, client = {}) => {
-        let args: TArgs;
-        try {
-          args = tool.validateArgs
-            ? tool.validateArgs(rawArgs)
-            : (rawArgs as TArgs);
-        } catch (error) {
-          throw new WebMcpExecutionValidationError(tool.name, error);
-        }
-
-        const context: WebMcpExecutionContext = {
-          signal: client.signal ?? signal,
-          registry: this,
-          source,
-          toolName: tool.name,
-        };
-        if (this.options.namespace !== undefined) {
-          context.namespace = this.options.namespace;
-        }
-        if (this.options.getAppContext !== undefined) {
-          context.getAppContext = this.options.getAppContext;
-        }
-
-        const needsConfirmation =
-          this.policies.confirmation.requiresConfirmation(
-            tool as WebMcpToolDescriptor,
-          ) || tool.confirmBeforeExecute;
-
-        if (needsConfirmation) {
-          if (tool.confirmationHandler) {
-            const confirmed = await tool.confirmationHandler(tool, args);
-            if (!confirmed) {
-              throw new WebMcpConfirmationRequiredError(tool.name);
-            }
-          } else {
-            throw new WebMcpConfirmationRequiredError(tool.name);
-          }
-        }
-
-        this.logEvent('executeStart', { toolName: tool.name, args });
-        this.options.onExecuteStart?.(tool.name, args);
-
-        try {
-          const rawResult = await tool.execute(args, context);
-          const toolRedacted = tool.redactResult
-            ? tool.redactResult(rawResult)
-            : rawResult;
-          const policyRedacted = this.policies.redaction.redact(toolRedacted, {
-            kind: 'result',
-            path: tool.name,
-          });
-          const normalized = normalizeWebMcpResult(policyRedacted);
-          const maxChars =
-            tool.outputBudget ?? this.options.maxOutputChars ?? 1500;
-          const budget = applyOutputBudget(
-            normalized,
-            maxChars,
-            this.options.enforceOutputBudget ?? false,
-            (message) => this.warn(message, tool.name),
-          );
-          const output = this.policies.output.enforce(budget.value, {
-            toolName: tool.name,
-          });
-          this.logEvent('executeSuccess', { toolName: tool.name, output });
-          this.options.onExecuteSuccess?.(tool.name, output);
-          return output;
-        } catch (error) {
-          this.logEvent('executeError', { toolName: tool.name, error });
-          this.options.onExecuteError?.(tool.name, error);
-          throw error;
-        }
-      },
+      execute: (rawArgs, client = {}) =>
+        this.executeRegisteredTool(tool, rawArgs, client, source),
     };
 
     if (tool.title !== undefined) {
@@ -356,6 +342,83 @@ export class WebMcpRegistry implements WebMcpRegistryLike {
     }
 
     return browserTool;
+  }
+
+  private async executeRegisteredTool<TArgs, TResult>(
+    tool: WebMcpToolDescriptor<TArgs, TResult>,
+    rawArgs: unknown,
+    client: Partial<{ signal: AbortSignal }>,
+    source: WebMcpExecutionContext['source'],
+  ): Promise<unknown> {
+    let args: TArgs;
+    try {
+      args = tool.validateArgs
+        ? tool.validateArgs(rawArgs)
+        : (rawArgs as TArgs);
+    } catch (error) {
+      throw new WebMcpExecutionValidationError(tool.name, error);
+    }
+
+    const context: WebMcpExecutionContext = {
+      signal: client.signal ?? idleExecuteSignal,
+      registry: this,
+      source,
+      toolName: tool.name,
+    };
+    if (this.options.namespace !== undefined) {
+      context.namespace = this.options.namespace;
+    }
+    if (this.options.getAppContext !== undefined) {
+      context.getAppContext = this.options.getAppContext;
+    }
+
+    const needsConfirmation =
+      this.policies.confirmation.requiresConfirmation(
+        tool as WebMcpToolDescriptor,
+      ) || tool.confirmBeforeExecute;
+
+    if (needsConfirmation) {
+      if (tool.confirmationHandler) {
+        const confirmed = await tool.confirmationHandler(tool, args);
+        if (!confirmed) {
+          throw new WebMcpConfirmationRequiredError(tool.name);
+        }
+      } else {
+        throw new WebMcpConfirmationRequiredError(tool.name);
+      }
+    }
+
+    this.logEvent('executeStart', { toolName: tool.name, args });
+    this.options.onExecuteStart?.(tool.name, args);
+
+    try {
+      const rawResult = await tool.execute(args, context);
+      const toolRedacted = tool.redactResult
+        ? tool.redactResult(rawResult)
+        : rawResult;
+      const policyRedacted = this.policies.redaction.redact(toolRedacted, {
+        kind: 'result',
+        path: tool.name,
+      });
+      const normalized = normalizeWebMcpResult(policyRedacted);
+      const maxChars = tool.outputBudget ?? this.options.maxOutputChars ?? 1500;
+      const budget = applyOutputBudget(
+        normalized,
+        maxChars,
+        this.options.enforceOutputBudget ?? false,
+        (message) => this.warn(message, tool.name),
+      );
+      const output = this.policies.output.enforce(budget.value, {
+        toolName: tool.name,
+      });
+      this.logEvent('executeSuccess', { toolName: tool.name, output });
+      this.options.onExecuteSuccess?.(tool.name, output);
+      return output;
+    } catch (error) {
+      this.logEvent('executeError', { toolName: tool.name, error });
+      this.options.onExecuteError?.(tool.name, error);
+      throw error;
+    }
   }
 
   private logEvent(event: string, payload?: unknown): void {

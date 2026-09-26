@@ -38,6 +38,14 @@ Click **Make profile dirty** and re-run tools to verify live updates.
 `tests/browser/vite-basic.spec.ts` verifies `get_page_state` registration and
 execution.
 
+Manual Chrome 155+ check from DevTools:
+
+```js
+const tools = await document.modelContext.getTools();
+const pageState = tools.find((tool) => tool.name === 'get_page_state');
+await document.modelContext.executeTool(pageState, {});
+```
+
 ## Chrome setup
 
 [docs/chrome-setup.md](../../docs/chrome-setup.md)

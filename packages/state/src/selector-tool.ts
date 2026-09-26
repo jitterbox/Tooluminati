@@ -19,7 +19,7 @@ export function createStateSummaryTool<TState, TSummary>({
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () => {
       const summary = selector(getState());
       return redact ? redact(summary) : summary;

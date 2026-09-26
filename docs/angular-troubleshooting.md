@@ -30,6 +30,7 @@ See [troubleshooting-panel.md](troubleshooting-panel.md) for panel options.
 - `provideWebMcpTroubleshooting`
 - `WebMcpTroubleshootingPanelComponent`
 - `WebMcpFormDirective`, `WebMcpParamDescriptionDirective`
+- `respondWithAgentResult`, `isAgentInvokedSubmit`
 - `injectTroubleshootingPanel`
 - `webMcpShowTroubleshootingPanel`, `webMcpHideTroubleshootingPanel`,
   `webMcpToggleTroubleshootingPanel`
@@ -66,6 +67,9 @@ Rendered DOM:
 For Signal Forms tool registration (imperative tools, not declarative attrs),
 use `@tooluminati/angular-forms` (`provideWebMcpFormTool`,
 `provideSignalFormWebMcpTool`) alongside this bundle.
+
+`respondWithAgentResult` and `isAgentInvokedSubmit` are re-exported
+from this package for `SubmitEvent.respondWith()` on agent submits.
 
 ## Signal Forms
 

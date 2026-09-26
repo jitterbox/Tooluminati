@@ -19,7 +19,7 @@ export function createFeatureFlagsTool(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () => ({ flags: getFlags() }),
   };
 }

@@ -19,7 +19,7 @@ export function createCurrentRouteTool(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () => provider.getCurrentRoute(),
   };
 }
@@ -37,7 +37,7 @@ export function createNavigationStateTool(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () =>
       provider.getNavigationState?.() ?? {
         state: 'idle',
@@ -74,7 +74,7 @@ export function createRouteContextTool(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () => {
       const context = provider.getRouteContext?.() ?? {};
       const loaderData = pickAllowlistedLoaderData(

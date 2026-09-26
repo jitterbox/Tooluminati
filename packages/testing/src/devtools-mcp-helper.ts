@@ -1,3 +1,6 @@
+import type { WebMcpInvocationOptions } from './browser-helpers';
+import type { BrowserRegisteredTool } from '@tooluminati/core';
+
 export interface WebMcpToolListing {
   name: string;
   description?: string | undefined;
@@ -7,19 +10,26 @@ type ModelContextHost = Document | Navigator;
 
 function getModelContext(host: ModelContextHost = document):
   | {
-      getTools?: () => Promise<WebMcpToolListing[]>;
+      getTools?: (options?: {
+        fromOrigins?: string[];
+      }) => Promise<BrowserRegisteredTool[]>;
       executeTool?: (
         tool: unknown,
-        argsJson: string,
+        input?: object | string,
+        options?: { signal?: AbortSignal },
       ) => Promise<unknown>;
     }
   | undefined {
-  return (host as ModelContextHost & { modelContext?: unknown }).modelContext as
+  return (host as ModelContextHost & { modelContext?: unknown })
+    .modelContext as
     | {
-        getTools?: () => Promise<WebMcpToolListing[]>;
+        getTools?: (options?: {
+          fromOrigins?: string[];
+        }) => Promise<BrowserRegisteredTool[]>;
         executeTool?: (
           tool: unknown,
-          argsJson: string,
+          input?: object | string,
+          options?: { signal?: AbortSignal },
         ) => Promise<unknown>;
       }
     | undefined;
@@ -27,7 +37,7 @@ function getModelContext(host: ModelContextHost = document):
 
 /**
  * Lists registered WebMCP tools from the browser model context.
- * Returns an empty array when WebMCP is unavailable (e.g. CI without Chrome 149).
+ * Returns an empty array when WebMCP is unavailable.
  */
 export async function listWebMcpTools(
   host: ModelContextHost = document,
@@ -46,12 +56,13 @@ export async function listWebMcpTools(
 
 /**
  * Executes a registered WebMCP tool by name.
- * Throws when WebMCP is unavailable or the tool cannot be resolved.
+ * Uses object input by default; legacy JSON string input must be explicitly selected.
  */
 export async function executeWebMcpTool(
   name: string,
   args: unknown = {},
   host: ModelContextHost = document,
+  options: WebMcpInvocationOptions = {},
 ): Promise<unknown> {
   const context = getModelContext(host);
   if (!context?.getTools || !context.executeTool) {
@@ -66,5 +77,9 @@ export async function executeWebMcpTool(
     throw new Error(`WebMCP tool not found: ${name}`);
   }
 
-  return context.executeTool(tool, JSON.stringify(args));
+  const payload = args && typeof args === 'object' ? (args as object) : {};
+  return context.executeTool(
+    tool,
+    options.inputFormat === 'json-string' ? JSON.stringify(payload) : payload,
+  );
 }

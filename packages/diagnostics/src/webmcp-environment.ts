@@ -1,5 +1,6 @@
 import {
   getModelContext,
+  isUsableModelContext,
   isWebMcpSupported,
   type WebMcpRegistry,
   type WebMcpToolDescriptor,
@@ -18,6 +19,8 @@ export interface WebMcpEnvironmentSummary {
   toolCount: number;
   origin: string;
   usingNavigatorFallback: boolean;
+  registerToolAvailable: boolean;
+  consumers: string[];
   checks: WebMcpEnvironmentCheck[];
   warnings: string[];
 }
@@ -26,6 +29,12 @@ export interface WebMcpEnvironmentSummaryOptions {
   registry?: WebMcpRegistry | undefined;
   globalObject?: typeof globalThis;
 }
+
+const WEBMCP_CONSUMERS = [
+  'Chrome DevTools / Model Context Inspector',
+  'ChatGPT Site tools (imperative registerTool only)',
+  'Safari/Firefox: no native WebMCP',
+];
 
 export function createWebMcpEnvironmentSummary(
   options: WebMcpEnvironmentSummaryOptions = {},
@@ -37,13 +46,14 @@ export function createWebMcpEnvironmentSummary(
       ? (globalObject.document as Document & { modelContext?: unknown })
           .modelContext
       : undefined;
-  getModelContext({
+  const modelContext = getModelContext({
     globalObject,
     onNavigatorFallback: () => {
       usingNavigatorFallback = true;
     },
   });
   const supported = isWebMcpSupported({ globalObject });
+  const registerToolAvailable = isUsableModelContext(modelContext);
   const origin =
     typeof globalObject.location !== 'undefined'
       ? globalObject.location.origin
@@ -51,18 +61,45 @@ export function createWebMcpEnvironmentSummary(
   const toolCount = options.registry?.getRegisteredToolNames().length ?? 0;
   const checks: WebMcpEnvironmentCheck[] = [];
   const warnings: string[] = [];
+  const documentContextStatus = isUsableModelContext(documentContext)
+    ? 'ok'
+    : supported
+      ? 'warn'
+      : 'fail';
 
   checks.push({
     id: 'document.modelContext',
     label: 'document.modelContext',
-    value: documentContext ? 'available' : 'missing',
-    status: documentContext ? 'ok' : 'fail',
-    ...(documentContext
+    value: isUsableModelContext(documentContext)
+      ? 'available'
+      : supported
+        ? 'missing; using fallback'
+        : 'missing',
+    status: documentContextStatus,
+    ...(documentContextStatus === 'ok'
+      ? {}
+      : {
+          hint: supported
+            ? 'No document.modelContext.registerTool on this page, ' +
+              'but WebMCP is available through navigator.modelContext ' +
+              'in this Chrome build.'
+            : 'No document.modelContext.registerTool on this page. ' +
+              'Enable WebMCP in Chrome or attach the Model Context ' +
+              'Inspector Extension.',
+        }),
+  });
+
+  checks.push({
+    id: 'registerTool',
+    label: 'registerTool',
+    value: registerToolAvailable ? 'available' : 'missing',
+    status: registerToolAvailable ? 'ok' : 'fail',
+    ...(registerToolAvailable
       ? {}
       : {
           hint:
-            'No document.modelContext on this page. Enable WebMCP in Chrome ' +
-            'or attach the Model Context Inspector Extension.',
+            'Feature-detect typeof modelContext.registerTool === ' +
+            '"function" before registering tools.',
         }),
   });
 
@@ -74,10 +111,20 @@ export function createWebMcpEnvironmentSummary(
     ...(usingNavigatorFallback
       ? {
           hint:
-            'Deprecated navigator.modelContext path detected. Migrate to ' +
-            'document.modelContext.',
+            'Deprecated navigator.modelContext path detected. Migrate ' +
+            'to document.modelContext.',
         }
       : {}),
+  });
+
+  checks.push({
+    id: 'origin-trial',
+    label: 'Origin trial / flag',
+    value: 'required until the API ships',
+    status: 'muted',
+    hint:
+      'Chrome 149–156 need #enable-webmcp-testing or an Origin-Trial ' +
+      'token. Chrome 157 is a target, not a ship contract.',
   });
 
   const originIsolation = detectOriginIsolationIssue(globalObject);
@@ -104,6 +151,16 @@ export function createWebMcpEnvironmentSummary(
     warnings.push(permissionsPolicy.warning);
   }
 
+  checks.push({
+    id: 'consumers',
+    label: 'Known agent consumers',
+    value: WEBMCP_CONSUMERS.join('; '),
+    status: 'muted',
+    hint:
+      'Treat tools as progressive enhancement. Declarative forms are ' +
+      'Chrome-only today; ChatGPT Site tools see registerTool only.',
+  });
+
   if (toolCount === 0 && supported) {
     warnings.push('No tools registered yet.');
     checks.push({
@@ -126,6 +183,8 @@ export function createWebMcpEnvironmentSummary(
     toolCount,
     origin,
     usingNavigatorFallback,
+    registerToolAvailable,
+    consumers: WEBMCP_CONSUMERS,
     checks,
     warnings,
   };
@@ -220,7 +279,7 @@ export function createWebMcpEnvironmentTool(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () => getSummary(),
   };
 }

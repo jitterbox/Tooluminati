@@ -73,10 +73,9 @@ describe('WebMcpRegistry', () => {
       execute: (args) => ({ id: args.id, token: 'secret-token' }),
     });
 
-    const result = await modelContext.executeTool(
-      'get_secret',
-      JSON.stringify({ id: 'visible' }),
-    );
+    const result = await modelContext.executeTool('get_secret', {
+      id: 'visible',
+    });
 
     expect(validateArgs).toHaveBeenCalled();
     expect(redactResult).toHaveBeenCalled();
@@ -96,9 +95,9 @@ describe('WebMcpRegistry', () => {
       execute: () => ({ ok: true }),
     });
 
-    await expect(
-      modelContext.executeTool('validated', '{}'),
-    ).rejects.toBeInstanceOf(WebMcpExecutionValidationError);
+    await expect(modelContext.executeTool('validated', {})).rejects.toBeInstanceOf(
+      WebMcpExecutionValidationError,
+    );
   });
 
   it('requires confirmation handler for confirmBeforeExecute tools', async () => {
@@ -112,9 +111,9 @@ describe('WebMcpRegistry', () => {
       execute: () => ({ ok: true }),
     });
 
-    await expect(
-      modelContext.executeTool('write_item', '{}'),
-    ).rejects.toBeInstanceOf(WebMcpConfirmationRequiredError);
+    await expect(modelContext.executeTool('write_item', {})).rejects.toBeInstanceOf(
+      WebMcpConfirmationRequiredError,
+    );
   });
 
   it('no-ops browser registration when disabled', () => {
@@ -211,13 +210,35 @@ describe('WebMcpRegistry', () => {
       onError,
     });
 
-    registry.registerTool({
+    const registration = registry.registerTool({
       name: 'async_fail',
       description: 'Async fail.',
       execute: () => ({ ok: true }),
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await expect(registration.ready).rejects.toMatchObject({
+      name: 'WebMcpRegistrationError',
+    });
     expect(onError).toHaveBeenCalled();
+  });
+
+  it('does not abort in-flight execute when unregistered', async () => {
+    const modelContext = new MockModelContext();
+    const registry = new WebMcpRegistry({ enabled: true, modelContext });
+    let captured: AbortSignal | undefined;
+
+    const registration = registry.registerTool({
+      name: 'long_read',
+      description: 'Read-only tool.',
+      annotations: { readOnlyHint: true, debugging: true },
+      execute: (_args, context) => {
+        captured = context.signal;
+        return { ok: true };
+      },
+    });
+
+    await modelContext.executeTool('long_read', {});
+    registration.abort();
+    expect(captured?.aborted).toBe(false);
   });
 });

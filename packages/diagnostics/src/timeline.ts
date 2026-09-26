@@ -443,7 +443,11 @@ export function createTroubleshootingTimelineTool(
       },
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true, untrustedContentHint: true },
+    annotations: {
+      readOnlyHint: true,
+      untrustedContentHint: true,
+      debugging: true,
+    },
     validateArgs(args) {
       if (typeof args !== 'object' || args === null) {
         return {};

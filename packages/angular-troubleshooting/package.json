@@ -1,6 +1,6 @@
 {
   "name": "@tooluminati/angular-troubleshooting",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Angular troubleshooting bundle with timeline, blockers, and dev panel.",
   "type": "module",
   "sideEffects": false,
@@ -28,8 +28,8 @@
     "tslib": "^2.8.0"
   },
   "peerDependencies": {
-    "@angular/core": "^20.0.0",
-    "@angular/forms": "^20.0.0"
+    "@angular/core": ">=20.0.0 <23.0.0",
+    "@angular/forms": ">=20.0.0 <23.0.0"
   },
   "files": [
     "dist"

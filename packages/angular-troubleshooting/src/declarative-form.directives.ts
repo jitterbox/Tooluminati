@@ -1,5 +1,12 @@
 import { Directive, input } from '@angular/core';
 
+export {
+  isAgentInvokedSubmit,
+  respondWithAgentResult,
+  WEBMCP_DECLARATIVE_FOCUS_STYLES,
+  ensureDeclarativeFocusStyles,
+} from '@tooluminati/diagnostics';
+
 @Directive({
   selector: 'form[webMcpForm]',
   standalone: true,

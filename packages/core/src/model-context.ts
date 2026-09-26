@@ -1,17 +1,27 @@
 import type { BrowserModelContext } from './types';
 
 interface DocumentWithModelContext extends Document {
-  modelContext?: BrowserModelContext;
+  modelContext?: unknown;
 }
 
 interface NavigatorWithModelContext extends Navigator {
-  modelContext?: BrowserModelContext;
+  modelContext?: unknown;
 }
 
 export interface GetModelContextOptions {
   globalObject?: typeof globalThis;
   allowNavigatorFallback?: boolean;
   onNavigatorFallback?: () => void;
+}
+
+export function isUsableModelContext(
+  value: unknown,
+): value is BrowserModelContext {
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    typeof (value as BrowserModelContext).registerTool === 'function'
+  );
 }
 
 export function getModelContext(
@@ -28,7 +38,7 @@ export function getModelContext(
 
   const documentContext = (globalObject.document as DocumentWithModelContext)
     .modelContext;
-  if (documentContext) {
+  if (isUsableModelContext(documentContext)) {
     return documentContext;
   }
 
@@ -40,19 +50,21 @@ export function getModelContext(
     globalObject.navigator as NavigatorWithModelContext | undefined
   )?.modelContext;
 
-  if (navigatorContext) {
+  if (isUsableModelContext(navigatorContext)) {
     options.onNavigatorFallback?.();
     if (
       typeof process !== 'undefined' &&
       process.env.NODE_ENV !== 'production'
     ) {
       console.warn(
-        '[tooluminati] Using deprecated navigator.modelContext fallback. Prefer document.modelContext.',
+        '[tooluminati] Using deprecated navigator.modelContext ' +
+          'fallback. Prefer document.modelContext.',
       );
     }
+    return navigatorContext;
   }
 
-  return navigatorContext;
+  return undefined;
 }
 
 export function isWebMcpSupported(

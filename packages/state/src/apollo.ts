@@ -20,7 +20,7 @@ export function createApolloSummaryTool(options: {
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () => ({ queries: options.getQueries() }),
   };
 }

@@ -1,12 +1,21 @@
 import type {
-  BrowserModelContextTestingExtensions,
+  BrowserModelContext,
   BrowserWebMcpToolDescriptor,
+  WebMcpExecuteToolOptions,
   WebMcpRegisterToolOptions,
 } from '@tooluminati/core';
 
+export function parseExecuteToolInput(input: unknown): unknown {
+  if (typeof input === 'string') {
+    return JSON.parse(input || '{}') as unknown;
+  }
+
+  return input ?? {};
+}
+
 export class MockModelContext
   extends EventTarget
-  implements BrowserModelContextTestingExtensions
+  implements BrowserModelContext
 {
   readonly tools = new Map<string, BrowserWebMcpToolDescriptor>();
   readonly invocations: Array<{
@@ -45,7 +54,11 @@ export class MockModelContext
     return [...this.tools.values()];
   }
 
-  async executeTool(toolOrName: unknown, argsJson = '{}'): Promise<unknown> {
+  async executeTool(
+    toolOrName: unknown,
+    input: object | string = {},
+    options: WebMcpExecuteToolOptions = {},
+  ): Promise<unknown> {
     const name =
       typeof toolOrName === 'string'
         ? toolOrName
@@ -59,10 +72,10 @@ export class MockModelContext
       throw new Error(`Tool not found: ${name}`);
     }
 
-    const args = JSON.parse(argsJson) as unknown;
+    const args = parseExecuteToolInput(input);
     try {
       const result = await tool.execute(args, {
-        signal: new AbortController().signal,
+        signal: options.signal ?? new AbortController().signal,
       });
       this.invocations.push({ name, args, result });
       return result;

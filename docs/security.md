@@ -7,8 +7,9 @@ agent as an untrusted client with access to powerful context.
 
 - Register tools explicitly.
 - Keep production disabled unless reviewed.
-- Use `readOnlyHint: true` for diagnostics.
+- Use `readOnlyHint: true` and `debugging: true` for diagnostics.
 - Use `untrustedContentHint: true` for user-generated or external content.
+- Use `consequentialHint: true` for mutating or irreversible tools.
 - Validate tool arguments in code.
 - Redact outputs by default.
 - Keep outputs small.
