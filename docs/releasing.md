@@ -42,6 +42,10 @@ In the repository settings, add:
 | `NPM_TOKEN` | npm automation token with publish access to the scope |
 
 `GITHUB_TOKEN` is provided automatically to the Release workflow.
+`setup-node` configures registry authentication through `NODE_AUTH_TOKEN`;
+the publish step maps the `NPM_TOKEN` secret to both environment names.
+The workflow verifies authentication with `npm whoami` before publication.
+If that check fails, refresh the repository's npm token with scope write access.
 
 ### 3. Enable GitHub Actions permissions
 
