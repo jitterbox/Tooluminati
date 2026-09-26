@@ -11,6 +11,7 @@ import {
 import {
   filterPanelEvents,
   serializeTroubleshootingDiagnostics,
+  ensureDeclarativeFocusStyles,
   type TimelineFilterGroup,
   type TroubleshootingPanelSnapshot,
 } from '@tooluminati/diagnostics';
@@ -138,6 +139,7 @@ export class WebMcpTroubleshootingPanelComponent implements OnInit, OnDestroy {
   );
 
   ngOnInit(): void {
+    ensureDeclarativeFocusStyles();
     if (this.startCollapsed()) {
       this.services.visibility.setCollapsed(true);
     }

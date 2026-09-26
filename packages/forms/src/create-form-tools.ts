@@ -39,7 +39,7 @@ export function createFormValidationSummaryTool<TValues>(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () => {
       const summary: FormDiagnosticSummary = {
         name: options.name,
@@ -78,6 +78,8 @@ export function createFormSubmitTool<TValues>(
     inputSchema: schema,
     annotations: {
       readOnlyHint: false,
+      consequentialHint: true,
+      debugging: true,
       ...options.annotations,
     },
     validateArgs: options.validateArgs,

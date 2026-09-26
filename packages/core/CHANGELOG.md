@@ -1,5 +1,19 @@
 # @tooluminati/core
 
+## 0.2.0
+
+### Minor Changes
+
+- Preserve replacement registrations when older registrations fail or abort, and observe registration promises from other JavaScript realms.
+
+- Align Tooluminati with the 2 September 2026 WebMCP CG draft: document.modelContext feature detection, registerTool ready promises, Chrome 153 execute-signal semantics, object executeTool input, debugging/consequentialHint annotations, and Chrome 150+/OT docs.
+
+## 0.1.1
+
+### Patch Changes
+
+- Treat Chrome 149 `navigator.modelContext` fallback as supported WebMCP in environment diagnostics instead of reporting missing `document.modelContext` as a hard failure.
+
 ## 0.1.0
 
 ### Minor Changes

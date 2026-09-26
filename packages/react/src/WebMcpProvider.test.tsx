@@ -62,7 +62,7 @@ describe('WebMcpProvider', () => {
       </WebMcpProvider>,
     );
 
-    const result = await modelContext.executeTool('get_value', '{}');
+    const result = await modelContext.executeTool('get_value', {});
     expect(result).toEqual({ value: 'second' });
   });
 

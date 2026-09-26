@@ -12,7 +12,7 @@ import { createWebMcpEnvironmentSummary } from './webmcp-environment';
 
 const globalObject = {
   window: {},
-  document: { modelContext: {} },
+  document: { modelContext: { registerTool: () => undefined } },
   location: { origin: 'https://app.test' },
 } as unknown as typeof globalThis;
 
@@ -32,7 +32,10 @@ describe('troubleshooting panel snapshot', () => {
         createWebMcpEnvironmentSummary({
           globalObject: {
             window: {},
-            document: { modelContext: {}, domain: 'x.com' },
+            document: {
+              modelContext: { registerTool: () => undefined },
+              domain: 'x.com',
+            },
             location: { origin: 'https://app.test' },
           } as unknown as typeof globalThis,
         }),

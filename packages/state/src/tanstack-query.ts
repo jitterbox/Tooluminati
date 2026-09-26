@@ -71,7 +71,7 @@ export function createQueryCacheSummaryTool({
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () => {
       if (!allowKeys?.length) {
         throw new Error(

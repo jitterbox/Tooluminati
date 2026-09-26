@@ -57,3 +57,11 @@ import { WebMcpTroubleshootingProvider } from '@tooluminati/react-troubleshootin
 
 See [react-troubleshooting.md](react-troubleshooting.md) and
 [troubleshooting-panel.md](troubleshooting-panel.md).
+
+## Chrome `usewebmcp`
+
+Chrome's React docs point at the community `usewebmcp` hook for generic
+`registerTool` plumbing. Tooluminati is the policy, redaction, and
+diagnostic catalog layer. Keep `WebMcpProvider` / `useWebMcpTool` as the
+registration path. Do not also register the same tool names through
+`usewebmcp`.

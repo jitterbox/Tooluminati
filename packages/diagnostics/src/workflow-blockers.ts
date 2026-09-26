@@ -60,7 +60,11 @@ export function createWorkflowBlockersTool(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true, untrustedContentHint: true },
+    annotations: {
+      readOnlyHint: true,
+      untrustedContentHint: true,
+      debugging: true,
+    },
     execute: () => {
       const actions =
         sources.actionProvider?.listActions?.().map((action) => ({

@@ -694,10 +694,10 @@ importers:
   packages/angular:
     dependencies:
       '@angular/common':
-        specifier: ^20.0.0
+        specifier: '>=20.0.0 <23.0.0'
         version: 20.3.25(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       '@angular/core':
-        specifier: ^20.0.0
+        specifier: '>=20.0.0 <23.0.0'
         version: 20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1)
       '@tooluminati/core':
         specifier: workspace:*
@@ -712,10 +712,10 @@ importers:
   packages/angular-devtools:
     dependencies:
       '@angular/common':
-        specifier: ^20.0.0
+        specifier: '>=20.0.0 <23.0.0'
         version: 20.3.25(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       '@angular/core':
-        specifier: ^20.0.0
+        specifier: '>=20.0.0 <23.0.0'
         version: 20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1)
       '@tooluminati/angular':
         specifier: workspace:*
@@ -733,10 +733,10 @@ importers:
   packages/angular-forms:
     dependencies:
       '@angular/core':
-        specifier: ^20.0.0
+        specifier: '>=20.0.0 <23.0.0'
         version: 20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1)
       '@angular/forms':
-        specifier: ^20.0.0
+        specifier: '>=20.0.0 <23.0.0'
         version: 20.3.25(@angular/common@20.3.25(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.3.25(@angular/common@20.3.25(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@tooluminati/angular':
         specifier: workspace:*
@@ -751,10 +751,10 @@ importers:
   packages/angular-router:
     dependencies:
       '@angular/core':
-        specifier: ^20.0.0
+        specifier: '>=20.0.0 <23.0.0'
         version: 20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1)
       '@angular/router':
-        specifier: ^20.0.0
+        specifier: '>=20.0.0 <23.0.0'
         version: 20.3.25(@angular/common@20.3.25(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.3.25(@angular/common@20.3.25(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@tooluminati/angular':
         specifier: workspace:*
@@ -769,7 +769,7 @@ importers:
   packages/angular-state:
     dependencies:
       '@angular/core':
-        specifier: ^20.0.0
+        specifier: '>=20.0.0 <23.0.0'
         version: 20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1)
       '@ngrx/store':
         specifier: ^20.0.0
@@ -787,10 +787,10 @@ importers:
   packages/angular-troubleshooting:
     dependencies:
       '@angular/core':
-        specifier: ^20.0.0
+        specifier: '>=20.0.0 <23.0.0'
         version: 20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1)
       '@angular/forms':
-        specifier: ^20.0.0
+        specifier: '>=20.0.0 <23.0.0'
         version: 20.3.25(@angular/common@20.3.25(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.3.25(@angular/common@20.3.25(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.25(@angular/compiler@20.3.25)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
       '@tooluminati/angular':
         specifier: workspace:*

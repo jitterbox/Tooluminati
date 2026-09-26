@@ -1,8 +1,10 @@
+export interface WebMcpInvocationOptions {
+  /** Select explicitly for browsers that require JSON string input. Never retries execution. */
+  inputFormat?: 'object' | 'json-string';
+}
+
 export interface WebMcpTestPage {
-  evaluate<T, A>(
-    callback: (arg: A) => T | Promise<T>,
-    arg: A,
-  ): Promise<T>;
+  evaluate<T, A>(callback: (arg: A) => T | Promise<T>, arg: A): Promise<T>;
 }
 
 export async function expectWebMcpTool(
@@ -29,14 +31,18 @@ export async function invokeWebMcpTool<T>(
   page: WebMcpTestPage,
   name: string,
   args: unknown,
+  options: WebMcpInvocationOptions = {},
 ): Promise<T> {
   return page.evaluate(
-    async ({ toolName, input }) => {
+    async ({ toolName, input, inputFormat }) => {
       const context = (document as Document & { modelContext?: unknown })
         .modelContext as
         | {
             getTools?: () => Promise<Array<{ name: string }>>;
-            executeTool?: (tool: unknown, argsJson: string) => Promise<unknown>;
+            executeTool?: (
+              tool: unknown,
+              input?: object | string,
+            ) => Promise<unknown>;
           }
         | undefined;
       const tools = (await context?.getTools?.()) ?? [];
@@ -45,8 +51,13 @@ export async function invokeWebMcpTool<T>(
         throw new Error(`WebMCP tool "${toolName}" cannot be invoked.`);
       }
 
-      return context.executeTool(tool, JSON.stringify(input));
+      const payload =
+        input && typeof input === 'object' ? (input as object) : {};
+      return context.executeTool(
+        tool,
+        inputFormat === 'json-string' ? JSON.stringify(payload) : payload,
+      );
     },
-    { toolName: name, input: args },
+    { toolName: name, input: args, inputFormat: options.inputFormat },
   ) as Promise<T>;
 }

@@ -1,6 +1,6 @@
 {
   "name": "@tooluminati/policies",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Policy presets for Tooluminati.",
   "type": "module",
   "sideEffects": false,

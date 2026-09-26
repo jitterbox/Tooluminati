@@ -56,6 +56,13 @@ export default defineConfig({
         baseURL: 'http://127.0.0.1:4176',
       },
     },
+    {
+      name: 'real-chrome-webmcp',
+      testMatch: '**/real-chrome-webmcp.spec.ts',
+      use: {
+        baseURL: 'http://127.0.0.1:4173',
+      },
+    },
   ],
   webServer: [
     {

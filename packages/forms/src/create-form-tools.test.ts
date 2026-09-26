@@ -34,7 +34,9 @@ describe('create-form-tools', () => {
   it('returns validation summary without submitting', async () => {
     const tool = createFormValidationSummaryTool({
       ...baseOptions,
-      getErrors: () => [{ kind: 'required', path: 'subject', message: 'Required' }],
+      getErrors: () => [
+        { kind: 'required', path: 'subject', message: 'Required' },
+      ],
     });
 
     const summary = await tool.execute({}, {} as never);
@@ -43,7 +45,10 @@ describe('create-form-tools', () => {
   });
 
   it('submits through the submit tool execute handler', async () => {
-    const submit = vi.fn(async () => ({ success: true as const, message: 'ok' }));
+    const submit = vi.fn(async () => ({
+      success: true as const,
+      message: 'ok',
+    }));
     const tool = createFormSubmitTool({
       ...baseOptions,
       submit,
@@ -55,5 +60,42 @@ describe('create-form-tools', () => {
     );
     expect(submit).toHaveBeenCalledOnce();
     expect(result).toBe('ok');
+  });
+});
+
+it('annotates submission and validation separately, preserving explicit overrides', () => {
+  const options = {
+    name: 'save',
+    description: 'Save form.',
+    getValues: () => ({ name: '' }),
+    setValues: vi.fn(),
+    submit: vi.fn(),
+  };
+  expect(createFormSubmitTool(options).annotations).toEqual({
+    readOnlyHint: false,
+    consequentialHint: true,
+    debugging: true,
+  });
+  expect(createFormValidationSummaryTool(options).annotations).toEqual({
+    readOnlyHint: true,
+    debugging: true,
+  });
+  const overridden = {
+    ...options,
+    annotations: {
+      consequentialHint: false,
+      debugging: false,
+      untrustedContentHint: true,
+    },
+  };
+  expect(createFormSubmitTool(overridden).annotations).toEqual({
+    readOnlyHint: false,
+    consequentialHint: false,
+    debugging: false,
+    untrustedContentHint: true,
+  });
+  expect(createFormValidationSummaryTool(overridden).annotations).toEqual({
+    readOnlyHint: true,
+    debugging: true,
   });
 });

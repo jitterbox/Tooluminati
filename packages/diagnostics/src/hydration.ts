@@ -33,7 +33,7 @@ export function createHydrationHealthTool(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () => getHealth(),
   };
 }

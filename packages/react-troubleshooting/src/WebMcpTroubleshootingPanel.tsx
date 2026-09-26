@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   filterPanelEvents,
   serializeTroubleshootingDiagnostics,
+  ensureDeclarativeFocusStyles,
   type TimelineFilterGroup,
   type TroubleshootingPanelSnapshot,
 } from '@tooluminati/diagnostics';
@@ -49,6 +50,10 @@ export function WebMcpTroubleshootingPanel({
   const [openErrors, setOpenErrors] = useState<Record<string, boolean>>({});
   const [copied, setCopied] = useState(false);
   const [spinning, setSpinning] = useState(false);
+
+  useEffect(() => {
+    ensureDeclarativeFocusStyles();
+  }, []);
 
   useEffect(() => {
     if (startCollapsed) {

@@ -138,10 +138,16 @@ See the Angular examples under `examples/angular-*` and
 
 ## Angular native WebMCP APIs
 
-Angular 20+ ships experimental `provideWebMcpTools` / Signal Forms
-`experimentalWebMcpTool`. Tooluminati uses `@tooluminati/core`'s
-`WebMcpRegistry` instead so policy, redaction, and security presets match the
-React packages. Do not double-register the same tool through both APIs.
+Angular **22** ships experimental `provideExperimentalWebMcpTools`,
+`declareExperimentalWebMcpTool`, and Signal Forms
+`provideExperimentalWebMcpForms` / `experimentalWebMcpTool`.
+Tooluminati peers Angular `>=20 <23` and uses `@tooluminati/core`'s
+`WebMcpRegistry` so policy, redaction, and security presets match the
+React packages.
+
+Do not double-register the same tool through both APIs. Prefer Angular
+native implicit Signal Form tools for user-facing forms on Angular 22,
+and Tooluminati `provideWebMcpFormTool` for policy-wrapped diagnostics.
 
 ## Troubleshooting bundle
 

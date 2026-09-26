@@ -32,9 +32,19 @@ It helps apps expose safe, structured diagnostics so agents can troubleshoot
 forms, routers, data caches, action availability, errors, hydration, and
 production security policy — not just register another `useWebMcpTool` hook.
 
-WebMCP is experimental and currently requires browser flags or origin-trial
-support. All `@tooluminati/*` APIs should be treated as pre-1.0 and subject to
-change as the draft evolves.
+WebMCP is a W3C Web Machine Learning Community Group draft (2 September 2026),
+not Baseline and not Safari. Chromium origin trial covers Chrome/Edge 149–156
+and currently requires a testing flag or origin-trial token. All
+`@tooluminati/*` APIs should be treated as pre-1.0 and subject to change as
+the draft evolves.
+
+## Upgrading to 0.2.0
+
+Version 0.2.0 adds awaitable registration readiness, independent execution
+cancellation, diagnostic annotations, and declarative submit-result helpers.
+Update all installed `@tooluminati/*` packages together. Browser invocation
+helpers use object input by default; older browsers require explicit JSON
+string mode. See the [0.2.0 migration guide](docs/migration-0.2.0.md).
 
 ## Install
 

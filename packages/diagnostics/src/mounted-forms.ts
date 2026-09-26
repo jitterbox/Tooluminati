@@ -60,7 +60,7 @@ export function createMountedFormsSummaryTool(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () => ({ forms: registry.list() }),
   };
 }

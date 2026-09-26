@@ -74,6 +74,24 @@ pnpm check
 pnpm build
 ```
 
+## Prepared version releases
+
+When package versions and changelogs have already been updated locally, do not
+run `version-packages` a second time. Confirm all sixteen public package
+versions agree, refresh the lockfile, and validate before merging:
+
+```bash
+pnpm install --lockfile-only
+pnpm install --frozen-lockfile
+pnpm check
+pnpm build
+```
+
+Merge the versioned release PR to `main`. With no pending changesets, the
+Release workflow publishes versions missing from npm. Wait for it to finish,
+then verify every package version and its `latest` tag in the registry.
+A merge or a successful build alone does not confirm publication.
+
 ## Manual publish (emergency only)
 
 ```bash

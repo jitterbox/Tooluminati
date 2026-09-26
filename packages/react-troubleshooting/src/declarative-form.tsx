@@ -6,8 +6,17 @@ import {
   type TextareaHTMLAttributes,
   type FormHTMLAttributes,
 } from 'react';
+import {
+  isAgentInvokedSubmit,
+  respondWithAgentResult,
+} from '@tooluminati/diagnostics';
 
-type AgentSubmitEvent = SubmitEvent & { agentInvoked?: boolean };
+export {
+  isAgentInvokedSubmit,
+  respondWithAgentResult,
+  WEBMCP_DECLARATIVE_FOCUS_STYLES,
+  ensureDeclarativeFocusStyles,
+} from '@tooluminati/diagnostics';
 
 export interface WebMcpFormProps extends FormHTMLAttributes<HTMLFormElement> {
   toolName: string;
@@ -87,10 +96,27 @@ export function useAgentInvokedSubmit(
   handler: FormEventHandler<HTMLFormElement>,
 ): FormEventHandler<HTMLFormElement> {
   return (event) => {
-    const submitEvent = event.nativeEvent as AgentSubmitEvent;
-    if (submitEvent.agentInvoked) {
+    if (isAgentInvokedSubmit(event.nativeEvent)) {
       handler(event);
     }
+  };
+}
+
+export function useAgentSubmitRespondWith(
+  getResult: () => unknown | Promise<unknown>,
+): FormEventHandler<HTMLFormElement> {
+  return (event) => {
+    const nativeEvent = event.nativeEvent as SubmitEvent & {
+      respondWith?: unknown;
+    };
+    if (
+      !isAgentInvokedSubmit(nativeEvent) ||
+      typeof nativeEvent.respondWith !== 'function'
+    ) {
+      return;
+    }
+    // Supply respondWith synchronously; capture synchronous handler failures in its promise.
+    respondWithAgentResult(nativeEvent, Promise.resolve().then(getResult));
   };
 }
 

@@ -27,7 +27,7 @@ export function createAppInfoTool(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: () => getInfo(),
   };
 }
@@ -47,7 +47,7 @@ export function createVisibleToolsTool(
       properties: {},
       additionalProperties: false,
     },
-    annotations: { readOnlyHint: true },
+    annotations: { readOnlyHint: true, debugging: true },
     execute: (_args, context) => ({
       tools: context.registry.getVisibleToolSummaries(),
     }),
